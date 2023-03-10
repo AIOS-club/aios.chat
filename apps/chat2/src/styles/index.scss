@@ -1,0 +1,39 @@
+@layer default-chat-sdk {
+  @import '../../node_modules/stream-chat-react/dist/scss/v2/index.scss';
+  // @import '~stream-chat-react/dist/scss/v2/index.scss';
+}
+
+@import "global_theme_elements";
+@import "global_theme_variables";
+@import "layout";
+
+@import "AdminPanel";
+@import "Attachment";
+@import "Channel";
+@import "ChannelList";
+@import "ChannelSearch";
+@import "Message";
+@import "MessageActions";
+@import "MessageInput";
+@import "MessageList";
+@import "MessageReactions";
+@import "PinnedMessageList";
+@import "Sidebar";
+@import "Thread";
+@import "TypingIndicator";
+@import "UserList";
+@import "WorkspaceHeader";
+
+*::-webkit-scrollbar {
+  width: 0.3rem;
+  height: 0.3rem;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #b2b1b5;
+  border-radius: 2px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}

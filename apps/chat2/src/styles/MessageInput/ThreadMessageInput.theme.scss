@@ -1,0 +1,19 @@
+.thread-message-input__input {
+  .thread-message-input__send-button {
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    cursor: pointer;
+
+    svg path {
+      fill: var(--primary-color)
+    }
+
+    &:disabled svg path {
+      fill: var(--str-chat__message-send-disabled-color);
+    }
+  }
+
+  textarea {
+    border-top-left-radius: var(--str-chat__message-textarea-border-radius);
+  }
+}

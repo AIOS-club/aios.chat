@@ -1,0 +1,28 @@
+.typing-indicator__input {
+  position: relative;
+  top: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.typing-indicator__list {
+  display: flex;
+  align-items: center;
+  margin-left: 6px;
+}
+
+.dots {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  margin-right: 2px;
+}
+
+.typing-indicator__input__text {
+  margin-left: 5px;
+}

@@ -1,0 +1,170 @@
+@use '../utils';
+
+.str-chat {
+  --str-chat__deleted-message-background-color: white;
+}
+
+.str-chat__message--deleted {
+  .str-chat__message--deleted-inner {
+    font-size: 12px;
+  }
+}
+
+.str-chat__message-team--editing {
+  background: var(--panel-secondary-background-color);
+  box-shadow: 0 0 11px 0 rgba(0, 0, 0, 0.06), inset 0 1px 0 0 var(--primary-color),
+  inset 0 -1px 0 0 var(--primary-color);
+
+  .str-chat__message-input {
+    background: var(--panel-secondary-background-color);
+  }
+}
+
+.pinned-message {
+  background: #e6efff;
+}
+
+.unpinned-message {
+  background: var(--static-background-color);
+}
+
+.str-chat__message-team-pin-indicator {
+  font-size: 10px;
+  color: var(--text-low-emphasis-color);
+
+  svg {
+    fill: var(--text-low-emphasis-color);
+  }
+}
+
+
+.quoted-message {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: white;
+
+  .quoted-message-inner {
+    background: white;
+  }
+}
+
+.str-chat__message-team-error-header {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+  text-transform: none;
+}
+
+.str-chat__message-team {
+  &:hover {
+    background: var(--panel-secondary-background-color);
+  }
+
+  .str-chat__message-team-group {
+    .str-chat__message-team-meta {
+      font-size: 11px;
+
+      time {
+        color: var(--text-low-emphasis-color);
+        text-transform: uppercase;
+      }
+
+      .str-chat__message-team-author {
+        text-transform: capitalize;
+        font-style: normal;
+        font-weight: var(--font-weight-medium);
+        font-size: 13px;
+        line-height: 120%;
+        color: var(--text-low-emphasis-color);
+      }
+    }
+
+    .str-chat__message-team-content {
+      color: var(--text-color);
+      font-size: 15px;
+      line-height: 22px;
+      font-weight: var(--font-weight-regular);
+
+      .str-chat__message-team-text--is-emoji {
+        font-size: 32px;
+        line-height: 42px;
+      }
+
+      .str-chat__message-team-failed {
+        @include reset-button-style;
+        color: var(--error-color);
+        cursor: pointer;
+        font-size: var(--sm-font);
+      }
+
+    }
+
+    .str-chat__message-team-content blockquote {
+      font-style: italic;
+
+      &::before {
+        font-size: 30px;
+        font-style: italic;
+      }
+    }
+
+    .str-chat__message-team-content .str-chat__message-team-text p {
+      line-height: 120%;
+
+      a {
+        color: var(--primary-color);
+        font-weight: var(--font-weight-bold);
+        text-decoration: none;
+      }
+
+      code {
+        border: 1px solid rgba(208, 2, 27, 0.1);
+        border-radius: 3px;
+      }
+
+      pre,
+      code {
+        font-family: Monaco, monospace;
+        line-height: inherit;
+        font-size: 12px;
+        font-weight: var(--font-weight-bold);
+        background-color: #f8f8f8;
+
+      }
+
+      pre {
+        border-radius: 4px;
+        border: 1px solid #d3d3d3;
+      }
+    }
+
+    .str-chat__message-replies-count-button {
+      @include reset-button-style;
+      line-height: 15px;
+      font-weight: var(--font-weight-bold);
+      font-size: 14px;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+
+    .str-chat__message-replies-count-button:focus {
+      outline: none;
+    }
+  }
+}
+
+.str-chat__event-component__channel-event {
+  .str-chat__event-component__channel-event__content {
+    color: rgba(0,0,0,0.6);
+    font-size: 16px;
+  }
+
+  .str-chat__event-component__channel-event__sentence {
+    color: rgba(0,0,0,0.6);
+    font-size: 16px;
+  }
+
+  .str-chat__event-component__channel-event__date {
+    font-size: 10px;
+  }
+}

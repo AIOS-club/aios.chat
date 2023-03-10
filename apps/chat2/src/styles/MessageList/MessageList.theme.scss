@@ -1,0 +1,9 @@
+.str-chat {
+  --str-chat__message-list-background-color: #fafafa;
+  --str-chat__message-list-color: var(-text-low-emphasis-color);
+}
+
+.str-chat__thread-list {
+  background: white;
+  border-bottom: var(--border-stroke);
+}

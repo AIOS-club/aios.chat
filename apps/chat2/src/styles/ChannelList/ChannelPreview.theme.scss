@@ -1,0 +1,25 @@
+@mixin highlighted-button {
+  background: rgba(0, 0, 0, 0.2);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-weight: var(--font-weight-bold);
+}
+
+.channel-preview {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &.selected {
+    @include highlighted-button;
+  }
+
+  &:hover {
+    @include highlighted-button;
+  }
+}
+
+.channel-preview__item {
+  font-size: 14px;
+  color: white;
+}

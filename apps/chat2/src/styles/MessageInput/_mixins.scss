@@ -1,0 +1,17 @@
+@mixin message-input__wrapper {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px 28px;
+  width: 100%;
+}
+
+@mixin message-input__input {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: var(--str-chat__message-textarea-border-radius);
+  overflow: hidden;
+  width: 100%;
+
+  &:focus-within {
+    border-color: var(--primary-color);
+  }
+}

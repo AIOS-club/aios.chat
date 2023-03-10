@@ -1,0 +1,36 @@
+.str-chat__message-reactions-container {
+  .str-chat__simple-reactions-list-item {
+    line-height: 15px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  ul.str-chat__simple-reactions-list {
+    background: var(--static-background-color);
+    line-height: 12px;
+    border-radius: 50vw;
+    border: 1px solid var(--panel-secondary-background-color);
+  }
+
+  ul.str-chat__simple-reactions-list:hover {
+    border: 1px solid var(--primary-color);
+  }
+
+  .str-chat__simple-reactions-list-item .emoji-mart-emoji:hover {
+    transition: transform .2s ease-in-out;
+    transform: scale(1.2);
+
+  }
+
+  .str-chat__simple-reactions-list-item--last-number {
+    font-size: 11px;
+    color: var(--text-color);
+  }
+}
+
+.str-chat__reaction-selector {
+  border: 1px solid var(--panel-secondary-background-color);
+  border-radius: var(--str-chat__border-radius-circle);
+}

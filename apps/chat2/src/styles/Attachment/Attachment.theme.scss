@@ -1,0 +1,47 @@
+.str-chat {
+  --attachment-border: var(--border-stroke);
+
+  --str-chat__audio-attachment-widget-border-block-start: var(--attachment-border);
+  --str-chat__audio-attachment-widget-border-block-end: var(--attachment-border);
+  --str-chat__audio-attachment-widget-border-inline-start: var(--attachment-border);
+  --str-chat__audio-attachment-widget-border-inline-end: var(--attachment-border);
+
+  --str-chat__file-attachment-border-block-start: var(--attachment-border);
+  --str-chat__file-attachment-border-block-end: var(--attachment-border);
+  --str-chat__file-attachment-border-inline-start: var(--attachment-border);
+  --str-chat__file-attachment-border-inline-end: var(--attachment-border);
+
+  --str-chat__card-attachment-background-color: white;
+  --str-chat__card-attachment-border-radius: 16px;
+  --str-chat__card-attachment-border-block-start: var(--attachment-border);
+  --str-chat__card-attachment-border-block-end: var(--attachment-border);
+  --str-chat__card-attachment-border-inline-start: var(--attachment-border);
+  --str-chat__card-attachment-border-inline-end: var(--attachment-border);
+}
+
+.str-chat__gallery-placeholder {
+  font-size: 16px;
+}
+
+.str-chat__message-attachment--card--actions {
+  .str-chat__message-attachment-actions-button {
+    border-bottom: none;
+
+    &:first-of-type {
+      border-left: none;
+    }
+    &:last-of-type {
+      border-right: none;
+    }
+
+    &:hover {
+      color: var(--primary-color);
+    }
+
+    &:active {
+      color: white;
+      background: var(--primary-color);
+      transition: background-color 0.2s ease-out;
+    }
+  }
+}

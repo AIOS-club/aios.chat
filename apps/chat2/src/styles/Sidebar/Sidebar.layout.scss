@@ -1,0 +1,31 @@
+.sidebar {
+  display: flex;
+  height: 100%;
+
+  .sidebar__company-selection-bar {
+    width: 72px;
+    padding: 14px;
+
+    .sidebar__company-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+    }
+  }
+
+  .channel-list-bar {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+
+    .channel-list-bar__header {
+      padding-inline: 16px;
+      height: var(--header-height);
+    }
+  }
+}
+
+
+

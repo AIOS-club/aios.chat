@@ -1,0 +1,7 @@
+@import "../WorkspaceHeader";
+
+.custom-thread-header {
+  @include workspace-header-layout;
+  padding-inline-end: 10px;
+}
+

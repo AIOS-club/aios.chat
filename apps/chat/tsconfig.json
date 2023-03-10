@@ -1,0 +1,16 @@
+{
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "tsconfig/nextjs.json",
+  "typeRoots": ["./node_modules/@types"],
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "jsx": "preserve"
+  },
+  "include": [
+    "src",
+    "next-env.d.ts"
+  ]
+}

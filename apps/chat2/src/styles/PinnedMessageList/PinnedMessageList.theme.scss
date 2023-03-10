@@ -1,0 +1,15 @@
+@import "../WorkspaceHeader";
+
+.pinned-messages__header {
+  @include workspace-header-theme;
+
+  .close-thread-icon {
+    cursor: pointer;
+  }
+}
+
+.pinned-messages__list {
+  .pinned-message {
+    background: white;
+  }
+}

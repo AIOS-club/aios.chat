@@ -1,0 +1,102 @@
+.str-chat {
+  --str-chat__message-textarea-background-color: white;
+  --str-chat__message-textarea-border-radius: 8px;
+  --str-chat__suggestion-list-container-background-color: white;
+  --str-chat__message-send-color: var(--primary-color);
+}
+
+textarea {
+  background: var(--static-background-color);
+  font-size: 15px;
+  border: none;
+  outline: none;
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.str-chat__dropzone-container {
+  background-color: var(--str-chat__dropzone-container-background-color);
+  color: var(--str-chat__dropzone-container-color);
+  backdrop-filter: var(--str-chat__dropzone-container-backdrop-filter);
+  font: var(--str-chat__subtitle-text);
+}
+
+.str-chat__suggestion-list-container {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.str-chat__send-button {
+  background: var(--str-chat__message-send-background-color);
+  color: var(--str-chat__message-send-color);
+  box-shadow: var(--str-chat__message-send-box-shadow);
+  border-radius: 8px;
+  border-block-start: var(--str-chat__message-send-border-block-start);
+  border-block-end: var(--str-chat__message-send-border-block-end);
+  border-inline-start: var(--str-chat__message-send-border-inline-start);
+  border-inline-end: var(--str-chat__message-send-border-inline-end);
+  cursor: pointer;
+
+  svg path {
+    fill: var(--str-chat__message-send-color);
+  }
+
+  &:disabled {
+    background-color: var(--str-chat__message-send-disabled-background-color);
+
+    svg path {
+      fill: var(--str-chat__message-send-disabled-color);
+    }
+  }
+}
+
+.message-input__controls-button {
+  border-radius: 5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  path {
+    fill-opacity: 0.2;
+    fill: #000;
+  }
+
+  &.active path {
+    fill-opacity: 1;
+    fill: var(--primary-color);
+  }
+
+  &:hover path {
+    fill: var(--primary-color);
+    fill-opacity: 1;
+  }
+}
+
+.giphy-icon__wrapper {
+  background: var(--primary-color);
+  border-radius: 12px;
+
+  .giphy-icon__text {
+    font-weight: var(--font-weight-bold);
+    font-size: 11px;
+    color: white;
+  }
+}
+
+.emoji-mart-anchor-selected {
+  color: var(--primary-color) !important;
+}
+
+.emoji-mart-anchor-bar {
+  background: var(--primary-color) !important;
+}
+
+.emoji-mart .emoji-mart-emoji:focus {
+  outline: none;
+}
+
+div.rfu-dropzone:focus {
+  outline: none;
+}

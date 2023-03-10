@@ -1,0 +1,65 @@
+.user-list__container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  h2 {
+    display: flex;
+    gap: 10px;
+    margin: 0;
+    padding: 30px 20px 16px;
+  }
+}
+
+.user-list__message {
+  margin: 20px;
+}
+
+.user-list__row.user-list__header {
+  padding-block: 1rem;
+}
+
+.user-list__row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  gap: 10px;
+
+  p {
+    margin: 0;
+  }
+
+  .user-list__column-block {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .user-list__column--user-data {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .user-list__column--last-active {
+    width: 40%;
+  }
+
+  .user-list__column--checkbox {
+    flex: 1;
+  }
+
+  .user-list__column--last-active,
+  .user-list__column--checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

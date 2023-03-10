@@ -1,0 +1,14 @@
+.str-chat__list .str-chat__parent-message-li {
+  padding: 12px 0;
+  margin-block-end: 0;
+
+  .str-chat__thread-start {
+    display: none;
+  }
+}
+
+.str-chat__thread-list {
+  .str-chat__message-team {
+    padding: 10px;
+  }
+}

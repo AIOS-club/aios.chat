@@ -1,0 +1,28 @@
+.str-chat__edit-message-form {
+  .str-chat__message-input {
+    padding-inline: 0;
+  }
+
+  .str-chat__file-input-container,
+  .str-chat__emoji-picker-button {
+    display: none;
+  }
+
+  .str-chat__message-textarea-with-emoji-picker {
+    padding: 0;
+  }
+
+  .str-chat__message-textarea-container {
+    overflow: hidden;
+  }
+
+  .str-chat__message-textarea-react-host {
+    position: static;
+
+    .str-chat__suggestion-list-container {
+      width: 100%;
+      left: 0;
+      bottom: 85%;
+    }
+  }
+}

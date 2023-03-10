@@ -1,0 +1,39 @@
+
+
+
+.user-list__container {
+  color: var(--text-color);
+
+  h2 {
+    border-bottom: 1px solid var(--border-color);
+    font: var(--font-weight-regular) 16px;
+  }
+}
+
+.user-list__message {
+  font-size: 16px;
+}
+
+.user-list__row.user-list__header {
+
+  p {
+    color: var(--text-low-emphasis-color);
+  }
+}
+
+.user-list__row {
+
+  &:hover {
+    background: var(--panel-primary-background-color);
+    cursor: pointer;
+  }
+
+  p {
+    font: var(--font-weight-regular) 14px/17px var(--font-family);
+    color: var(--text-color);
+  }
+
+  .user-item__name {
+    font-weight: 500;
+  }
+}

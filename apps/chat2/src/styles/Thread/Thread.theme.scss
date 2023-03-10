@@ -1,0 +1,15 @@
+@import "../WorkspaceHeader";
+
+.custom-thread-header {
+  @include workspace-header-theme;
+
+  .close-thread-icon {
+    cursor: pointer;
+  }
+}
+
+.str-chat__thread {
+  box-shadow: inset 1px 0 0 var(--border-color);
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+}

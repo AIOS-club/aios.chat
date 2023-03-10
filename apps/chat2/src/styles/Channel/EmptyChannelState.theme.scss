@@ -1,0 +1,19 @@
+.channel-empty__container {
+  .channel-empty__main-description {
+    font-weight: var(--font-weight-bold);
+    font-size: 18px;
+    line-height: 120%;
+    color: var(--text-color);
+  }
+
+  .channel-empty__main-description .channel-empty__user-name {
+    color: var(--primary-color);
+  }
+
+  .channel-empty__secondary-description {
+    font-size: 14px;
+    line-height: 120%;
+    color: var(--text-low-emphasis-color);
+  }
+}
+

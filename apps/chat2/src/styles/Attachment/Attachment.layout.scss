@@ -1,0 +1,22 @@
+.str-chat__attachment-list {
+  align-items: flex-start;
+
+  .str-chat__message-attachment {
+    max-width: 100%;
+  }
+
+  .str-chat__message-attachment--card--actions {
+    overflow: hidden;
+  }
+
+  .str-chat__message-attachment-audio-widget {
+    flex: 1 1 var(--str-chat__attachment-max-width);
+    max-width: var(--str-chat__attachment-max-width);
+  }
+
+  .str-chat__message-attachment-card--text {
+    display: none;
+  }
+}
+
+

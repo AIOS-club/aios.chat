@@ -1,0 +1,27 @@
+.str-chat {
+  --str-chat__channel-list-background-color: transparent;
+}
+
+.team-channel-list {
+  .str-chat__avatar-fallback {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), var(--primary-color)
+  }
+
+  .team-channel-list__message {
+    color: white;
+  }
+
+  .team-channel-list__header {
+    .team-channel-list__header__title {
+      font-size: 13px;
+      line-height: 16px;
+      color: rgba(255, 255, 255, 0.66);
+    }
+
+    button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  }
+}

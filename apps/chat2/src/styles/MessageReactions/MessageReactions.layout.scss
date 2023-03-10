@@ -1,0 +1,35 @@
+.str-chat__message-reactions-container {
+  margin-block-start: 8px;
+
+  .str-chat__simple-reactions-list-item--last-number {
+    display: unset;
+  }
+
+  ul.str-chat__simple-reactions-list {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: 6px 6px 4px 6px;
+  }
+
+  .str-chat__simple-reactions-list-item span {
+    display: flex;
+    align-items: center;
+  }
+
+  .emoji-mart-emoji-custom span {
+    height: 15px !important;
+    width: 15px !important;
+  }
+}
+
+.str-chat__reaction-selector {
+  left: unset;
+  top: -60px;
+  right: 0;
+}
+
+.str-chat__reaction-selector .emoji-mart-emoji span {
+  height: 24px !important;
+  width: 24px !important;
+}

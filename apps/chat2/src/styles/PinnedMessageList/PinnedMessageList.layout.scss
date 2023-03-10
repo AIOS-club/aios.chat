@@ -1,0 +1,21 @@
+@import "../WorkspaceHeader";
+
+.pinned-messages__header {
+  @include workspace-header-layout;
+  padding-inline-end: 10px;
+}
+
+.pinned-messages__list {
+  padding-top: 20px;
+
+  .str-chat__message-simple__actions,
+  .str-chat__message-team-pin-indicator,
+  .str-chat__message-replies-count-button,
+  .str-chat__message-team-actions {
+    display: none;
+  }
+
+  .pinned-message {
+    margin-left: 0.5px;
+  }
+}

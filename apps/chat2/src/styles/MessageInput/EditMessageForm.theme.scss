@@ -1,0 +1,19 @@
+.str-chat__edit-message-form {
+  .str-chat__message-textarea-container {
+    border: 1px solid var(--primary-color);
+
+    &:focus-within {
+      border-width: 2px;
+    }
+  }
+
+  .str-chat__edit-message-cancel {
+    color: rgba(0,0,0,.33);
+  }
+
+  .str-chat__edit-message-cancel,
+  .str-chat__edit-message-send {
+    font-weight: var(--font-weight-bold);
+    text-transform: none;
+  }
+}

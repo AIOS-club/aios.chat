@@ -1,0 +1,16 @@
+@import "../WorkspaceHeader";
+@import "../utils";
+
+.team-channel-header__container {
+  @include workspace-header-layout;
+}
+
+.team-channel-header__name {
+  @include ellipsis-text;
+}
+
+.team-channel-header__name.user {
+  font: var(--font-weight-medium);
+  font-size: 14px;
+}
+

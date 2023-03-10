@@ -1,0 +1,57 @@
+@use "mixins";
+
+.team-message-input__wrapper {
+  @include mixins.message-input__wrapper;
+  position: relative;
+  flex-direction: column;
+
+  .team-message-input__input {
+    @include mixins.message-input__input;
+
+    .team-message-input__top {
+      min-height: 43px;
+      width: 100%;
+
+      .team-message-input__form {
+        display: flex;
+        align-items: center;
+        padding-right: 10px;
+
+        .str-chat__send-button {
+          display: flex;
+          align-items: center;
+          padding: 10px;
+
+          svg {
+            width: calc(var(--str-chat__spacing-px) * 20);
+            height: calc(var(--str-chat__spacing-px) * 20);
+          }
+        }
+
+        .str-chat__suggestion-list-container {
+          width: unset;
+          bottom: 85%;
+          right: 20px;
+          left: 20px;
+        }
+      }
+    }
+
+    .team-message-input__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      height: 40px;
+    }
+  }
+
+  .str-chat__input--emojipicker {
+    z-index: 3;
+    position: absolute;
+    bottom: 112px;
+    left: 20px;
+    width: 338px;
+  }
+}
+

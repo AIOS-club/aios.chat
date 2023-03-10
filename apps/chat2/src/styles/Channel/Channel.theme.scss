@@ -1,0 +1,5 @@
+@import "../WorkspaceHeader";
+
+.team-channel-header__container {
+  @include workspace-header-theme;
+}

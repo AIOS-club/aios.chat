@@ -1,0 +1,18 @@
+@mixin workspace-header-theme {
+  border-bottom: var(--border-stroke);
+  background: var(--static-background-color);
+
+  .workspace-header__title {
+    font: var(--header-title-text);
+    color: var(--text-color);
+  }
+
+  .workspace-header__subtitle {
+    font: var(--header-subtitle-text);
+    color: var(--text-low-emphasis-color);
+  }
+
+  button {
+    cursor: pointer;
+  }
+}

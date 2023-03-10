@@ -1,0 +1,59 @@
+@use "../utils";
+
+// FIXME: hack: hide "Reply" action (see: https://github.com/GetStream/stream-chat-react/issues/1779)
+.str-chat__thread-list .str-chat__message-actions-list button:first-child {
+  display: none;
+}
+
+.str-chat__message-team-actions {
+  position: absolute;
+  top: -12px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 75px;
+  height: 24px;
+  z-index: 10;
+  padding: 0 4px 0;
+  visibility: hidden;
+
+  > span {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+  }
+
+  .str-chat__message-actions-box-button {
+    display: flex;
+    align-items: center;
+  }
+
+  .str-chat__message-actions-box {
+    bottom: initial;
+    left: initial;
+    visibility: hidden;
+    right: 100%;
+    top: -10px;
+  }
+
+  .str-chat__message-actions-box--open {
+    visibility: visible;
+  }
+}
+
+.str-chat__thread-list {
+  .str-chat__message-team-actions {
+    width: 60px;
+    min-width: unset;
+
+    .str-chat__message-actions-box {
+      top: initial;
+      bottom: -10px;
+    }
+  }
+}

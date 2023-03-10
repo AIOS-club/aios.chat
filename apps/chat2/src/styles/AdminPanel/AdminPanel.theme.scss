@@ -1,0 +1,55 @@
+@import "../WorkspaceHeader";
+@import "../utils";
+
+.admin-panel__form {
+  .admin-panel__form-header {
+    @include workspace-header-theme;
+  }
+
+  .admin-panel__form-footer {
+    background: var(--panel-primary-background-color);
+    border-bottom-right-radius: 16px;
+
+    button {
+      border: none;
+      background: var(--primary-color);
+      font: var(--font-weight-bold) 18px var(--font-family);
+      color: var(--static-background-color);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  }
+
+  .channel-name-input-field {
+    h2 {
+      font: var(--font-weight-regular) 16px;
+    }
+
+    input {
+      font: 18px var(--font-family);
+      background: var(--panel-primary-background-color);
+      border: var(--border-stroke);
+      border-radius: 8px;
+
+      &:focus {
+        border: 1px solid var(--primary-color);
+        outline: none;
+      }
+
+      &::placeholder {
+        font-weight: var(--font-weight-light);
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+
+  .admin-panel__form-validation-error {
+    color: var(--error-color);
+    font-size: 14px;
+    font-style: italic;
+  }
+}
+
+
+
+

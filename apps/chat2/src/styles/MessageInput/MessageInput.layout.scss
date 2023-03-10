@@ -1,0 +1,51 @@
+textarea {
+  width: 100%;
+  resize: none;
+  padding: 16px 10px;
+}
+
+.str-chat__textarea {
+  height: auto;
+  flex: 1 1;
+}
+
+.message-input__controls-button {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  svg {
+    width: 30px;
+  }
+}
+
+.str-chat__dropzone-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 5;
+}
+
+.giphy-icon__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 24px;
+  width: 63px;
+  margin-left: 8px;
+}
+
+.rfu-image-previewer {
+  flex: none;
+  margin-left: 12px;
+}
+
+.rfu-image-previewer__image {
+  margin-bottom: 0;
+}

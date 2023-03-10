@@ -1,0 +1,35 @@
+{
+  "name": "chat2",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "deploy": "vercel deploy dist --team=turborepo --confirm",
+    "dev": "vite --host 0.0.0.0 --port 3001 --clearScreen false",
+    "lint": "tsc --noEmit && eslint \"src/**/*.ts*\""
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.58.3",
+    "sass-loader": "^13.2.0",
+    "stream-chat": "^8.4.1",
+    "stream-chat-react": "^10.7.1",
+    "ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^2.1.0",
+    "eslint": "^7.32.0",
+    "autoprefixer": "^10.4.13",
+    "eslint-config-custom": "workspace:*",
+    "postcss": "^8.4.21",
+    "tailwind-config": "workspace:*",
+    "tailwindcss": "^3.2.7",
+    "tsconfig": "workspace:*",
+    "typescript": "^4.8.3",
+    "vite": "^3.1.0"
+  }
+}

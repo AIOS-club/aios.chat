@@ -1,0 +1,49 @@
+@use '../utils';
+
+.channel-preview {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  height: 37px;
+  padding: 0;
+
+  &.selected {
+    display: flex;
+    align-items: center;
+    height: 37px;
+  }
+}
+
+.channel-preview__item {
+  display: flex;
+  align-items: center;
+  max-width: 220px;
+  height: 100%;
+  width: 100%;
+  padding-left: 26px;
+
+  p {
+    @include ellipsis-text;
+  }
+
+  &.single .str-chat__avatar {
+    margin-right: 12px;
+  }
+
+  &.multi .str-chat__avatar {
+    margin-right: 0;
+  }
+
+  &.multi span:first-child {
+    position: relative;
+    z-index: 2;
+    bottom: 6px;
+  }
+
+  &.multi div:nth-child(2) {
+    position: relative;
+    right: 10px;
+    z-index: 1;
+    margin-bottom: 0;
+  }
+}
