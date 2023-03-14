@@ -1,0 +1,24 @@
+.loadingSecond,
+.loadingFirst {
+  animation-name: fadeIn;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+}
+
+.loadingSecond {
+  animation-delay: 500ms;
+}
+
+.loading {
+  cursor: pointer;
+  user-select: none;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

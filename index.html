@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>ai</title>
+  <script>
+      <% Object.keys(process.env).forEach(function (key) { %>
+        window.<%= key %> = '<%= process.env[key] %>';
+      <% }); %>
+  </script>
+</head>
+
+<body class="font-sans dark:text-white dark:bg-hex-121212">
+  <div id="app"></div>
+  <!-- <script>
+      (function () {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        const setting = localStorage.getItem('color-schema') || 'auto';
+        if (setting === 'dark' || (prefersDark && setting !== 'light'))
+          document.documentElement.classList.toggle('dark', true);
+      })();
+  </script> -->
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>
