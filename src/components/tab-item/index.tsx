@@ -9,13 +9,13 @@ import { ChatList, ChatStoreProps, Messages } from '@/global';
 import { useFetchAnswer } from '@/api';
 import { encode } from '@/utils/encoder/encoder';
 
-interface ChatItemProps {
+interface TabItemProps {
   chat: ChatList;
 }
 
 const defaultCls = 'flex py-3 px-3 items-center gap-3 relative rounded-md hover:bg-[#1e293b] cursor-pointer break-all group';
 
-const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
+const TabItem: React.FC<TabItemProps> = ({ chat }) => {
   const { chatId, data, title, titleBlock } = chat;
 
   const { handleDelete: handleChatDelete, handleTitleChange, handleTitleBlock } = useContext<ChatStoreProps>(Store);
@@ -93,4 +93,4 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat }) => {
   );
 };
 
-export default ChatItem;
+export default TabItem;

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { Icon, Toast } from '@douyinfe/semi-ui';
 import { useFetchAnswer } from '@/api';
-import BeforeInputTips from '@/components/before-input-tips';
+import EmptyChatPlaceholder from '@/components/empty-chat-placeholder';
 import { Conversation } from '@/components/conversation/Conversation';
 import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
@@ -14,6 +14,8 @@ import { getSystemMessage, getCachePrompt } from '@/utils';
 import { Store } from '@/pages/index';
 import Refresh from '@/assets/refresh.svg';
 import { ChatStoreProps } from '@/global';
+
+const MAX_TOKENS = parseInt(import.meta.env.MAX_TOKENS, 10);
 
 const Chat: React.FC = () => {
   const [query] = useSearchParams();
@@ -62,8 +64,7 @@ const Chat: React.FC = () => {
 
   const handleFetchAnswer = async (v: string, retry: boolean = false) => {
     if (!v) return;
-    // TODO 这里的前端最大tokens可以放到环境变量里
-    if (encode(v).length > 3000) {
+    if (encode(v).length > MAX_TOKENS) {
       setValue(v);
       Toast.warning('提问内容文本过长，请控制在 2000 字以内');
       return;
@@ -150,7 +151,7 @@ const Chat: React.FC = () => {
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full dark:bg-gray-800 relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
-            {conversation.length > 0 ? <ConversationList data={conversation} /> : <BeforeInputTips setValue={setValue} />}
+            {conversation.length > 0 ? <ConversationList data={conversation} /> : <EmptyChatPlaceholder setValue={setValue} />}
           </div>
         </div>
       </div>

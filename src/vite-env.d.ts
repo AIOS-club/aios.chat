@@ -1,9 +1,6 @@
 /// <reference types="vite-plugin-pages/client-react" />
 /// <reference types="vite/client" />
 
-declare const COMMIT_VERSION: string;
-declare const APP_ENV: string;
-
 declare module '*.png' {
   const content: any;
   export default content;

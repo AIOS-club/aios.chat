@@ -3,7 +3,7 @@ import { Icon } from '@douyinfe/semi-ui';
 import SunTips from '@/assets/suntips.svg';
 import Lightning from '@/assets/lightning.svg';
 import Warning from '@/assets/warning.svg';
-import { BeforeInputTipsProps } from './BeforeInputTips';
+import { EmptyChatPlaceholderProps } from './EmptyChatPlaceholder';
 
 const Examples = [
   'Explain quantum computing in simple terms',
@@ -11,7 +11,7 @@ const Examples = [
   'How do I make an HTTP request in Javascript?'
 ];
 
-const BeforeInputTips: FC<BeforeInputTipsProps> = (props) => {
+const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = (props) => {
   const { setValue } = props;
 
   const renderTipsButtons = (): ReactElement => (
@@ -77,4 +77,4 @@ const BeforeInputTips: FC<BeforeInputTipsProps> = (props) => {
   );
 };
 
-export default BeforeInputTips;
+export default EmptyChatPlaceholder;

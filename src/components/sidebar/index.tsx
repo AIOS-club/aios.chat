@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Icon, Modal, Popconfirm, Toast } from '@douyinfe/semi-ui';
-import ChatItem from '@/components/chat-item';
+import TabItem from '@/components/tab-item';
 import useIsMobile from '@/hooks/useIsMobile';
 import { Store } from '@/pages/index';
 import { ChatStoreProps } from '@/global';
@@ -67,7 +67,7 @@ const Nav: React.FC<SideBarProps> = (props) => {
         </button>
         <div className="flex-col flex-1 overflow-y-auto border-b border-white/20 hidden-scroll-bar">
           <div className="flex flex-col gap-2 text-gray-100 text-sm">
-            {chatList.length > 0 && chatList.map(chat => <ChatItem key={chat.chatId} chat={chat} />)}
+            {chatList.length > 0 && chatList.map(chat => <TabItem key={chat.chatId} chat={chat} />)}
           </div>
         </div>
         {chatList.length > 0 && (
