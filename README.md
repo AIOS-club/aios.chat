@@ -1,6 +1,62 @@
-## Get Started
+<div align="center">
+  <a href="https://github.com/AIOS-club/lite.aios.chat">
+    <img src="src/assets/img/aiAvator.jpg" alt="Logo" width="80" height="80">
+  </a>
 
-#### 已支持的功能
+  <h3 align="center">lite aios chat</h3>
+
+  <p align="center">
+    和ai对话的lite版网页端
+    <br />
+    <br />
+    <a href="">View Demo</a>
+    ·
+    <a href="https://github.com/AIOS-club/lite.aios.chat/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/AIOS-club/lite.aios.chat/issues">Request Feature</a>
+  </p>
+</div>
+
+## Preview
+<br />
+<img src="src/assets/img/screenshot.png" />
+<br />
+<br />
+
+## Built With
+
+本项目由以下技术栈构建
+
+  [![React][React-logo]][React-url]
+
+
+## Get Started
+```bash
+npm install
+
+npm run dev
+```
+> 可能会遇到的版本不兼容问题，请尝试使用以下命令
+```bash
+npm install --legacy-peer-deps
+```
+
+## 环境变量
+请参考 **.env.production** 文件。<br />
+```bash
+VITE_API_HOST='' # api host
+VITE_MAX_TOKENS=3000 # 最大tokens数
+VITE_BASE_URL='/' # BASE_URL
+VITE_DEFAULT_PLACEHOLDER='' # 输入框的placeholder
+VITE_DEFAULT_BOTTOM_TIPS='' # 底部的消息
+VITE_AI_AVATOR_URL='' # ai avator
+VITE_USER_USER_URL='' # user avator
+```
+首次```npm run dev```，对话会失败，是因为本地需要 **.env.development** 文件,请先创建一个 **.env.development** 文件，并将 **.env.production** 文件里的内容复制进去
+> 后续在 ```npm run dev``` 的命令时会执行脚本，自动创建该文件
+
+
+## 已支持的功能
 - 上下文对话 最大3000tokens 可配置
 - 历史会话
 - markdown渲染
@@ -9,7 +65,7 @@
 - 可一键分享当前会话
 - 暗夜模式
 
-#### TODO
+## TODO
 - 预设场景化机器人system应用
 - 流式传输
 - prompt store
@@ -22,9 +78,8 @@
 - github action（打包验证，代码规范eslint等）
 - GitHub pages自动部署
 - docker-compose编写
+- 使用自定义API Key
 
-```bash
-npm install
 
-npm run dev
-```
+[React-logo]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
