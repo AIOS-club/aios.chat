@@ -29,7 +29,6 @@
     "postcss": "^8.4.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-katex": "^3.0.1",
     "react-photoswipe-gallery": "^2.2.6",
     "react-router-dom": "^6.4.3",
     "swr": "^2.0.0",

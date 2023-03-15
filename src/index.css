@@ -225,6 +225,10 @@ pre[class*=language-] {
   color: #f22c3d !important;
 }
 
+.katex {
+  line-height: 3.2;
+}
+
 @media screen and (max-width: 768px) {
   .pswp__top-bar {
     top: unset;
