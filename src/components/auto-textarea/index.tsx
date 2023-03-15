@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Icon } from '@douyinfe/semi-ui';
 import Loading from '@/components/loading';
-import Lark from '@/assets/lark.svg';
+import Lark from '@/assets/svg/lark.svg';
 import { AutoTextAreaProps } from './AutoTextArea';
 
 const placeholder = import.meta.env.VITE_DEFAULT_PLACEHOLDER;
