@@ -36,7 +36,6 @@
     "terser": "^5.16.3",
     "unplugin-auto-import": "^0.12.1",
     "uuid": "^9.0.0",
-    "vite-plugin-html": "^3.2.0",
     "vite-plugin-pages": "^0.28.0"
   },
   "devDependencies": {

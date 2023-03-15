@@ -5,6 +5,8 @@ import { SWRConfig } from 'swr';
 import App from './app';
 import './index.css';
 
+const BASE = import.meta.env.BASE_URL;
+
 ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
   <React.StrictMode>
     <SWRConfig

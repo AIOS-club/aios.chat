@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/promise-function-async */
 import axios from 'axios';
 import moment from 'moment';
 import { encode } from '@/utils/encoder/encoder';
 import { Conversation } from '@/components/conversation/Conversation';
 import { Messages } from '@/global';
+
+const MAX_TOKENS = parseInt(import.meta.env.MAX_TOKENS, 10);
 
 async function fetch (url: string, params: any, type: 'POST' | 'GET' = 'GET', options: any = {}): Promise<any> {
   const method = type.toLocaleLowerCase();
@@ -15,7 +16,6 @@ async function fetch (url: string, params: any, type: 'POST' | 'GET' = 'GET', op
     params: method === 'get' ? params : null,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
       ...options
     },
     timeout: 300000 // 5分钟
@@ -43,8 +43,9 @@ function getCachePrompt (conversation: Conversation[], curValue: string): Messag
         }
       }
     }
+    if (Number.isNaN(MAX_TOKENS)) return pairsConversation; // 没设置的话就一直记录
     const valueTokensLength = encode(curValue).length; // 当前会话的长度
-    const restTokensLength = 3000 - valueTokensLength;
+    const restTokensLength = MAX_TOKENS - valueTokensLength;
     // 如果当前会话的长度就超过了最大值，那么直接返回，让后端报错
     if (restTokensLength <= 0) {
       return [{ role: 'user', content: curValue }];

@@ -1,5 +1,5 @@
 import React from 'react';
 
-export interface BeforeInputTipsProps {
+export interface EmptyChatPlaceholderProps {
   setValue: React.Dispatch<React.SetStateAction<string>>
 }
