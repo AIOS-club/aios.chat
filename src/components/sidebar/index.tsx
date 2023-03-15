@@ -11,7 +11,7 @@ import Add from '@/assets/add.svg';
 import AddOne from '@/assets/add-one.svg';
 import Delete from '@/assets/delete.svg';
 import Bread from '@/assets/bread.svg';
-import Close from '@/assets/Close.svg';
+import Close from '@/assets/close.svg';
 import { Mode, SideBarProps } from './Sidebar';
 
 const commonCls = 'flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm';
