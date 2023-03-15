@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import html2canvas from 'html2canvas';
 import ClipboardJS from 'clipboard';
 import { marked } from 'marked';
+import 'katex/dist/katex.min.css'; // 加载katex的CSS文件
+import markedKatex from "marked-katex-extension-ts";
 import { Toast, Spin, Icon } from '@douyinfe/semi-ui';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import Flashing from '@/components/flashing';
@@ -19,7 +21,11 @@ import 'photoswipe/dist/photoswipe.css';
 const clipboard = new ClipboardJS('.copy-button', {
   text: (trigger: HTMLButtonElement) => decodeURIComponent(trigger.getAttribute('data-copy-text') || ''),
 });
+const options = {
+  throwOnError: false
+};
 
+marked.use(markedKatex(options));
 clipboard.on('success', () => {
   Toast.success('复制成功');
 });
