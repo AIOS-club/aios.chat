@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { Icon, Toast } from '@douyinfe/semi-ui';
 import { useFetchAnswer } from '@/api';
-import EmptyChatPlaceholder from '@/components/empty-chat-placeholder';
+import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/Conversation';
 import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
@@ -12,7 +12,7 @@ import useScrollToBottom from '@/hooks/useScrollToBottom';
 import { encode } from '@/utils/encoder/encoder';
 import { getSystemMessage, getCachePrompt } from '@/utils';
 import { Store } from '@/pages/index';
-import Refresh from '@/assets/refresh.svg';
+import Refresh from '@/assets/svg/refresh.svg';
 import { ChatStoreProps } from '@/global';
 
 const MAX_TOKENS = parseInt(import.meta.env.VITE_MAX_TOKENS, 10);
@@ -152,7 +152,7 @@ const Chat: React.FC = () => {
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full dark:bg-gray-800 relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
-            {conversation.length > 0 ? <ConversationList data={conversation} /> : <EmptyChatPlaceholder setValue={setValue} />}
+            {conversation.length > 0 ? <ConversationList data={conversation} /> : <ProjectSourceInfo />}
           </div>
         </div>
       </div>

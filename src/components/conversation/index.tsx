@@ -8,9 +8,9 @@ import markedKatex from 'marked-katex-extension-ts';
 import { Toast, Spin, Icon } from '@douyinfe/semi-ui';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import Flashing from '@/components/flashing';
-import Share from '@/assets/share.svg';
-import Bot from '@/assets/bot.svg';
-import User from '@/assets/user.svg';
+import Share from '@/assets/svg/share.svg';
+import aiAvator from '@/assets/img/aiAvator.jpg';
+import userAvator from '@/assets/img/userAvator.png';
 import { highlightCode, imgLoad } from './utils';
 import { ConversationProps, Conversation as Con } from './Conversation';
 import styles from './Conversation.module.less';
@@ -18,14 +18,16 @@ import 'highlight.js/styles/github-dark.css';
 import 'photoswipe/dist/photoswipe.css';
 import 'katex/dist/katex.min.css'; // 加载katex的CSS文件
 
-const clipboard = new ClipboardJS('.copy-button', {
-  text: (trigger: HTMLButtonElement) => decodeURIComponent(trigger.getAttribute('data-copy-text') || ''),
-});
 const options = {
   throwOnError: false
 };
 
 marked.use(markedKatex(options));
+
+const clipboard = new ClipboardJS('.copy-button', {
+  text: (trigger: HTMLButtonElement) => decodeURIComponent(trigger.getAttribute('data-copy-text') || ''),
+});
+
 clipboard.on('success', () => {
   Toast.success('复制成功');
 });
@@ -39,6 +41,9 @@ const conversationCls = 'answer min-h-[20px] flex flex-col items-start gap-4 whi
 const shareBtnCls = 'absolute top-10 right-0 w-16 h-7 flex justify-center break-keep items-center btn-neutral rounded-l html2canvas-ignore';
 const imageContentCls = 'pswp__img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 object-contain';
 const markdownCls = 'prose prose-p:m-0 prose-ul:m-0 prose-ul:leading-normal prose-li:m-0 prose-ol:m-0 prose-pre:w-full prose-pre:p-0 prose-pre:h-fit prose-pre:bg-black prose-pre:text-white w-0 flex-grow dark:prose-invert';
+
+const AI_AVATOR = import.meta.env.VITE_AI_AVATOR_URL;
+const USER_AVATOR = import.meta.env.VITE_USER_USER_URL;
 
 const Conversation: React.FC<ConversationProps> = (props) => {
   const { data } = props;
@@ -64,6 +69,12 @@ const Conversation: React.FC<ConversationProps> = (props) => {
       )}
     </Item>
   ), []);
+
+  const renderAvator = useCallback((character: 'user' | 'bot') => {
+    const userUrl = USER_AVATOR || userAvator;
+    const aiUrl = AI_AVATOR || aiAvator;
+    return <img className="rounded-sm" alt='' src={character === 'user' ? userUrl : aiUrl} />;
+  }, []);
 
   const handleClick = async () => {
     const element = ref.current;
@@ -114,12 +125,12 @@ const Conversation: React.FC<ConversationProps> = (props) => {
             key={d.key}
             className={classNames(defaultClass, {
               'dark:bg-gray-800': d.character === 'user',
-              'bg-gray-50 dark:bg-[#444654]': d.character !== 'user' // 兼容以前的AI-EDU
+              'bg-gray-50 dark:bg-[#444654]': d.character !== 'user'
             })}
           >
             <div className="text-base gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
               <div className="w-[30px] flex flex-col relative items-end flex-shrink-0">
-                <Icon svg={d.character === 'user' ? <User /> : <Bot />} />
+                {renderAvator(d.character)}
               </div>
               <div className={markdownCls}>
                 {d.type === 'image' ? renderImage(d) : (

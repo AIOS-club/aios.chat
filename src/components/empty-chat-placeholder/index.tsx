@@ -1,8 +1,8 @@
 import { FC, ReactElement } from 'react';
 import { Icon } from '@douyinfe/semi-ui';
-import SunTips from '@/assets/suntips.svg';
-import Lightning from '@/assets/lightning.svg';
-import Warning from '@/assets/warning.svg';
+import SunTips from '@/assets/svg/suntips.svg';
+import Lightning from '@/assets/svg/lightning.svg';
+import Warning from '@/assets/svg/warning.svg';
 import { EmptyChatPlaceholderProps } from './EmptyChatPlaceholder';
 
 const Examples = [
