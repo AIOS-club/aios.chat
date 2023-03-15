@@ -4,6 +4,8 @@ import Loading from '@/components/loading';
 import Lark from '@/assets/lark.svg';
 import { AutoTextAreaProps } from './AutoTextArea';
 
+const placeholder = import.meta.env.VITE_DEFAULT_PLACEHOLDER;
+
 const AutoTextArea: React.FC<AutoTextAreaProps> = (props) => {
   const {
     value,
@@ -32,7 +34,7 @@ const AutoTextArea: React.FC<AutoTextAreaProps> = (props) => {
         ref={textareaRef}
         data-id="root"
         style={{ height: `${textareaHeight}px`, maxHeight: '200px' }}
-        placeholder="发送消息给 AI"
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}

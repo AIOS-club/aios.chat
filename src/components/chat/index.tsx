@@ -15,7 +15,8 @@ import { Store } from '@/pages/index';
 import Refresh from '@/assets/refresh.svg';
 import { ChatStoreProps } from '@/global';
 
-const MAX_TOKENS = parseInt(import.meta.env.MAX_TOKENS, 10);
+const MAX_TOKENS = parseInt(import.meta.env.VITE_MAX_TOKENS, 10);
+const BOTTOM_TIPS = import.meta.env.VITE_DEFAULT_BOTTOM_TIPS;
 
 const Chat: React.FC = () => {
   const [query] = useSearchParams();
@@ -64,7 +65,7 @@ const Chat: React.FC = () => {
 
   const handleFetchAnswer = async (v: string, retry: boolean = false) => {
     if (!v) return;
-    if (encode(v).length > MAX_TOKENS) {
+    if (!Number.isNaN(MAX_TOKENS) && encode(v).length > MAX_TOKENS) {
       setValue(v);
       Toast.warning('提问内容文本过长，请控制在 2000 字以内');
       return;
@@ -173,7 +174,7 @@ const Chat: React.FC = () => {
           </div>
         </form>
         <div className="px-3 pt-2 pb-3 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3 md:pb-6">
-          。。。
+          {BOTTOM_TIPS}
         </div>
       </div>
     </main>
