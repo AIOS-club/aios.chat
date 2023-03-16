@@ -4,6 +4,8 @@ import { Messages } from '@/global';
 
 const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
 
+const regex = /(```[\s\S]*?```)/;
+
 /**
  * 获取前几次的用户对话信息
  */
@@ -34,14 +36,14 @@ function getCachePrompt (conversation: Conversation[], curValue: string): Messag
 function parseStreamText(data: string) {
   const dataList = data?.split('\n')?.filter(l => l !== '');
 
-  const result: Messages = { role: 'assistant', content: '' };
+  const result = { role: 'assistant', content: '', stop: false };
 
   dataList.forEach(l => {
     // 移除"data: "前缀
     const jsonStr = l.replace('data: ', '');
 
     if (jsonStr === '[DONE]') {
-      console.log('Done!');
+      result.stop = true;
     } else {
       // 将JSON字符串转换为JavaScript对象
       const jsonObj = JSON.parse(jsonStr);
@@ -52,6 +54,13 @@ function parseStreamText(data: string) {
       }
     }
   });
+
+  const matches = result.content.match(/```/g);
+  const count = matches ? matches.length : 0;
+  if (count % 2 !== 0) {
+    // 如果计数为奇数，说明```没有成对，因此在字符串末尾添加```
+    result.content = result.content + '\n```';
+  }
 
   return result;
 }

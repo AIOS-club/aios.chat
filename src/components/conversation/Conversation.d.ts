@@ -7,6 +7,7 @@ export interface Conversation {
   conversationId: string;
   type?: 'text' | 'image';
   url?: string;
+  stop?: boolean;
 }
 
 export interface ConversationProps {
