@@ -7,7 +7,6 @@ import Chat from '@/assets/svg/chat.svg';
 import Delete from '@/assets/svg/delete.svg';
 import { ChatList, ChatStoreProps, Messages } from '@/global';
 import { useFetchAnswer } from '@/api';
-import { encode } from '@/utils/encoder/encoder';
 
 interface TabItemProps {
   chat: ChatList;
@@ -32,15 +31,14 @@ const TabItem: React.FC<TabItemProps> = ({ chat }) => {
     return noTitleFlag && correctTitleFlag && !titleBlock;
   }, [data, title, titleBlock]);
 
-  const { messages, titleTokenLength } = useMemo(() => {
+  const messages = useMemo(() => {
     const content = `请你根据以下对话生成一个对话标题:\nHuman:${data[0]?.value}\nAI:${data[1]?.value}\n,你需要返回的是该段对话标题的中心思想, 不要返回无关文字`;
     const _messages: Messages[] = [{ role: 'user', content }];
-    const tokenLength = encode(content).length;
-    return { messages: _messages, titleTokenLength: tokenLength };
+    return _messages;
   }, [data]);
 
-  const generateTitle = useCallback(async (messages: Messages[], tokenLength: number) => {
-    await trigger({ messages, tokenLength } as any).then((res: any) => {
+  const generateTitle = useCallback(async (messages: Messages[]) => {
+    await trigger({ messages } as any).then((res: any) => {
       if (res.status === 200) {
         const { data } = res;
         const error = !Array.isArray(data?.choices) || data?.choices?.[0]?.block;
@@ -57,13 +55,9 @@ const TabItem: React.FC<TabItemProps> = ({ chat }) => {
 
   useEffect(() => {
     if (generateTitleFlag) {
-      if (titleTokenLength > 3000) {
-        handleTitleBlock(chatId);
-        return;
-      }
-      generateTitle(messages, titleTokenLength).catch(() => {});
+      generateTitle(messages).catch(() => {});
     }
-  }, [generateTitle, handleTitleBlock, chatId, generateTitleFlag, titleTokenLength, messages]);
+  }, [generateTitle, handleTitleBlock, chatId, generateTitleFlag, messages]);
 
   const actived = useMemo(() => {
     const chatIdFromUrl = query.get('chatId');
