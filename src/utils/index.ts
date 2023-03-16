@@ -4,29 +4,8 @@ import { Messages } from '@/global';
 
 const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
 
-async function fetch (url: string, params: any, type: 'POST' | 'GET' = 'GET', options: any = {}): Promise<any> {
-  const method = type.toLocaleLowerCase();
-
-  return axios({
-    url,
-    method,
-    data: method === 'post' ? params : null,
-    params: method === 'get' ? params : null,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options
-    },
-    timeout: 300000 // 5分钟
-  });
-}
-
 /**
  * 获取前几次的用户对话信息
- * @param conversation
- * @param curValue
- * @param cacheTimes
- * @param maxTokensLength
- * @returns
  */
 function getCachePrompt (conversation: Conversation[], curValue: string): Messages[] {
   const pairsConversation: Messages[] = [];
@@ -49,4 +28,32 @@ function getCachePrompt (conversation: Conversation[], curValue: string): Messag
   }
 }
 
-export { fetch, getCachePrompt };
+/**
+ * 解析stream流的字符串
+ */
+function parseStreamText(data: string) {
+  const dataList = data?.split('\n')?.filter(l => l !== '');
+
+  const result: Messages = { role: 'assistant', content: '' };
+
+  dataList.forEach(l => {
+    // 移除"data: "前缀
+    const jsonStr = l.replace('data: ', '');
+
+    if (jsonStr === '[DONE]') {
+      console.log('Done!');
+    } else {
+      // 将JSON字符串转换为JavaScript对象
+      const jsonObj = JSON.parse(jsonStr);
+      const delta = jsonObj.choices[0].delta as Messages;
+      if (delta.role) result.role = delta.role;
+      else if (delta.content) {
+        result.content = `${result.content}${delta.content}`;
+      }
+    }
+  });
+
+  return result;
+}
+
+export { getCachePrompt, parseStreamText };

@@ -18,6 +18,11 @@ router.post('/aios-chat', async (ctx) => {
 
   const { messages } = body;
 
+  ctx.type = 'text/event-stream'; // 设置响应类型为流
+  ctx.set('Cache-Control', 'no-cache');
+  ctx.set('Content-Type', 'text/event-stream');
+  ctx.set('Connection', 'keep-alive');
+
   const res = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [...getSystemMessage(), ...messages],
@@ -25,13 +30,26 @@ router.post('/aios-chat', async (ctx) => {
     n: 1, // 限制ai的回答数
     presence_penalty: -1.0, // 不轻易改变对话主题
     frequency_penalty: 1.0, // 减少重复已提及的内容
-    // stream: true,
+    stream: true,
     // stop: []
     // max_tokens: 1000,
+  }, { responseType: 'stream' }) as any;
+
+  ctx.status = 200;
+
+  res.data.on('data', (data: any) => {
+    ctx.res.write(data.toString()); // 将每次返回的值发送到客户端
   });
 
-  ctx.status = res.status;
-  ctx.body = res.data;
+  res.data.on('end', () => {
+    ctx.res.end(); // 当流结束时关闭连接
+  });
+
+  res.data.on('error', () => {
+    ctx.status = 500;
+  });
+
+  ctx.respond = false; // 禁用Koa的默认响应处理
 });
 
 export default router;

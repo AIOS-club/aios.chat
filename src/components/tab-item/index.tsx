@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useMemo, useCallback } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
 import { Icon } from '@douyinfe/semi-ui';
 import { Store } from '@/pages/index';
 import Chat from '@/assets/svg/chat.svg';
 import Delete from '@/assets/svg/delete.svg';
-import { ChatList, ChatStoreProps, Messages } from '@/global';
-import { useFetchAnswer } from '@/api';
+import { ChatList, ChatStoreProps } from '@/global';
 
 interface TabItemProps {
   chat: ChatList;
@@ -15,49 +14,13 @@ interface TabItemProps {
 const defaultCls = 'flex py-3 px-3 items-center gap-3 relative rounded-md hover:bg-[#1e293b] cursor-pointer break-all group';
 
 const TabItem: React.FC<TabItemProps> = ({ chat }) => {
-  const { chatId, data, title, titleBlock } = chat;
+  const { chatId, data, title } = chat;
 
-  const { handleDelete: handleChatDelete, handleTitleChange, handleTitleBlock } = useContext<ChatStoreProps>(Store);
+  const { handleDelete: handleChatDelete } = useContext<ChatStoreProps>(Store);
 
   const [query] = useSearchParams();
 
   const navigate = useNavigate();
-
-  const { trigger } = useFetchAnswer();
-
-  const generateTitleFlag = useMemo(() => {
-    const noTitleFlag = data.length >= 2 && !title;
-    const correctTitleFlag = !data[0]?.error && !data[1]?.error && data[0]?.value && data[1]?.value;
-    return noTitleFlag && correctTitleFlag && !titleBlock;
-  }, [data, title, titleBlock]);
-
-  const messages = useMemo(() => {
-    const content = `请你根据以下对话生成一个对话标题:\nHuman:${data[0]?.value}\nAI:${data[1]?.value}\n,你需要返回的是该段对话标题的中心思想, 不要返回无关文字`;
-    const _messages: Messages[] = [{ role: 'user', content }];
-    return _messages;
-  }, [data]);
-
-  const generateTitle = useCallback(async (messages: Messages[]) => {
-    await trigger({ messages } as any).then((res: any) => {
-      if (res.status === 200) {
-        const { data } = res;
-        const error = !Array.isArray(data?.choices) || data?.choices?.[0]?.block;
-        if (!error) {
-          const text: string = data.choices[0]?.message?.content;
-          const curValue = text.trimStart().replace(/\n{2,}/g, '\n');
-          handleTitleChange(chatId, curValue);
-        } else {
-          handleTitleBlock(chatId);
-        }
-      }
-    });
-  }, [trigger, handleTitleChange, handleTitleBlock, chatId]);
-
-  useEffect(() => {
-    if (generateTitleFlag) {
-      generateTitle(messages).catch(() => {});
-    }
-  }, [generateTitle, handleTitleBlock, chatId, generateTitleFlag, messages]);
 
   const actived = useMemo(() => {
     const chatIdFromUrl = query.get('chatId');
