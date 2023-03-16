@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "inst": "npm i --legacy-peer-deps && cd ./server && npm i && cd ..",
     "dev": "concurrently \"npm run dev:vite\" \"npm run dev:koa\"",
     "dev:vite": "vite",
     "dev:koa": "cross-env NODE_ENV=development esno watch server/app.ts",
