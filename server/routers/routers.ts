@@ -13,15 +13,8 @@ const config = new Configuration({ apiKey: env.API_KEY });
 
 const openai = new OpenAIApi(config);
 
-router.post('/aios-chat', async (ctx, next) => {
+router.post('/aios-chat', async (ctx) => {
   const body = ctx.request.body as Body;
-
-  if (!body || !Array.isArray(body.messages)) {
-    ctx.status = 200;
-    ctx.body = { choices: [{ block: true, text: 'Bad Request' }] };
-    await next();
-    return;
-  }
 
   const { messages } = body;
 
