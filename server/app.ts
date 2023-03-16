@@ -1,7 +1,10 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import cors from 'koa2-cors';
+import * as dotenv from 'dotenv';
 import router from './routers/routers';
+
+dotenv.config({ path: process.env.NODE_ENV === 'production' ? './server/.env.production' : './server/.env.development' });
 
 const app = new Koa();
 
