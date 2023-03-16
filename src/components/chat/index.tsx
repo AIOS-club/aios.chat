@@ -17,6 +17,9 @@ import { ChatStoreProps } from '@/global';
 const BOTTOM_TIPS = import.meta.env.VITE_DEFAULT_BOTTOM_TIPS;
 const API_HOST: string = import.meta.env.VITE_API_HOST;
 
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
+
 const Chat: React.FC = () => {
   const [query] = useSearchParams();
 
@@ -85,12 +88,14 @@ const Chat: React.FC = () => {
     const pre = [...curConversation];
     const [lastConversation] = pre.slice(-1);
     setLoading(true);
+
     await axios({
       url: API_HOST,
       timeout: 300000,
       method: 'POST',
       responseType: 'stream',
       data: { messages },
+      cancelToken: source.token,
       onDownloadProgress({ event }) {
         const chunk = event.target?.responseText || '';
         try {
@@ -98,9 +103,13 @@ const Chat: React.FC = () => {
           Object.assign(lastConversation, { value: res.content, error: false, loading: false });
           handleChatListChange(curChatId, pre);
         } catch {
-          handleError(curChatId, curConversation);
+          source.cancel('something is wrong');
         }
       },
+    }).catch(err => {
+      if (axios.isCancel(err)) {
+        handleError(curChatId, curConversation);
+      }
     }).finally(() => {
       setLoading(false);
     });
