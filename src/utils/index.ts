@@ -1,10 +1,8 @@
 import axios from 'axios';
-import moment from 'moment';
-import { encode } from '@/utils/encoder/encoder';
 import { Conversation } from '@/components/conversation/Conversation';
 import { Messages } from '@/global';
 
-const MAX_TOKENS = parseInt(import.meta.env.MAX_TOKENS, 10);
+const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
 
 async function fetch (url: string, params: any, type: 'POST' | 'GET' = 'GET', options: any = {}): Promise<any> {
   const method = type.toLocaleLowerCase();
@@ -43,31 +41,12 @@ function getCachePrompt (conversation: Conversation[], curValue: string): Messag
         }
       }
     }
-    if (Number.isNaN(MAX_TOKENS)) return pairsConversation; // 没设置的话就一直记录
-    const valueTokensLength = encode(curValue).length; // 当前会话的长度
-    const restTokensLength = MAX_TOKENS - valueTokensLength;
-    // 如果当前会话的长度就超过了最大值，那么直接返回，让后端报错
-    if (restTokensLength <= 0) {
-      return [{ role: 'user', content: curValue }];
-    }
-    let cacheConversation = pairsConversation.map(p => p.content).join('');
-    while (pairsConversation.length > 0 && encode(cacheConversation).length > restTokensLength) {
-      pairsConversation.shift();
-      cacheConversation = pairsConversation.map(p => p.content).join('');
-    }
-    return pairsConversation;
+    if (Number.isNaN(CACHE_TIMES) || CACHE_TIMES < 0) return pairsConversation;
+    const startIndex = Math.max(pairsConversation.length - CACHE_TIMES, 0);
+    return pairsConversation.slice(startIndex);
   } catch {
     return [{ role: 'user', content: curValue }];
   }
 }
 
-/**
- * 获取prompt前置信息
- */
-function getSystemMessage (): Messages[] {
-  const currentTime: Messages = { role: 'system', content: `现在的北京时间是: ${moment().format('YYYY-MM-DD HH:mm:ss')} ${moment().format('dddd')}` };
-  const markdownRender: Messages = { role: 'system', content: '请以markdown的形式返回答案' };
-  return [currentTime, markdownRender];
-}
-
-export { fetch, getCachePrompt, getSystemMessage };
+export { fetch, getCachePrompt };

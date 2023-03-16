@@ -45,7 +45,7 @@ npm install --legacy-peer-deps
 请参考 **.env.production** 文件。<br />
 ```bash
 VITE_API_HOST='' # api host
-VITE_MAX_TOKENS=3000 # 最大tokens数
+VITE_CACHE_TIMES=10 # 最大缓存的对话数，你应该限制用户的上下文缓存的对话数量
 VITE_BASE_URL='/' # BASE_URL
 VITE_DEFAULT_PLACEHOLDER='' # 输入框的placeholder
 VITE_DEFAULT_BOTTOM_TIPS='' # 底部的消息

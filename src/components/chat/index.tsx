@@ -1,7 +1,7 @@
 import React, { useRef, useState, useMemo, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { Icon, Toast } from '@douyinfe/semi-ui';
+import { Icon } from '@douyinfe/semi-ui';
 import { useFetchAnswer } from '@/api';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/Conversation';
@@ -9,13 +9,11 @@ import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
 import useIsMobile from '@/hooks/useIsMobile';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
-import { encode } from '@/utils/encoder/encoder';
-import { getSystemMessage, getCachePrompt } from '@/utils';
+import { getCachePrompt } from '@/utils';
 import { Store } from '@/pages/index';
 import Refresh from '@/assets/svg/refresh.svg';
 import { ChatStoreProps } from '@/global';
 
-const MAX_TOKENS = parseInt(import.meta.env.VITE_MAX_TOKENS, 10);
 const BOTTOM_TIPS = import.meta.env.VITE_DEFAULT_BOTTOM_TIPS;
 
 const Chat: React.FC = () => {
@@ -65,11 +63,6 @@ const Chat: React.FC = () => {
 
   const handleFetchAnswer = async (v: string, retry: boolean = false) => {
     if (!v) return;
-    if (!Number.isNaN(MAX_TOKENS) && encode(v).length > MAX_TOKENS) {
-      setValue(v);
-      Toast.warning('提问内容文本过长，请控制在 2000 字以内');
-      return;
-    }
     let curConversation = [] as Conversation[];
     if (retry) {
       curConversation = [...conversation];
@@ -87,12 +80,9 @@ const Chat: React.FC = () => {
     chatIdRef.current = chatId;
     const curChatId = chatIdRef.current;
     handleChatListChange(curChatId, curConversation, true);
-    const systemMessages = getSystemMessage(); // 获取一些前置信息。
-    const _messages = getCachePrompt([...curConversation], v.trimEnd()); // 获取上下文缓存的信息
-    const messages = systemMessages.concat(_messages);
-    const prompt = messages.map(p => p.content).join('');
+    const messages = getCachePrompt([...curConversation], v.trimEnd()); // 获取上下文缓存的信息
 
-    await trigger({ messages, tokensLength: encode(prompt).length } as any).then((res: any) => {
+    await trigger({ messages } as any).then((res: any) => {
       if (curConversation.length === 0) return;
       if (res.status === 200) {
         const { data } = res;
