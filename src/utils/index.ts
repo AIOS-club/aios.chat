@@ -1,5 +1,4 @@
 import axios from 'axios';
-import moment from 'moment';
 import { Conversation } from '@/components/conversation/Conversation';
 import { Messages } from '@/global';
 
@@ -50,13 +49,4 @@ function getCachePrompt (conversation: Conversation[], curValue: string): Messag
   }
 }
 
-/**
- * 获取prompt前置信息
- */
-function getSystemMessage (): Messages[] {
-  const currentTime: Messages = { role: 'system', content: `现在的北京时间是: ${moment().format('YYYY-MM-DD HH:mm:ss')} ${moment().format('dddd')}` };
-  const markdownRender: Messages = { role: 'system', content: '请以markdown的形式返回答案' };
-  return [currentTime, markdownRender];
-}
-
-export { fetch, getCachePrompt, getSystemMessage };
+export { fetch, getCachePrompt };

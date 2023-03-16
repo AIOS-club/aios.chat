@@ -9,7 +9,7 @@ import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
 import useIsMobile from '@/hooks/useIsMobile';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
-import { getSystemMessage, getCachePrompt } from '@/utils';
+import { getCachePrompt } from '@/utils';
 import { Store } from '@/pages/index';
 import Refresh from '@/assets/svg/refresh.svg';
 import { ChatStoreProps } from '@/global';
@@ -80,9 +80,7 @@ const Chat: React.FC = () => {
     chatIdRef.current = chatId;
     const curChatId = chatIdRef.current;
     handleChatListChange(curChatId, curConversation, true);
-    const systemMessages = getSystemMessage(); // 获取一些前置信息。
-    const _messages = getCachePrompt([...curConversation], v.trimEnd()); // 获取上下文缓存的信息
-    const messages = systemMessages.concat(_messages);
+    const messages = getCachePrompt([...curConversation], v.trimEnd()); // 获取上下文缓存的信息
 
     await trigger({ messages } as any).then((res: any) => {
       if (curConversation.length === 0) return;

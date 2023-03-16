@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import { Configuration, OpenAIApi, ChatCompletionRequestMessage } from 'openai';
+import { getSystemMessage } from '../utils';
 import env from '../config';
 
 interface Body {
@@ -26,7 +27,7 @@ router.post('/aios-chat', async (ctx, next) => {
 
   const res = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
-    messages,
+    messages: [...getSystemMessage(), ...messages],
     temperature: 0.8,
     n: 1, // 限制ai的回答数
     presence_penalty: -1.0, // 不轻易改变对话主题
