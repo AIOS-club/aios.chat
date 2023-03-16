@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/AIOS-club/lite.aios.chat">
-    <img src="src/assets/img/aiAvator.jpg" alt="Logo" width="80" height="80">
+    <img src="src/assets/img/AIOS-LOGO.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">lite aios chat</h3>
