@@ -49,15 +49,6 @@ const Chat: React.FC = function() {
 
   const isMutating = loading && chatId === chatIdRef.current;
 
-  const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (isMutating) return;
-    const v = value;
-    setValue('');
-    await handleFetchAnswer(v);
-  };
-
   const handleError = (id: string, data: Conversation[]) => {
     const pre = [...data];
     const [lastConversation] = pre.slice(-1);
@@ -119,6 +110,15 @@ const Chat: React.FC = function() {
     });
   };
 
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (isMutating) return;
+    const v = value;
+    setValue('');
+    await handleFetchAnswer(v);
+  };
+
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -131,11 +131,14 @@ const Chat: React.FC = function() {
     }
   };
 
-  const handleRetry = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, lastConversation: Conversation) => {
+  const handleRetry = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    lastConversation: Conversation,
+  ) => {
     e.stopPropagation();
     e.preventDefault();
-    const { value } = lastConversation;
-    await handleFetchAnswer(value.trim(), true);
+    const { value: lastConversationValue } = lastConversation;
+    await handleFetchAnswer(lastConversationValue.trim(), true);
   };
 
   const renderRetryButton = () => {

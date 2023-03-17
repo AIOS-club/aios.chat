@@ -116,13 +116,19 @@ export const HeaderBar: React.FC<SideBarProps> = (props) => {
   const modalDom = useRef(null);
 
   const clickMask = (e: React.MouseEvent) => {
-    modalDom.current === e.target && onClose();
+    if (modalDom.current === e.target) {
+      onClose();
+    }
   };
 
   return (
     <div className="sticky top-0 z-10 flex items-center border-b border-white/20 bg-gray-800 pl-1 pt-1 text-gray-200 sm:pl-3 md:hidden">
       <div>
-        <button type="button" className="-ml-0.5 -mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white dark:hover:text-white" onClick={showModal}>
+        <button 
+          type="button" 
+          className="-ml-0.5 -mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white dark:hover:text-white" 
+          onClick={showModal}
+        >
           <span className="sr-only">打开侧边栏</span>
           <Bread />
         </button>
@@ -139,7 +145,7 @@ export const HeaderBar: React.FC<SideBarProps> = (props) => {
                   <Close />
                 </button>
               </div>
-              <Nav onNewChat={props.onNewChat} />
+              <Nav onNewChat={onNewChat} />
             </div>
             <div className="w-14 flex-shrink-0" />
           </div>
@@ -153,10 +159,10 @@ export const HeaderBar: React.FC<SideBarProps> = (props) => {
   );
 };
 
-const SideBar: React.FC<SideBarProps> = (props) => (
+const SideBar: React.FC<SideBarProps> = ({ onNewChat }) => (
   <div className="hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[260px] md:flex-col">
     <div className="flex h-full min-h-0 flex-col ">
-      <Nav onNewChat={props.onNewChat} />
+      <Nav onNewChat={onNewChat} />
     </div>
   </div>
 );

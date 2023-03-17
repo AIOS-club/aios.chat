@@ -27,7 +27,12 @@ module.exports = {
     'react-hooks'
   ],
   rules: {
-    'import/extensions': 'warn',
+    'react/jsx-no-constructed-context-values': 'warn',
+    'no-trailing-spaces': 'off',
+    'react/function-component-definition': 'warn',
+    "max-len": ["warn", { "code": 170, "ignoreComments": true }],
+    'react/button-has-type': 'warn',
+    'import/extensions': 'off',
     'jsx-a11y/accessible-emoji': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/anchor-is-valid': [

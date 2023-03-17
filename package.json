@@ -12,7 +12,7 @@
     "build:vite": "tsc && vite build",
     "build:koa": "cross-env NODE_ENV=production tsup server/app.ts --out-dir dist/server --format cjs",
     "preview": "vite preview",
-    "lint": "eslint --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --fix --max-warnings 999"
+    "lint": "eslint --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --max-warnings 999"
   },
   "dependencies": {
     "@andylacko/vite-svg-react-loader": "^3.0.3",

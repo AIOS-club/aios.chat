@@ -20,14 +20,14 @@ const imgLoad = (event: Event) => {
         inner: '<path d="M20.5 14.3 17.1 18V10h-2.2v7.9l-3.4-3.6L10 16l6 6.1 6-6.1ZM23 23H9v2h14Z" id="pswp__icn-download"/>',
         outlineID: 'pswp__icn-download'
       },
-      onInit: (element, pswp) => {
+      onInit: (element, _pswp) => {
         const el = element as HTMLAnchorElement;
         el.setAttribute('download', 'chat');
         el.setAttribute('target', '_blank');
         el.setAttribute('rel', 'noopener');
 
-        pswp.on('change', () => {
-          el.href = pswp.currSlide?.data.src || '';
+        _pswp.on('change', () => {
+          el.href = _pswp.currSlide?.data.src || '';
         });
       }
     });

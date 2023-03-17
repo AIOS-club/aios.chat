@@ -38,6 +38,7 @@ const defaultClass = 'w-full border-b border-black/10 dark:border-gray-900/50 te
 const conversationCls = 'answer min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap';
 const shareBtnCls = 'absolute top-10 right-0 w-16 h-7 flex justify-center break-keep items-center btn-neutral rounded-l html2canvas-ignore';
 const imageContentCls = 'pswp__img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 object-contain';
+// eslint-disable-next-line
 const markdownCls = 'prose prose-p:m-0 prose-ul:m-0 prose-ul:leading-normal prose-li:m-0 prose-ol:m-0 prose-pre:w-full prose-pre:p-0 prose-pre:h-fit prose-pre:bg-black prose-pre:text-white w-0 flex-grow dark:prose-invert';
 
 const AI_AVATOR = import.meta.env.VITE_AI_AVATOR_URL;
@@ -53,11 +54,11 @@ const Conversation: React.FC<ConversationProps> = (props) => {
   // TODO 用semi的Image
   const renderImage = useCallback((d: Con) => (
     <Item content={<img alt="" className={imageContentCls} src={d.url} />}>
-      {({ ref, open }) => (
+      {({ ref: _ref, open }) => (
         <img
           alt=""
           className="max-w-full max-h-full w-auto h-auto cursor-pointer"
-          ref={ref as React.MutableRefObject<HTMLImageElement>}
+          ref={_ref as React.MutableRefObject<HTMLImageElement>}
           onClick={open}
           src={d.url}
         />
@@ -81,7 +82,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
       scrollY: -window.scrollY,
       windowWidth: document.documentElement.clientWidth,
       windowHeight: document.documentElement.clientHeight,
-      ignoreElements: (element) => element.className?.includes?.('html2canvas-ignore'),
+      ignoreElements: (_element) => _element.className?.includes?.('html2canvas-ignore'),
     }).then((_canvas) => {
       let canvas = _canvas;
       if (canvas.width > 2000) {
