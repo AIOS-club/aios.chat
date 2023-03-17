@@ -1,8 +1,10 @@
-import React, { ReactElement, useState } from 'react';
+import React, {
+  ReactElement, useMemo, useState, useCallback 
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { ChatStoreProps, ChatList } from '@/global';
-import { Conversation } from '@/components/conversation/Conversation';
+import { ChatStoreProps, ChatList } from '@/global.d';
+import { Conversation } from '@/components/conversation/Conversation.d';
 import SideBar, { HeaderBar } from '@/components/sidebar';
 import Chat from '@/components/chat';
 
@@ -15,15 +17,14 @@ function App (): ReactElement {
     if (localStorage?.getItem('chatList')) {
       const data = JSON.parse(localStorage.getItem('chatList') || '[]');
       return data;
-    } else {
-      return [];
     }
+    return [];
   });
 
   const handleChange = (chatId: string, data: Conversation[], forceUpdate: boolean = false) => {
-    setChatList(pre => {
+    setChatList((pre) => {
       const cacheChatList = [...pre];
-      const changeChat = cacheChatList.find(chat => chat.chatId === chatId);
+      const changeChat = cacheChatList.find((chat) => chat.chatId === chatId);
       if (changeChat && Array.isArray(data)) {
         changeChat.data = [...data];
       } else if (forceUpdate) {
@@ -36,9 +37,9 @@ function App (): ReactElement {
 
   const handleTitleChange = (chatId: string, title: string) => {
     if (!title) return;
-    setChatList(pre => {
+    setChatList((pre) => {
       const cacheChatList = [...pre];
-      const changeChat = cacheChatList.find(chat => chat.chatId === chatId);
+      const changeChat = cacheChatList.find((chat) => chat.chatId === chatId);
       if (changeChat) {
         changeChat.title = title;
       }
@@ -48,9 +49,9 @@ function App (): ReactElement {
   };
 
   const handleTitleBlock = (chatId: string) => {
-    setChatList(pre => {
+    setChatList((pre) => {
       const cacheChatList = [...pre];
-      const changeChat = cacheChatList.find(chat => chat.chatId === chatId);
+      const changeChat = cacheChatList.find((chat) => chat.chatId === chatId);
       if (changeChat) {
         changeChat.titleBlock = true;
       }
@@ -59,36 +60,36 @@ function App (): ReactElement {
     });
   };
 
-  const handleDelete = (chatId: string) => {
-    setChatList(pre => {
+  const handleDelete = useCallback((chatId: string) => {
+    setChatList((pre) => {
       const cacheChatList = [...pre];
-      const delChatIndex = cacheChatList.findIndex(chat => chat.chatId === chatId);
+      const delChatIndex = cacheChatList.findIndex((chat) => chat.chatId === chatId);
       cacheChatList.splice(delChatIndex, 1);
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
     navigate('/');
-  };
+  }, [navigate]);
 
-  const handleDeleteAll = () => {
+  const handleDeleteAll = useCallback(() => {
     setChatList([]);
     localStorage?.removeItem('chatList');
     navigate('/');
-  };
+  }, [navigate]);
 
-  const handleNewChat = () => {
+  const handleNewChat = useCallback(() => {
     const curChatId = uuid();
     const newChat = { chatId: curChatId, data: [] };
-    setChatList(pre => {
+    setChatList((pre) => {
       const cacheChatList = [...pre];
       cacheChatList.unshift(newChat);
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
     navigate(`/?chatId=${curChatId}`);
-  };
+  }, [navigate]);
 
-  const value = {
+  const value = useMemo(() => ({
     chatList,
     setChatList,
     handleChange,
@@ -97,7 +98,7 @@ function App (): ReactElement {
     handleDeleteAll,
     handleTitleChange,
     handleTitleBlock,
-  };
+  }), [chatList, handleDelete, handleDeleteAll, handleNewChat]);
 
   return (
     <Store.Provider value={value}>

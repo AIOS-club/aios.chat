@@ -11,7 +11,7 @@ const Examples = [
   'How do I make an HTTP request in Javascript?'
 ];
 
-const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = (props) => {
+const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = function EmptyChatPlaceholder(props) {
   const { setValue } = props;
 
   const renderTipsButtons = (): ReactElement => (
@@ -19,6 +19,7 @@ const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = (props) => {
       {Examples.map((v: string) => (
         <button
           key={v}
+          type="button"
           onClick={() => setValue(v)}
           className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900"
         >
@@ -72,7 +73,7 @@ const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = (props) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-48 flex-shrink-0"></div>
+      <div className="w-full h-48 flex-shrink-0" />
     </div>
   );
 };

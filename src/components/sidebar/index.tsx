@@ -1,6 +1,8 @@
 import React, { useContext, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { Icon, Modal, Popconfirm, Toast } from '@douyinfe/semi-ui';
+import {
+  Icon, Modal, Popconfirm, Toast
+} from '@douyinfe/semi-ui';
 import TabItem from '@/components/tab-item';
 import useIsMobile from '@/hooks/useIsMobile';
 import { Store } from '@/pages/index';
@@ -25,7 +27,7 @@ const useNewChat = (onNewChat: any) => {
   return handleNewChat;
 };
 
-const Nav: React.FC<SideBarProps> = (props) => {
+const Nav: React.FC<SideBarProps> = function Nav(props) {
   const { chatList, handleDeleteAll } = useContext<ChatStoreProps>(Store);
 
   const { onNewChat = () => {} } = props;
@@ -36,9 +38,8 @@ const Nav: React.FC<SideBarProps> = (props) => {
     if (typeof window.matchMedia === 'function') {
       const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
       return darkMode ? 'dark' : 'light';
-    } else {
-      return false; // 表示不支持暗色模式
     }
+    return false; // 表示不支持暗色模式
   });
 
   const handleNewChat = useNewChat(onNewChat);
@@ -62,12 +63,13 @@ const Nav: React.FC<SideBarProps> = (props) => {
   return (
     <div className={`flex h-full w-full flex-1 items-start border-white/20 ${isMobile ? 'scrollbar-trigger' : ''}`}>
       <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
-        <button className={classNames(commonCls, 'mb-2 flex-shrink-0 border border-white/20')} onClick={handleNewChat}>
-          <Icon svg={<Add />} />开始新对话
+        <button type="button" className={classNames(commonCls, 'mb-2 flex-shrink-0 border border-white/20')} onClick={handleNewChat}>
+          <Icon svg={<Add />} />
+          开始新对话
         </button>
         <div className="flex-col flex-1 overflow-y-auto border-b border-white/20 hidden-scroll-bar">
           <div className="flex flex-col gap-2 text-gray-100 text-sm">
-            {chatList.length > 0 && chatList.map(chat => <TabItem key={chat.chatId} chat={chat} />)}
+            {chatList.length > 0 && chatList.map((chat) => <TabItem key={chat.chatId} chat={chat} />)}
           </div>
         </div>
         {chatList.length > 0 && (
@@ -79,11 +81,14 @@ const Nav: React.FC<SideBarProps> = (props) => {
               Toast.success('删除成功');
             }}
           >
-            <button className={commonCls}><Icon svg={<Delete />} />清除所有会话</button>
+            <button className={commonCls} type="button">
+              <Icon svg={<Delete />} />
+              清除所有会话
+            </button>
           </Popconfirm>
         )}
         {mode ? (
-          <button className={commonCls} onClick={handleChangeMode}>
+          <button className={commonCls} onClick={handleChangeMode} type="button">
             <Icon svg={mode === 'dark' ? <Sun /> : <Moon />} />
             {`${mode === 'dark' ? '亮色' : '暗色'}`}
           </button>
@@ -93,7 +98,7 @@ const Nav: React.FC<SideBarProps> = (props) => {
   );
 };
 
-export const HeaderBar: React.FC<SideBarProps> = (props) => {
+export const HeaderBar: React.FC<SideBarProps> = function HeaderBar(props) {
   const { onNewChat = () => {} } = props;
 
   const handleNewChat = useNewChat(onNewChat);
@@ -111,17 +116,23 @@ export const HeaderBar: React.FC<SideBarProps> = (props) => {
   const modalDom = useRef(null);
 
   const clickMask = (e: React.MouseEvent) => {
-    modalDom.current === e.target && onClose();
+    if (modalDom.current === e.target) {
+      onClose();
+    }
   };
 
   return (
     <div className="sticky top-0 z-10 flex items-center border-b border-white/20 bg-gray-800 pl-1 pt-1 text-gray-200 sm:pl-3 md:hidden">
       <div>
-        <button type="button" className="-ml-0.5 -mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white dark:hover:text-white" onClick={showModal}>
+        <button 
+          type="button" 
+          className="-ml-0.5 -mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white dark:hover:text-white" 
+          onClick={showModal}
+        >
           <span className="sr-only">打开侧边栏</span>
           <Bread />
         </button>
-        <Modal title={null} footer={null} visible={visible} onOk={onClose} onCancel={onClose} style={{ width: 0 }} motion={false} closable={false} maskClosable={true}>
+        <Modal title={null} footer={null} visible={visible} onOk={onClose} onCancel={onClose} style={{ width: 0 }} motion={false} closable={false} maskClosable>
           <div className="fixed inset-0 z-40 flex" onClick={clickMask} ref={modalDom}>
             <div className="relative flex w-full max-w-xs flex-1 flex-col bg-gray-900 translate-x-0" id="headlessui-dialog-panel-:r1:" data-headlessui-state="open">
               <div className="absolute top-0 right-0 -mr-12 pt-2 opacity-100">
@@ -134,10 +145,9 @@ export const HeaderBar: React.FC<SideBarProps> = (props) => {
                   <Close />
                 </button>
               </div>
-              <Nav onNewChat={props.onNewChat} />
+              <Nav onNewChat={onNewChat} />
             </div>
-            <div className="w-14 flex-shrink-0">
-            </div>
+            <div className="w-14 flex-shrink-0" />
           </div>
         </Modal>
       </div>
@@ -149,11 +159,11 @@ export const HeaderBar: React.FC<SideBarProps> = (props) => {
   );
 };
 
-const SideBar: React.FC<SideBarProps> = (props) => {
+const SideBar: React.FC<SideBarProps> = function SideBar({ onNewChat }) {
   return (
     <div className="hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[260px] md:flex-col">
       <div className="flex h-full min-h-0 flex-col ">
-        <Nav onNewChat={props.onNewChat} />
+        <Nav onNewChat={onNewChat} />
       </div>
     </div>
   );

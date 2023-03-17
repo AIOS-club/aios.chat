@@ -38,12 +38,13 @@ const defaultClass = 'w-full border-b border-black/10 dark:border-gray-900/50 te
 const conversationCls = 'answer min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap';
 const shareBtnCls = 'absolute top-10 right-0 w-16 h-7 flex justify-center break-keep items-center btn-neutral rounded-l html2canvas-ignore';
 const imageContentCls = 'pswp__img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 object-contain';
+// eslint-disable-next-line
 const markdownCls = 'prose prose-p:m-0 prose-ul:m-0 prose-ul:leading-normal prose-li:m-0 prose-ol:m-0 prose-pre:w-full prose-pre:p-0 prose-pre:h-fit prose-pre:bg-black prose-pre:text-white w-0 flex-grow dark:prose-invert';
 
 const AI_AVATOR = import.meta.env.VITE_AI_AVATOR_URL;
 const USER_AVATOR = import.meta.env.VITE_USER_USER_URL;
 
-const Conversation: React.FC<ConversationProps> = (props) => {
+const Conversation: React.FC<ConversationProps> = function Conversation(props) {
   const { data } = props;
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,11 +54,11 @@ const Conversation: React.FC<ConversationProps> = (props) => {
   // TODO 用semi的Image
   const renderImage = useCallback((d: Con) => (
     <Item content={<img alt="" className={imageContentCls} src={d.url} />}>
-      {({ ref, open }) => (
+      {({ ref: _ref, open }) => (
         <img
           alt=""
           className="max-w-full max-h-full w-auto h-auto cursor-pointer"
-          ref={ref as React.MutableRefObject<HTMLImageElement>}
+          ref={_ref as React.MutableRefObject<HTMLImageElement>}
           onClick={open}
           src={d.url}
         />
@@ -68,7 +69,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
   const renderAvator = useCallback((character: 'user' | 'bot') => {
     const userUrl = USER_AVATOR || userAvator;
     const aiUrl = AI_AVATOR || aiAvator;
-    return <img className="rounded-sm" alt='' src={character === 'user' ? userUrl : aiUrl} />;
+    return <img className="rounded-sm" alt="" src={character === 'user' ? userUrl : aiUrl} />;
   }, []);
 
   const handleClick = async () => {
@@ -81,7 +82,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
       scrollY: -window.scrollY,
       windowWidth: document.documentElement.clientWidth,
       windowHeight: document.documentElement.clientHeight,
-      ignoreElements: (element) => element.className?.includes?.('html2canvas-ignore'),
+      ignoreElements: (_element) => _element.className?.includes?.('html2canvas-ignore'),
     }).then((_canvas) => {
       let canvas = _canvas;
       if (canvas.width > 2000) {
@@ -115,7 +116,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
   return (
     <div className="flex flex-col items-center text-sm dark:bg-gray-800" ref={ref}>
       <Gallery withDownloadButton>
-        {data.map(d => (
+        {data.map((d) => (
           <div
             key={d.key}
             className={classNames(defaultClass, {
@@ -143,9 +144,14 @@ const Conversation: React.FC<ConversationProps> = (props) => {
           </div>
         ))}
       </Gallery>
-      <div className="w-full h-48 flex items-center m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl py-4 px-12 md:py-6 flex-shrink-0 share-btn-custom"></div>
-      <button className={classNames(shareBtnCls, styles.share)} onClick={handleClick}>
-        {loading ? <Spin /> : <><Icon svg={<Share />} style={{ marginRight: 5 }} />分享</>}
+      <div className="w-full h-48 flex items-center m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl py-4 px-12 md:py-6 flex-shrink-0 share-btn-custom" />
+      <button type="button" className={classNames(shareBtnCls, styles.share)} onClick={handleClick}>
+        {loading ? <Spin /> : (
+          <>
+            <Icon svg={<Share />} style={{ marginRight: 5 }} />
+            分享
+          </>
+        )}
       </button>
     </div>
   );
