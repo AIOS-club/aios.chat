@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "inst": "npm i --legacy-peer-deps && cd ./server && npm i && cd ..",
+    "inst": "npm i -g pnpm && pnpm i && cd ./server && pnpm i && cd ..",
     "dev": "concurrently \"npm run dev:vite\" \"npm run dev:koa\"",
     "dev:vite": "vite",
     "dev:koa": "cross-env NODE_ENV=development esno watch server/app.ts",
@@ -35,6 +35,7 @@
     "moment": "^2.29.4",
     "photoswipe": "^5.3.6",
     "postcss": "^8.4.20",
+    "prop-types": "^15.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-photoswipe-gallery": "^2.2.6",

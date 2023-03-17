@@ -22,7 +22,7 @@ const API_HOST: string = import.meta.env.VITE_API_HOST;
 const { CancelToken } = axios;
 const source = CancelToken.source();
 
-const Chat: React.FC = () => {
+const Chat: React.FC = function() {
   const [query] = useSearchParams();
 
   const chatId = useMemo(() => query.get('chatId') || uuid(), [query]);
