@@ -7,6 +7,7 @@
     "dev": "concurrently \"npm run dev:vite\" \"npm run dev:koa\"",
     "dev:vite": "vite",
     "dev:koa": "cross-env NODE_ENV=development esno watch server/app.ts",
+    "vercel-build": "npm run build",
     "build": "npm run build:vite && npm run build:koa",
     "build:vite": "tsc && vite build",
     "build:koa": "cross-env NODE_ENV=production tsup server/app.ts --out-dir dist/server --format cjs",
