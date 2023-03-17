@@ -72,7 +72,7 @@ const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = (props) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-48 flex-shrink-0"></div>
+      <div className="w-full h-48 flex-shrink-0" />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Conversation } from '@/components/conversation/Conversation';
-import { Messages } from '@/global';
+import { Conversation } from '@/components/conversation/Conversation.d';
+import { Messages } from '@/global.d';
 
 const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
 
@@ -34,11 +34,11 @@ function getCachePrompt (conversation: Conversation[], curValue: string): Messag
  * 解析stream流的字符串
  */
 function parseStreamText(data: string) {
-  const dataList = data?.split('\n')?.filter(l => l !== '');
+  const dataList = data?.split('\n')?.filter((l) => l !== '');
 
   const result = { role: 'assistant', content: '', stop: false };
 
-  dataList.forEach(l => {
+  dataList.forEach((l) => {
     // 移除"data: "前缀
     const jsonStr = l.replace('data: ', '');
 
@@ -59,7 +59,7 @@ function parseStreamText(data: string) {
   const count = matches ? matches.length : 0;
   if (count % 2 !== 0) {
     // 如果计数为奇数，说明```没有成对，因此在字符串末尾添加```
-    result.content = result.content + '\n```';
+    result.content += '\n```';
   }
 
   return result;

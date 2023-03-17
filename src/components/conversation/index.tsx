@@ -68,7 +68,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
   const renderAvator = useCallback((character: 'user' | 'bot') => {
     const userUrl = USER_AVATOR || userAvator;
     const aiUrl = AI_AVATOR || aiAvator;
-    return <img className="rounded-sm" alt='' src={character === 'user' ? userUrl : aiUrl} />;
+    return <img className="rounded-sm" alt="" src={character === 'user' ? userUrl : aiUrl} />;
   }, []);
 
   const handleClick = async () => {
@@ -115,7 +115,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
   return (
     <div className="flex flex-col items-center text-sm dark:bg-gray-800" ref={ref}>
       <Gallery withDownloadButton>
-        {data.map(d => (
+        {data.map((d) => (
           <div
             key={d.key}
             className={classNames(defaultClass, {
@@ -143,9 +143,14 @@ const Conversation: React.FC<ConversationProps> = (props) => {
           </div>
         ))}
       </Gallery>
-      <div className="w-full h-48 flex items-center m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl py-4 px-12 md:py-6 flex-shrink-0 share-btn-custom"></div>
+      <div className="w-full h-48 flex items-center m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl py-4 px-12 md:py-6 flex-shrink-0 share-btn-custom" />
       <button className={classNames(shareBtnCls, styles.share)} onClick={handleClick}>
-        {loading ? <Spin /> : <><Icon svg={<Share />} style={{ marginRight: 5 }} />分享</>}
+        {loading ? <Spin /> : (
+          <>
+            <Icon svg={<Share />} style={{ marginRight: 5 }} />
+            分享
+          </>
+        )}
       </button>
     </div>
   );

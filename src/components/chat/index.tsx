@@ -1,4 +1,6 @@
-import React, { useRef, useState, useMemo, useContext } from 'react';
+import React, {
+  useRef, useState, useMemo, useContext
+} from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
@@ -17,7 +19,7 @@ import { ChatStoreProps } from '@/global';
 const BOTTOM_TIPS = import.meta.env.VITE_DEFAULT_BOTTOM_TIPS;
 const API_HOST: string = import.meta.env.VITE_API_HOST;
 
-const CancelToken = axios.CancelToken;
+const { CancelToken } = axios;
 const source = CancelToken.source();
 
 const Chat: React.FC = () => {
@@ -33,11 +35,10 @@ const Chat: React.FC = () => {
 
   const conversation = useMemo<Conversation[]>(() => {
     if (chatId) {
-      const cur = chatList.find(chat => chat.chatId === chatId);
+      const cur = chatList.find((chat) => chat.chatId === chatId);
       return cur?.data || [];
-    } else {
-      return chatList[0]?.data || [];
     }
+    return chatList[0]?.data || [];
   }, [chatId, chatList]);
 
   const chatIdRef = useRef<string>('');
@@ -77,8 +78,12 @@ const Chat: React.FC = () => {
       const conversationId = uuid();
       curConversation = [
         ...conversation,
-        { character: 'user', value: v, key: uuid(), error: false, conversationId },
-        { character: 'bot', value: '', key: uuid(), error: false, conversationId }
+        {
+          character: 'user', value: v, key: uuid(), error: false, conversationId
+        },
+        {
+          character: 'bot', value: '', key: uuid(), error: false, conversationId
+        }
       ];
     }
     chatIdRef.current = chatId;
@@ -134,18 +139,18 @@ const Chat: React.FC = () => {
   };
 
   const renderRetryButton = () => {
-    const length = conversation.length;
+    const { length } = conversation;
     if (!length) return null;
     const lastUserConversation = conversation[length - 2];
     const lastConversation = conversation[length - 1];
     if (!lastConversation.stop) return null;
-    else {
-      return (
-        <button className="btn flex justify-center gap-2 btn-neutral" onClick={async (e) => handleRetry(e, lastUserConversation)}>
-          <Icon svg={<Refresh />} />Regenerate response
-        </button>
-      );
-    };
+
+    return (
+      <button className="btn flex justify-center gap-2 btn-neutral" onClick={async (e) => handleRetry(e, lastUserConversation)}>
+        <Icon svg={<Refresh />} />
+        Regenerate response
+      </button>
+    );
   };
 
   return (

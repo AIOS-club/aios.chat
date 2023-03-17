@@ -7,7 +7,9 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
-    'standard-with-typescript'
+    'standard-with-typescript',
+    'airbnb',
+    'airbnb-typescript',
   ],
   overrides: [
   ],
@@ -25,6 +27,7 @@ module.exports = {
     'react-hooks'
   ],
   rules: {
+    'import/extensions': 'warn',
     'jsx-a11y/accessible-emoji': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/anchor-is-valid': [

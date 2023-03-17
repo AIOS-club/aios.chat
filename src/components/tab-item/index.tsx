@@ -42,7 +42,7 @@ const TabItem: React.FC<TabItemProps> = ({ chat }) => {
       onClick={handleClick}
     >
       <Icon svg={<Chat />} />
-      <div className='flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative text-left'>
+      <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative text-left">
         {title || data[0]?.value || '新对话'}
       </div>
       {actived && <Icon svg={<Delete />} onClick={handleDelete} />}
