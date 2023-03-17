@@ -60,7 +60,7 @@ const Chat: React.FC = () => {
   const handleError = (id: string, data: Conversation[]) => {
     const pre = [...data];
     const [lastConversation] = pre.slice(-1);
-    Object.assign(lastConversation, { value: '请稍后重试', error: true, loading: false, stop: true });
+    Object.assign(lastConversation, { value: '请稍后重试', error: true, stop: true });
     handleChatListChange(id, pre);
   };
 
@@ -70,15 +70,15 @@ const Chat: React.FC = () => {
     if (retry) {
       curConversation = [...conversation];
       const [lastConversation] = curConversation.slice(-1);
-      lastConversation.loading = true;
+      lastConversation.value = '';
       lastConversation.error = false;
       lastConversation.stop = false;
     } else {
       const conversationId = uuid();
       curConversation = [
         ...conversation,
-        { character: 'user', value: v, key: uuid(), error: false, loading: false, conversationId, stop: true },
-        { character: 'bot', value: '', key: uuid(), error: false, loading: true, conversationId, stop: false }
+        { character: 'user', value: v, key: uuid(), error: false, conversationId },
+        { character: 'bot', value: '', key: uuid(), error: false, conversationId }
       ];
     }
     chatIdRef.current = chatId;
@@ -101,7 +101,7 @@ const Chat: React.FC = () => {
         const chunk = event.target?.responseText || '';
         try {
           const res = parseStreamText(chunk);
-          Object.assign(lastConversation, { value: res.content, error: false, loading: false, stop: res.stop });
+          Object.assign(lastConversation, { value: res.content, error: false, stop: res.stop });
           handleChatListChange(curChatId, pre);
         } catch {
           source.cancel('something is wrong');
@@ -138,7 +138,7 @@ const Chat: React.FC = () => {
     if (!length) return null;
     const lastUserConversation = conversation[length - 2];
     const lastConversation = conversation[length - 1];
-    if (lastConversation?.loading || lastConversation.stop === false) return null;
+    if (!lastConversation.stop) return null;
     else {
       return (
         <button className="btn flex justify-center gap-2 btn-neutral" onClick={async (e) => handleRetry(e, lastUserConversation)}>

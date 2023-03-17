@@ -17,7 +17,7 @@ function getCachePrompt (conversation: Conversation[], curValue: string): Messag
       const gpt = conversation[i + 1];
       if (user && gpt && user.conversationId === gpt.conversationId && !gpt.error) {
         pairsConversation.push({ role: 'user', content: user.value });
-        if (!gpt.loading) {
+        if (gpt.stop) {
           pairsConversation.push({ role: 'assistant', content: gpt.value });
         }
       }

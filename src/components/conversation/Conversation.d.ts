@@ -2,8 +2,7 @@ export interface Conversation {
   key: string;
   character: 'user' | 'bot';
   value: string;
-  error: boolean;
-  loading: boolean;
+  error?: boolean;
   conversationId: string;
   type?: 'text' | 'image';
   url?: string;

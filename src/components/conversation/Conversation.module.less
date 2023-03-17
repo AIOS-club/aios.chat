@@ -1,5 +1,39 @@
+@keyframes blink {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.loadingStyle {
+  content: '▋';
+  margin-left: 1rem;
+  vertical-align: baseline;
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
 .error {
   color: #ff0000;
+}
+
+.loading {
+  >*:last-child {
+    &::after {
+      .loadingStyle();
+    }
+  }
+}
+
+.start {
+  &::after {
+    .loadingStyle();
+    margin-left: 0;
+  }
 }
 
 .share {
