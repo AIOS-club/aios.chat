@@ -23,51 +23,55 @@
 <br />
 <br />
 
-## Built With
-
-本项目由以下技术栈构建
-
-  [![React][React-logo]][React-url]
-
-
 ## Get Started
 ```bash
-npm install
+npm run inst # 安装
 
 npm run dev
 ```
-> 可能会遇到的版本不兼容问题，请尝试使用以下命令
-```bash
-npm install --legacy-peer-deps
-```
 
 ## 环境变量
-请参考 **.env.production** 文件。<br />
+请参考 **.env.example** 文件。<br />
 ```bash
-VITE_API_HOST='' # api host
-VITE_CACHE_TIMES=10 # 最大缓存的对话数，你应该限制用户的上下文缓存的对话数量
+# 输入框的提示词
+VITE_DEFAULT_PLACEHOLDER='发消息给AI'
+
+# 输入框底部的消息
+VITE_DEFAULT_BOTTOM_TIPS=''
+
+# API_HOST
+VITE_API_HOST='http://localhost:3000/aios-chat'
+
+# 最多缓存的对话次数 不包括system信息
+VITE_CACHE_TIMES=10
+
+# BASE_URL
 VITE_BASE_URL='/' # BASE_URL
-VITE_DEFAULT_PLACEHOLDER='' # 输入框的placeholder
-VITE_DEFAULT_BOTTOM_TIPS='' # 底部的消息
-VITE_AI_AVATOR_URL='' # ai avator
-VITE_USER_USER_URL='' # user avator
+
+# ai avator
+VITE_AI_AVATOR_URL=''
+
+# user avator
+VITE_USER_USER_URL=''
 ```
-首次```npm run dev```，对话会失败，是因为本地需要 **.env.development** 文件,请先创建一个 **.env.development** 文件，并将 **.env.production** 文件里的内容复制进去
+
+首次```npm run dev```，本地需要 **.env.development** 文件,请先创建一个 **.env.development** 文件，并将 **.env.example** 文件里的内容复制进去
+> 根目录以及server目录下都需要新建一个.env.development 文件，server目录下的环境变量需要填入 API_KEY
+
 > 后续在 ```npm run dev``` 的命令时会执行脚本，自动创建该文件
 
 
 ## 已支持的功能
-- 上下文对话 最大3000tokens 可配置
+- 上下文对话
 - 历史会话
 - markdown渲染
 - katex数学公式支持
-- 支持图片问答（后续接口支持）
 - 可一键分享当前会话
+- 流式传输
 - 暗夜模式
 
 ## TODO
 - 预设场景化机器人system应用
-- 流式传输
 - prompt store
 - 添加后端BFF层
 - 添加http和socks代理配置或提供一些预置的openai接口代理
@@ -79,7 +83,3 @@ VITE_USER_USER_URL='' # user avator
 - GitHub pages自动部署
 - docker-compose编写
 - 使用自定义API Key
-
-
-[React-logo]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/

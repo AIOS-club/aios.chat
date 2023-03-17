@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       minify: 'terser',
+      outDir: 'dist/client',
     },
     plugins: [
       react(),
