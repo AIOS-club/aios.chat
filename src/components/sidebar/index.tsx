@@ -27,7 +27,7 @@ const useNewChat = (onNewChat: any) => {
   return handleNewChat;
 };
 
-const Nav: React.FC<SideBarProps> = function(props) {
+const Nav: React.FC<SideBarProps> = function Nav(props) {
   const { chatList, handleDeleteAll } = useContext<ChatStoreProps>(Store);
 
   const { onNewChat = () => {} } = props;
@@ -63,7 +63,7 @@ const Nav: React.FC<SideBarProps> = function(props) {
   return (
     <div className={`flex h-full w-full flex-1 items-start border-white/20 ${isMobile ? 'scrollbar-trigger' : ''}`}>
       <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
-        <button className={classNames(commonCls, 'mb-2 flex-shrink-0 border border-white/20')} onClick={handleNewChat}>
+        <button type="button" className={classNames(commonCls, 'mb-2 flex-shrink-0 border border-white/20')} onClick={handleNewChat}>
           <Icon svg={<Add />} />
           开始新对话
         </button>
@@ -81,14 +81,14 @@ const Nav: React.FC<SideBarProps> = function(props) {
               Toast.success('删除成功');
             }}
           >
-            <button className={commonCls}>
+            <button className={commonCls} type="button">
               <Icon svg={<Delete />} />
               清除所有会话
             </button>
           </Popconfirm>
         )}
         {mode ? (
-          <button className={commonCls} onClick={handleChangeMode}>
+          <button className={commonCls} onClick={handleChangeMode} type="button">
             <Icon svg={mode === 'dark' ? <Sun /> : <Moon />} />
             {`${mode === 'dark' ? '亮色' : '暗色'}`}
           </button>
@@ -98,7 +98,7 @@ const Nav: React.FC<SideBarProps> = function(props) {
   );
 };
 
-export const HeaderBar: React.FC<SideBarProps> = (props) => {
+export const HeaderBar: React.FC<SideBarProps> = function HeaderBar(props) {
   const { onNewChat = () => {} } = props;
 
   const handleNewChat = useNewChat(onNewChat);
@@ -159,12 +159,14 @@ export const HeaderBar: React.FC<SideBarProps> = (props) => {
   );
 };
 
-const SideBar: React.FC<SideBarProps> = ({ onNewChat }) => (
-  <div className="hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[260px] md:flex-col">
-    <div className="flex h-full min-h-0 flex-col ">
-      <Nav onNewChat={onNewChat} />
+const SideBar: React.FC<SideBarProps> = function SideBar({ onNewChat }) {
+  return (
+    <div className="hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[260px] md:flex-col">
+      <div className="flex h-full min-h-0 flex-col ">
+        <Nav onNewChat={onNewChat} />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default SideBar;

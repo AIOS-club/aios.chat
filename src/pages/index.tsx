@@ -1,4 +1,6 @@
-import React, { ReactElement, useState } from 'react';
+import React, {
+  ReactElement, useMemo, useState, useCallback 
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { ChatStoreProps, ChatList } from '@/global.d';
@@ -58,7 +60,7 @@ function App (): ReactElement {
     });
   };
 
-  const handleDelete = (chatId: string) => {
+  const handleDelete = useCallback((chatId: string) => {
     setChatList((pre) => {
       const cacheChatList = [...pre];
       const delChatIndex = cacheChatList.findIndex((chat) => chat.chatId === chatId);
@@ -67,15 +69,15 @@ function App (): ReactElement {
       return cacheChatList;
     });
     navigate('/');
-  };
+  }, [navigate]);
 
-  const handleDeleteAll = () => {
+  const handleDeleteAll = useCallback(() => {
     setChatList([]);
     localStorage?.removeItem('chatList');
     navigate('/');
-  };
+  }, [navigate]);
 
-  const handleNewChat = () => {
+  const handleNewChat = useCallback(() => {
     const curChatId = uuid();
     const newChat = { chatId: curChatId, data: [] };
     setChatList((pre) => {
@@ -85,9 +87,9 @@ function App (): ReactElement {
       return cacheChatList;
     });
     navigate(`/?chatId=${curChatId}`);
-  };
+  }, [navigate]);
 
-  const value = {
+  const value = useMemo(() => ({
     chatList,
     setChatList,
     handleChange,
@@ -96,7 +98,7 @@ function App (): ReactElement {
     handleDeleteAll,
     handleTitleChange,
     handleTitleBlock,
-  };
+  }), [chatList, handleDelete, handleDeleteAll, handleNewChat]);
 
   return (
     <Store.Provider value={value}>

@@ -22,7 +22,7 @@ const API_HOST: string = import.meta.env.VITE_API_HOST;
 const { CancelToken } = axios;
 const source = CancelToken.source();
 
-const Chat: React.FC = function() {
+const Chat: React.FC = function Chat() {
   const [query] = useSearchParams();
 
   const chatId = useMemo(() => query.get('chatId') || uuid(), [query]);
@@ -149,7 +149,7 @@ const Chat: React.FC = function() {
     if (!lastConversation.stop) return null;
 
     return (
-      <button className="btn flex justify-center gap-2 btn-neutral" onClick={async (e) => handleRetry(e, lastUserConversation)}>
+      <button type="button" className="btn flex justify-center gap-2 btn-neutral" onClick={async (e) => handleRetry(e, lastUserConversation)}>
         <Icon svg={<Refresh />} />
         Regenerate response
       </button>

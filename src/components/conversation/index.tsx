@@ -44,7 +44,7 @@ const markdownCls = 'prose prose-p:m-0 prose-ul:m-0 prose-ul:leading-normal pros
 const AI_AVATOR = import.meta.env.VITE_AI_AVATOR_URL;
 const USER_AVATOR = import.meta.env.VITE_USER_USER_URL;
 
-const Conversation: React.FC<ConversationProps> = (props) => {
+const Conversation: React.FC<ConversationProps> = function Conversation(props) {
   const { data } = props;
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -145,7 +145,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
         ))}
       </Gallery>
       <div className="w-full h-48 flex items-center m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl py-4 px-12 md:py-6 flex-shrink-0 share-btn-custom" />
-      <button className={classNames(shareBtnCls, styles.share)} onClick={handleClick}>
+      <button type="button" className={classNames(shareBtnCls, styles.share)} onClick={handleClick}>
         {loading ? <Spin /> : (
           <>
             <Icon svg={<Share />} style={{ marginRight: 5 }} />

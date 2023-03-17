@@ -6,7 +6,7 @@ import { AutoTextAreaProps } from './AutoTextArea';
 
 const placeholder = import.meta.env.VITE_DEFAULT_PLACEHOLDER;
 
-const AutoTextArea: React.FC<AutoTextAreaProps> = function(props) {
+const AutoTextArea: React.FC<AutoTextAreaProps> = function AutoTextArea(props) {
   const {
     value,
     loading,

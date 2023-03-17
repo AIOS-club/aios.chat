@@ -5,7 +5,7 @@ import env from '../config';
 
 interface Body {
   messages: ChatCompletionRequestMessage[];
-};
+}
 
 const router = new Router();
 

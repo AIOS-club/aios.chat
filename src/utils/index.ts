@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Conversation } from '@/components/conversation/Conversation.d';
 import { Messages } from '@/global.d';
 
