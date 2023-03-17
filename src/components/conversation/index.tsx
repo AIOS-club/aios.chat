@@ -50,6 +50,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
 
   const ref = useRef<HTMLDivElement>(null);
 
+  // TODO 用semi的Image
   const renderImage = useCallback((d: Con) => (
     <Item content={<img alt="" className={imageContentCls} src={d.url} />}>
       {({ ref, open }) => (
