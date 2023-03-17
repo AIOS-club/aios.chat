@@ -1,5 +1,4 @@
 import React, { useCallback, useRef, useState } from 'react';
-import ReactDOMServer from 'react-dom/server';
 import classNames from 'classnames';
 import html2canvas from 'html2canvas';
 import ClipboardJS from 'clipboard';
@@ -7,7 +6,6 @@ import { marked } from 'marked';
 import markedKatex from 'marked-katex-extension-ts';
 import { Toast, Spin, Icon } from '@douyinfe/semi-ui';
 import { Gallery, Item } from 'react-photoswipe-gallery';
-import Flashing from '@/components/flashing';
 import Share from '@/assets/svg/share.svg';
 import aiAvator from '@/assets/img/aiAvator.jpg';
 import userAvator from '@/assets/img/userAvator.png';
@@ -52,10 +50,7 @@ const Conversation: React.FC<ConversationProps> = (props) => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const renderInnerHtml = useCallback((d: Con) => {
-    return d.loading ? ReactDOMServer.renderToString(<Flashing />) : marked(d.value, { highlight: highlightCode });
-  }, []);
-
+  // TODO 用semi的Image
   const renderImage = useCallback((d: Con) => (
     <Item content={<img alt="" className={imageContentCls} src={d.url} />}>
       {({ ref, open }) => (
@@ -135,8 +130,12 @@ const Conversation: React.FC<ConversationProps> = (props) => {
               <div className={markdownCls}>
                 {d.type === 'image' ? renderImage(d) : (
                   <div
-                    className={classNames(conversationCls, { [styles.error]: d.error })}
-                    dangerouslySetInnerHTML={{ __html: renderInnerHtml(d) }}
+                    className={classNames(conversationCls, {
+                      [styles.error]: d.error,
+                      [styles.loading]: !d.stop && d.character !== 'user',
+                      [styles.start]: d.character !== 'user' && !d.value
+                    })}
+                    dangerouslySetInnerHTML={{ __html: marked(d.value, { highlight: highlightCode }) }}
                   />
                 )}
               </div>

@@ -2,19 +2,23 @@ import React, { useRef, useState, useMemo, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
-import { useFetchAnswer } from '@/api';
+import axios from 'axios';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/Conversation';
 import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
 import useIsMobile from '@/hooks/useIsMobile';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
-import { getCachePrompt } from '@/utils';
+import { getCachePrompt, parseStreamText } from '@/utils';
 import { Store } from '@/pages/index';
 import Refresh from '@/assets/svg/refresh.svg';
 import { ChatStoreProps } from '@/global';
 
 const BOTTOM_TIPS = import.meta.env.VITE_DEFAULT_BOTTOM_TIPS;
+const API_HOST: string = import.meta.env.VITE_API_HOST;
+
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
 const Chat: React.FC = () => {
   const [query] = useSearchParams();
@@ -24,7 +28,8 @@ const Chat: React.FC = () => {
   const { chatList, handleChange: handleChatListChange } = useContext<ChatStoreProps>(Store);
 
   const [value, setValue] = useState<string>('');
-  const [isComposing, setIsComposing] = useState(false); // 中文输入还在选词的时候敲回车不发请求
+  const [isComposing, setIsComposing] = useState<boolean>(false); // 中文输入还在选词的时候敲回车不发请求
+  const [loading, setLoading] = useState<boolean>(false);
 
   const conversation = useMemo<Conversation[]>(() => {
     if (chatId) {
@@ -41,8 +46,6 @@ const Chat: React.FC = () => {
 
   const scrollRef = useScrollToBottom(conversation);
 
-  const { trigger, isMutating: loading } = useFetchAnswer();
-
   const isMutating = loading && chatId === chatIdRef.current;
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -57,7 +60,7 @@ const Chat: React.FC = () => {
   const handleError = (id: string, data: Conversation[]) => {
     const pre = [...data];
     const [lastConversation] = pre.slice(-1);
-    Object.assign(lastConversation, { value: '请稍后重试', error: true, loading: false });
+    Object.assign(lastConversation, { value: '请稍后重试', error: true, stop: true });
     handleChatListChange(id, pre);
   };
 
@@ -67,14 +70,15 @@ const Chat: React.FC = () => {
     if (retry) {
       curConversation = [...conversation];
       const [lastConversation] = curConversation.slice(-1);
-      lastConversation.loading = true;
+      lastConversation.value = '';
       lastConversation.error = false;
+      lastConversation.stop = false;
     } else {
       const conversationId = uuid();
       curConversation = [
         ...conversation,
-        { character: 'user', value: v, key: uuid(), error: false, loading: false, conversationId },
-        { character: 'bot', value: '', key: uuid(), error: false, loading: true, conversationId }
+        { character: 'user', value: v, key: uuid(), error: false, conversationId },
+        { character: 'bot', value: '', key: uuid(), error: false, conversationId }
       ];
     }
     chatIdRef.current = chatId;
@@ -82,24 +86,31 @@ const Chat: React.FC = () => {
     handleChatListChange(curChatId, curConversation, true);
     const messages = getCachePrompt([...curConversation], v.trimEnd()); // 获取上下文缓存的信息
 
-    await trigger({ messages } as any).then((res: any) => {
-      if (curConversation.length === 0) return;
-      if (res.status === 200) {
-        const { data } = res;
-        const error = !Array.isArray(data?.choices) || data?.choices?.[0]?.block;
-        const text: string = error ? (data.choices[0]?.message?.content || data.choices[0]?.text || '请稍后重试') : data.choices[0]?.message?.content;
-        const type = error ? 'text' : (data?.choices?.[0]?.type || 'text');
-        const url = type === 'image' ? data?.choices?.[0]?.url : '';
-        const curValue = text.trimStart().replace(/\n{2,}/g, '\n');
-        const pre = [...curConversation];
-        const [lastConversation] = pre.slice(-1);
-        Object.assign(lastConversation, { value: curValue, type, error, loading: false, url });
-        handleChatListChange(curChatId, pre);
-      } else {
-        handleError(curChatId, curConversation);
-      }
+    const pre = [...curConversation];
+    const [lastConversation] = pre.slice(-1);
+    setLoading(true);
+
+    await axios({
+      url: API_HOST,
+      timeout: 300000,
+      method: 'POST',
+      responseType: 'stream',
+      data: { messages },
+      cancelToken: source.token,
+      onDownloadProgress({ event }) {
+        const chunk = event.target?.responseText || '';
+        try {
+          const res = parseStreamText(chunk);
+          Object.assign(lastConversation, { value: res.content, error: false, stop: res.stop });
+          handleChatListChange(curChatId, pre);
+        } catch {
+          source.cancel('something is wrong');
+        }
+      },
     }).catch(() => {
       handleError(curChatId, curConversation);
+    }).finally(() => {
+      setLoading(false);
     });
   };
 
@@ -127,7 +138,7 @@ const Chat: React.FC = () => {
     if (!length) return null;
     const lastUserConversation = conversation[length - 2];
     const lastConversation = conversation[length - 1];
-    if (lastConversation?.loading) return null;
+    if (!lastConversation.stop) return null;
     else {
       return (
         <button className="btn flex justify-center gap-2 btn-neutral" onClick={async (e) => handleRetry(e, lastUserConversation)}>
