@@ -17,6 +17,8 @@
   </p>
 </div>
 
+> 本项目基于 **MIT** 协议
+
 ## Preview
 <br />
 <img src="src/assets/img/screenshot.png" />
@@ -83,3 +85,7 @@ VITE_USER_USER_URL=''
 - GitHub pages自动部署
 - docker-compose编写
 - 使用自定义API Key
+
+## License
+
+MIT License © [AIOS-club](./LICENSE)
