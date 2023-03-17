@@ -9,7 +9,7 @@
     "dev:koa": "cross-env NODE_ENV=development esno watch server/app.ts",
     "build": "npm run build:vite && npm run build:koa",
     "build:vite": "tsc && vite build",
-    "build:koa": "cross-env NODE_ENV=production tsup server/app.ts --out-dir dist/server --format cjs && node dist/server/app.js",
+    "build:koa": "cross-env NODE_ENV=production tsup server/app.ts --out-dir dist/server --format cjs",
     "preview": "vite preview",
     "lint": "eslint --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --fix --max-warnings 999"
   },
