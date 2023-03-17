@@ -18,7 +18,6 @@ router.post('/aios-chat', async (ctx) => {
 
   const { messages } = body;
 
-  ctx.type = 'text/event-stream'; // 设置响应类型为流
   ctx.set('Cache-Control', 'no-cache');
   ctx.set('Content-Type', 'text/event-stream');
   ctx.set('Connection', 'keep-alive');
