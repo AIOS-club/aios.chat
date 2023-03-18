@@ -3,8 +3,6 @@ import { Messages } from '@/global.d';
 
 const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
 
-const regex = /(```[\s\S]*?```)/;
-
 /**
  * 获取前几次的用户对话信息
  */
