@@ -2,7 +2,7 @@
   "version": 2,
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/client(.*)",
       "dest": "/dist/client/$1"
     },
     {
