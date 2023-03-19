@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "inst": "npm i -g pnpm && pnpm i && cd ./server && pnpm i && cd ..",
+    "dev:env": "node entry.js && npm run dev",
     "dev": "concurrently \"npm run dev:vite\" \"npm run dev:koa\"",
     "dev:vite": "vite",
     "dev:koa": "cross-env NODE_ENV=development esno watch server/app.ts",

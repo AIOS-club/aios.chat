@@ -1,2 +1,3 @@
 vite.config.ts
 global.d.ts
+entry.js

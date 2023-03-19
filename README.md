@@ -29,8 +29,13 @@
 ```bash
 npm run inst # 安装
 
-npm run dev
+npm run dev # 运行
+
+npm run dev:env # 运行时自动生成.env.development
 ```
+
+> 当你运行 npm run dev:env 时会自动在根目录和server目录下生成一个.env.development文件。
+> 你需要在server目录下的.env.development填写API_KEY。之后重新 npm run dev
 
 ## 环境变量
 请参考 **.env.example** 文件。<br />
@@ -56,11 +61,6 @@ VITE_AI_AVATOR_URL=''
 # user avator
 VITE_USER_USER_URL=''
 ```
-
-首次```npm run dev```，本地需要 **.env.development** 文件,请先创建一个 **.env.development** 文件，并将 **.env.example** 文件里的内容复制进去
-> 根目录以及server目录下都需要新建一个.env.development 文件，server目录下的环境变量需要填入 API_KEY
-
-> 后续在 ```npm run dev``` 的命令时会执行脚本，自动创建该文件
 
 
 ## 已支持的功能

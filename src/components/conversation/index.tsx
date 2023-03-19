@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { useCallback, useRef, useState } from 'react';
 import classNames from 'classnames';
 import html2canvas from 'html2canvas';
@@ -136,7 +137,9 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
                       [styles.loading]: !d.stop && d.character !== 'user',
                       [styles.start]: d.character !== 'user' && !d.value
                     })}
-                    dangerouslySetInnerHTML={{ __html: marked(d.value, { highlight: highlightCode }) }}
+                    dangerouslySetInnerHTML={{
+                      __html: d.character === 'user' ? d.value : marked(d.value, { highlight: highlightCode })
+                    }}
                   />
                 )}
               </div>
