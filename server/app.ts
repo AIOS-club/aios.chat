@@ -18,7 +18,7 @@ app.listen(port, () => {
 app.on('error', (err, ctx) => {
   if (err.code === 'EADDRINUSE') { // 如果端口被占用
     console.log(`Port ${port} is in use, trying another...`);
-    port = port + 1;
+    port += 1;
     app.listen(port); // 尝试监听下一个端口
   } else {
     console.error('Server error', err);
