@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import { Configuration, OpenAIApi, ChatCompletionRequestMessage } from 'openai';
-import { getSystemMessage } from '../utils';
+import { getSystemMessage, parseStreamText } from '../utils';
 import env from '../config';
 
 const RETRIES = parseInt(env.RETRIES, 10) || 3;
@@ -51,7 +51,8 @@ router.post('/aios-chat', async (ctx) => {
     ctx.status = 200;
 
     res.data.on('data', (data: any) => {
-      ctx.res.write(data.toString()); // 将每次返回的值发送到客户端
+      const message = parseStreamText(data.toString());
+      ctx.res.write(message.content); // 将每次返回的值发送到客户端
     });
 
     res.data.on('end', () => {
