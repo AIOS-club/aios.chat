@@ -16,6 +16,7 @@ const frontEnv = {
 const backEnv = {
   API_KEY: '""',
   PORT: 3000,
+  RETRIES: 3,
 }
 
 function getEnvString(obj) {

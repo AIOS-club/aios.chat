@@ -11,7 +11,7 @@ import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
 import useIsMobile from '@/hooks/useIsMobile';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
-import { getCachePrompt, parseStreamText } from '@/utils';
+import { getCachePrompt, parseMarkdown } from '@/utils';
 import { Store } from '@/pages/index';
 import Refresh from '@/assets/svg/refresh.svg';
 import { ChatStoreProps } from '@/global';
@@ -94,10 +94,9 @@ const Chat: React.FC = function Chat() {
       data: { messages },
       cancelToken: source.token,
       onDownloadProgress({ event }) {
-        const chunk = event.target?.responseText || '';
+        const chunk: string = event.target?.responseText || '';
         try {
-          const res = parseStreamText(chunk);
-          Object.assign(lastConversation, { value: res.content, error: false, stop: res.stop });
+          Object.assign(lastConversation, { value: parseMarkdown(chunk), error: false });
           handleChatListChange(curChatId, pre);
         } catch {
           source.cancel('something is wrong');
@@ -107,6 +106,7 @@ const Chat: React.FC = function Chat() {
       handleError(curChatId, curConversation);
     }).finally(() => {
       setLoading(false);
+      Object.assign(lastConversation, { stop: true });
     });
   };
 
