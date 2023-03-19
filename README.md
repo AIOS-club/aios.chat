@@ -35,7 +35,7 @@ npm run dev:env # 运行时自动生成.env.development
 ```
 
 > 当你运行 npm run dev:env 时会自动在根目录和server目录下生成一个.env.development文件。
-> 你需要在server目录下的.env.development填写API_KEY。之后重新 npm run dev
+> 你需要在server目录下的.env.development填写正确可用的API_KEY。
 
 ## 环境变量
 请参考 **.env.example** 文件。<br />
