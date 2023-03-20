@@ -108,6 +108,7 @@ const Chat: React.FC = function Chat() {
     }).finally(() => {
       setLoading(false);
       Object.assign(lastConversation, { stop: true });
+      handleChatListChange(curChatId, pre);
     });
   };
 
