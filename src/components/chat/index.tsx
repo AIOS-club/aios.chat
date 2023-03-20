@@ -52,7 +52,8 @@ const Chat: React.FC = function Chat() {
   const handleError = (id: string, data: Conversation[]) => {
     const pre = [...data];
     const [lastConversation] = pre.slice(-1);
-    Object.assign(lastConversation, { value: '请稍后重试', error: true, stop: true });
+    const errorResult = { value: lastConversation.value || '', error: true, stop: true };
+    Object.assign(lastConversation, errorResult);
     handleChatListChange(id, pre);
   };
 

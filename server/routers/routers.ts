@@ -1,9 +1,9 @@
 import Router from 'koa-router';
 import { Configuration, OpenAIApi, ChatCompletionRequestMessage } from 'openai';
-import { getSystemMessage, parseStreamText } from '../utils';
+import { getSystemMessage, parseStreamText, ErrorMessage } from '../utils';
 import env from '../config';
 
-const RETRIES = parseInt(env.RETRIES, 10) || 3;
+const RETRIES = parseInt(env.RETRIES, 10) ?? 3;
 
 interface Body {
   messages: ChatCompletionRequestMessage[];
@@ -15,7 +15,7 @@ const config = new Configuration({ apiKey: env.API_KEY });
 
 const openai = new OpenAIApi(config);
 
-const callOpenAI = async (messages: ChatCompletionRequestMessage[], retries = 3): Promise<any> => {
+const callOpenAI = async (messages: ChatCompletionRequestMessage[], retries: number): Promise<any> => {
   try {
     const res = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
@@ -58,8 +58,10 @@ router.post('/aios-chat', async (ctx) => {
     res.data.on('end', () => {
       ctx.res.end(); // 当流结束时关闭连接
     });
-  } catch (error) {
-    ctx.status = 500;
+  } catch (error: any) {
+    const statusCode: number = error.response?.status;    
+    ctx.status = statusCode;
+    ctx.res.write(ErrorMessage[statusCode] || 'Something is wrong, please try again');
     ctx.res.end();
   }
 
