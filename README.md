@@ -73,19 +73,18 @@ VITE_USER_USER_URL=''
 - 暗夜模式
 
 ## TODO
-- 预设场景化机器人system应用
-- prompt store
-- 添加后端BFF层
-- 添加http和socks代理配置或提供一些预置的openai接口代理
-- 访问权限控制
-- 可修改openai的模型（3.5、3.0）可修改接口参数temperature、model、temperature、frequency_penalty、presence_penalty
-- 多语言支持
-- 一键部署文档
-- github action（打包验证，代码规范eslint等）
-- GitHub pages自动部署
-- docker-compose编写
-- 使用自定义API Key
-
+- [x] github action（打包验证，代码规范eslint等）
+- [x] 使用自定义API Key
+- [ ] 预设场景化机器人system应用
+- [ ] prompt store
+- [ ] 添加后端BFF层
+- [ ] 添加http和socks代理配置或提供一些预置的openai接口代理
+- [ ] 访问权限控制
+- [ ] 可修改openai的模型（3.5、3.0）可修改接口参数temperature、model、temperature、frequency_penalty、presence_penalty
+- [ ] 多语言支持
+- [ ] 一键部署文档
+- [ ] GitHub pages自动部署
+- [ ] docker-compose编写
 ## License
 
 MIT License © [AIOS-club](./LICENSE)

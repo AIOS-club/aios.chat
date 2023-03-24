@@ -1,16 +1,15 @@
-import React, {
-  ReactElement, useMemo, useState, useCallback 
-} from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { ChatStoreProps, ChatList } from '@/global.d';
 import { Conversation } from '@/components/conversation/Conversation.d';
-import SideBar, { HeaderBar } from '@/components/sidebar';
+import SideBar from '@/components/sidebar';
+import HeaderBar from '@/components/header';
 import Chat from '@/components/chat';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
-function App (): ReactElement {
+function App () {
   const navigate = useNavigate();
 
   const [chatList, setChatList] = useState<ChatList[]>(() => {
@@ -20,6 +19,13 @@ function App (): ReactElement {
     }
     return [];
   });
+
+  const [apiKey, setApiKey] = useState<string>(() => localStorage?.getItem('API_KEY') || '');
+
+  const handleApiKeyChange = (key: string) => {
+    setApiKey(key);
+    localStorage?.setItem('API_KEY', key);
+  };
 
   const handleChange = (chatId: string, data: Conversation[], forceUpdate: boolean = false) => {
     setChatList((pre) => {
@@ -91,6 +97,8 @@ function App (): ReactElement {
 
   const value = useMemo(() => ({
     chatList,
+    apiKey,
+    handleApiKeyChange,
     setChatList,
     handleChange,
     handleNewChat,
@@ -98,7 +106,7 @@ function App (): ReactElement {
     handleDeleteAll,
     handleTitleChange,
     handleTitleBlock,
-  }), [chatList, handleDelete, handleDeleteAll, handleNewChat]);
+  }), [chatList, apiKey, handleDelete, handleDeleteAll, handleNewChat]);
 
   return (
     <Store.Provider value={value}>

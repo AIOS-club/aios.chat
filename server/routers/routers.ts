@@ -7,15 +7,16 @@ const RETRIES = parseInt(env.RETRIES, 10) ?? 3;
 
 interface Body {
   messages: ChatCompletionRequestMessage[];
+  apiKey?: string;
 }
 
 const router = new Router();
 
-const config = new Configuration({ apiKey: env.API_KEY });
-
-const openai = new OpenAIApi(config);
-
-const callOpenAI = async (messages: ChatCompletionRequestMessage[], retries: number): Promise<any> => {
+const callOpenAI = async (
+  openai: OpenAIApi,
+  messages: ChatCompletionRequestMessage[],
+  retries: number
+): Promise<any> => {
   try {
     const res = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
@@ -32,21 +33,25 @@ const callOpenAI = async (messages: ChatCompletionRequestMessage[], retries: num
     return res;
   } catch (error) {
     if (retries === 0) throw error;
-    return callOpenAI(messages, retries - 1);
+    return callOpenAI(openai, messages, retries - 1);
   }
 };
 
 router.post('/aios-chat', async (ctx) => {
   const body = ctx.request.body as Body;
 
-  const { messages } = body;
+  const { messages, apiKey } = body;
 
   ctx.set('Cache-Control', 'no-cache');
   ctx.set('Content-Type', 'text/event-stream');
   ctx.set('Connection', 'keep-alive');
 
   try {
-    const res = await callOpenAI(messages, RETRIES);
+    const config = new Configuration({ apiKey: apiKey || env.API_KEY });
+
+    const openai = new OpenAIApi(config);
+
+    const res = await callOpenAI(openai, messages, RETRIES);
 
     ctx.status = 200;
 
@@ -59,9 +64,10 @@ router.post('/aios-chat', async (ctx) => {
       ctx.res.end(); // 当流结束时关闭连接
     });
   } catch (error: any) {
-    const statusCode: number = error.response?.status;    
+    // Invalid character in header content ["Authorization"] 为API KEY 错误
+    const statusCode: number = error.response ? error.response?.status : 401;
     ctx.status = statusCode;
-    ctx.res.write(ErrorMessage[statusCode] || 'Something is wrong, please try again');
+    ctx.res.write(ErrorMessage[statusCode || 500] || 'Something is wrong, please try again');
     ctx.res.end();
   }
 

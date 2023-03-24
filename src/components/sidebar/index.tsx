@@ -1,38 +1,34 @@
-import React, { useContext, useRef, useState } from 'react';
-import classNames from 'classnames';
+import React, {
+  useCallback, useContext, useState, useRef 
+} from 'react';
 import {
   Icon, Modal, Popconfirm, Toast
 } from '@douyinfe/semi-ui';
+import classNames from 'classnames';
 import TabItem from '@/components/tab-item';
+import ApiKeyInput from '@/components/api-key-input';
 import useIsMobile from '@/hooks/useIsMobile';
 import { Store } from '@/pages/index';
 import { ChatStoreProps } from '@/global';
 import Moon from '@/assets/svg/moon.svg';
 import Sun from '@/assets/svg/sun.svg';
 import Add from '@/assets/svg/add.svg';
-import AddOne from '@/assets/svg/add-one.svg';
 import Delete from '@/assets/svg/delete.svg';
-import Bread from '@/assets/svg/bread.svg';
-import Close from '@/assets/svg/close.svg';
+import Key from '@/assets/svg/key.svg';
 import { Mode, SideBarProps } from './Sidebar';
 
 const commonCls = 'flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm';
 
-const useNewChat = (onNewChat: any) => {
-  const handleNewChat = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onNewChat();
-  };
-  return handleNewChat;
-};
-
-const Nav: React.FC<SideBarProps> = function Nav(props) {
-  const { chatList, handleDeleteAll } = useContext<ChatStoreProps>(Store);
+export const Nav: React.FC<SideBarProps> = function Nav(props) {
+  const {
+    chatList, handleDeleteAll, apiKey, handleApiKeyChange 
+  } = useContext<ChatStoreProps>(Store);
 
   const { onNewChat = () => {} } = props;
 
   const isMobile = useIsMobile();
+
+  const apiKeyRef = useRef<any>();
 
   const [mode, setMode] = useState<Mode>(() => {
     if (typeof window.matchMedia === 'function') {
@@ -42,10 +38,7 @@ const Nav: React.FC<SideBarProps> = function Nav(props) {
     return false; // 表示不支持暗色模式
   });
 
-  const handleNewChat = useNewChat(onNewChat);
-
-  const handleChangeMode = () => {
-    // 能进这里表示mode不是dark就是light
+  const handleChangeMode = useCallback(() => {
     const html = document.getElementsByTagName('html')[0];
     if (mode === 'light') {
       setMode('dark');
@@ -58,12 +51,30 @@ const Nav: React.FC<SideBarProps> = function Nav(props) {
       html.classList.add('light');
       html.style.colorScheme = 'light';
     }
-  };
+  }, [mode]);
+
+  const handleInputKey = useCallback(() => {
+    const preApiKey = apiKey;
+    apiKeyRef.current = Modal.info({
+      header: <div className="py-6 font-semibold">输入API KEY</div>,
+      style: { top: '100px', maxWidth: '100%' },
+      bodyStyle: { marginLeft: 0 },
+      content: <ApiKeyInput handleApiKeyChange={handleApiKeyChange} localApiKey={apiKey} />,
+      okText: '保存',
+      onOk: () => {
+        Toast.success('保存成功');
+      },
+      onCancel: () => {
+        handleApiKeyChange(preApiKey);
+        apiKeyRef.current?.destroy();
+      }
+    });
+  }, [apiKey, handleApiKeyChange]);
 
   return (
     <div className={`flex h-full w-full flex-1 items-start border-white/20 ${isMobile ? 'scrollbar-trigger' : ''}`}>
       <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
-        <button type="button" className={classNames(commonCls, 'mb-2 flex-shrink-0 border border-white/20')} onClick={handleNewChat}>
+        <button type="button" className={classNames(commonCls, 'mb-2 flex-shrink-0 border border-white/20')} onClick={onNewChat}>
           <Icon svg={<Add />} />
           开始新对话
         </button>
@@ -87,6 +98,10 @@ const Nav: React.FC<SideBarProps> = function Nav(props) {
             </button>
           </Popconfirm>
         )}
+        <button className={commonCls} type="button" onClick={handleInputKey}>
+          <Icon svg={<Key />} />
+          自定义 API KEY
+        </button>
         {mode ? (
           <button className={commonCls} onClick={handleChangeMode} type="button">
             <Icon svg={mode === 'dark' ? <Sun /> : <Moon />} />
@@ -94,67 +109,6 @@ const Nav: React.FC<SideBarProps> = function Nav(props) {
           </button>
         ) : null}
       </nav>
-    </div>
-  );
-};
-
-export const HeaderBar: React.FC<SideBarProps> = function HeaderBar(props) {
-  const { onNewChat = () => {} } = props;
-
-  const handleNewChat = useNewChat(onNewChat);
-
-  const [visible, setVisible] = useState(false);
-
-  const onClose = () => {
-    setVisible(false);
-  };
-
-  const showModal = () => {
-    setVisible(true);
-  };
-
-  const modalDom = useRef(null);
-
-  const clickMask = (e: React.MouseEvent) => {
-    if (modalDom.current === e.target) {
-      onClose();
-    }
-  };
-
-  return (
-    <div className="sticky top-0 z-10 flex items-center border-b border-white/20 bg-gray-800 pl-1 pt-1 text-gray-200 sm:pl-3 md:hidden">
-      <div>
-        <button 
-          type="button" 
-          className="-ml-0.5 -mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white dark:hover:text-white" 
-          onClick={showModal}
-        >
-          <span className="sr-only">打开侧边栏</span>
-          <Bread />
-        </button>
-        <Modal title={null} footer={null} visible={visible} onOk={onClose} onCancel={onClose} style={{ width: 0 }} motion={false} closable={false} maskClosable>
-          <div className="fixed inset-0 z-40 flex" onClick={clickMask} ref={modalDom}>
-            <div className="relative flex w-full max-w-xs flex-1 flex-col bg-gray-900 translate-x-0" id="headlessui-dialog-panel-:r1:" data-headlessui-state="open">
-              <div className="absolute top-0 right-0 -mr-12 pt-2 opacity-100">
-                <button
-                  type="button"
-                  className="ml-1 flex h-10 w-10 items-center justify-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                  onClick={onClose}
-                >
-                  <span className="sr-only">关闭侧边栏</span>
-                  <Close />
-                </button>
-              </div>
-              <Nav onNewChat={onNewChat} />
-            </div>
-            <div className="w-14 flex-shrink-0" />
-          </div>
-        </Modal>
-      </div>
-      <h1 className="flex-1 text-center text-base font-normal">新对话</h1>
-      <button type="button" className="px-3" onClick={handleNewChat}>
-        <AddOne />
-      </button>
     </div>
   );
 };
