@@ -45,7 +45,7 @@ const Chat: React.FC = function Chat() {
 
   const isMobile = useIsMobile();
 
-  const scrollRef = useScrollToBottom(conversation);
+  const [scrollRef, scrollToBottom] = useScrollToBottom();
 
   const isMutating = loading && chatId === chatIdRef.current;
 
@@ -109,6 +109,7 @@ const Chat: React.FC = function Chat() {
       setLoading(false);
       Object.assign(lastConversation, { stop: true });
       handleChatListChange(curChatId, pre);
+      scrollToBottom();
     });
   };
 
