@@ -1,15 +1,15 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
-function useScrollToBottom<T = any> (deps?: any): T {
+function useScrollToBottom(): [React.MutableRefObject<any>, () => void] {
   const ref = useRef<HTMLElement>();
 
-  useLayoutEffect(() => {
-    if (ref.current) {
+  const scrollToBottom = useCallback(() => {
+    if (ref.current?.scrollTo && typeof ref.current.scrollTo === 'function') {
       ref.current.scrollTo?.({ left: 0, top: ref.current.scrollHeight, behavior: 'smooth' });
     }
-  }, [deps]);
+  }, []);
 
-  return ref as T;
+  return [ref, scrollToBottom];
 }
 
 export default useScrollToBottom;

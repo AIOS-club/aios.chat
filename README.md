@@ -9,7 +9,7 @@
     和ai对话的lite版网页端
     <br />
     <br />
-    <a href="">View Demo</a>
+    <a href="https://lite-aios-chat.vercel.app">View Demo</a>
     ·
     <a href="https://github.com/AIOS-club/lite.aios.chat/issues">Report Bug</a>
     ·
