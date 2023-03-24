@@ -10,8 +10,10 @@ export interface ChatList{
 }
 
 export interface ChatStoreProps {
+  apiKey: string;
   chatList: ChatList[];
   setChatList: React.Dispatch<React.SetStateAction<ChatList[]>>;
+  handleApiKeyChange: (key: string) => void;
   handleChange: (chatId: string, data: Conversation[], forceUpdate?: boolean) => void;
   handleDelete: (chatId: string) => void;
   handleTitleChange: (chatId: string, title: string) => void;

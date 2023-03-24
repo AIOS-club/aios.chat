@@ -27,7 +27,7 @@ const Chat: React.FC = function Chat() {
 
   const chatId = useMemo(() => query.get('chatId') || uuid(), [query]);
 
-  const { chatList, handleChange: handleChatListChange } = useContext<ChatStoreProps>(Store);
+  const { chatList, apiKey, handleChange: handleChatListChange } = useContext<ChatStoreProps>(Store);
 
   const [value, setValue] = useState<string>('');
   const [isComposing, setIsComposing] = useState<boolean>(false); // 中文输入还在选词的时候敲回车不发请求
@@ -92,7 +92,7 @@ const Chat: React.FC = function Chat() {
       timeout: 300000,
       method: 'POST',
       responseType: 'stream',
-      data: { messages },
+      data: { messages, apiKey },
       cancelToken: source.token,
       onDownloadProgress({ event }) {
         const chunk: string = event.target?.responseText || '';
