@@ -178,6 +178,49 @@ pre[class*=language-] {
   font-family: Söhne Mono, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
 }
 
+table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  overflow: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.dark table {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+table th,
+table td {
+  padding: 12px 15px !important;
+}
+
+table thead {
+  background-color: #bfdfff;
+}
+
+table tbody {
+  background-color: #f5f5f5;
+}
+
+table tbody tr:nth-of-type(even) {
+  background-color: #efefef;
+}
+
+.dark table thead {
+  background-color: #000;
+}
+
+.dark table tbody {
+  background-color: #ddd;
+  color: #000;
+}
+
+.dark table tr:nth-of-type(even) {
+  background-color: #c2c2c2;
+}
+
 .hljs-comment {
   color: hsla(0, 0%, 100%, .5) !important;
 }
