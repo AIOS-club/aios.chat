@@ -48,7 +48,6 @@ specifiers:
   prop-types: ^15.7.0
   react: ^18.2.0
   react-dom: ^18.2.0
-  react-photoswipe-gallery: ^2.2.6
   react-router-dom: ^6.4.3
   tailwindcss: ^3.2.4
   terser: ^5.16.3
@@ -84,7 +83,6 @@ dependencies:
   prop-types: 15.8.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
-  react-photoswipe-gallery: 2.2.6_l2jw522tfxw55whguz44il27di
   react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
   tailwindcss: 3.2.7_postcss@8.4.21
   terser: 5.16.6
@@ -4521,18 +4519,6 @@ packages:
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-
-  /react-photoswipe-gallery/2.2.6_l2jw522tfxw55whguz44il27di:
-    resolution: {integrity: sha512-BW0+S6Zm3Mac+b3rQNO3g2Wvv6enAkcBzNHweFmXtewBQ7XgWmSYQ+sjIt4iKE4YLt8wFVx+RYOuRoFqv/oQMg==}
-    peerDependencies:
-      photoswipe: '>= 5.2.2'
-      prop-types: '>= 15.7.0'
-      react: '>= 16.8.0'
-    dependencies:
-      photoswipe: 5.3.6
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
 
   /react-refresh/0.14.0:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}

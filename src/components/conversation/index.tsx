@@ -6,12 +6,11 @@ import ClipboardJS from 'clipboard';
 import { marked } from 'marked';
 import markedKatex from 'marked-katex-extension-ts';
 import { Toast, Spin, Icon } from '@douyinfe/semi-ui';
-import { Gallery, Item } from 'react-photoswipe-gallery';
 import Share from '@/assets/svg/share.svg';
 import aiAvator from '@/assets/img/aiAvator.jpg';
 import userAvator from '@/assets/img/userAvator.png';
 import { highlightCode, imgLoad } from './utils';
-import { ConversationProps, Conversation as Con } from './Conversation';
+import { ConversationProps } from './Conversation';
 import styles from './Conversation.module.less';
 import 'highlight.js/styles/github-dark.css';
 import 'photoswipe/dist/photoswipe.css';
@@ -38,7 +37,6 @@ clipboard.on('error', () => {
 const defaultClass = 'w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group';
 const conversationCls = 'answer min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap';
 const shareBtnCls = 'absolute top-10 right-0 w-16 h-7 flex justify-center break-keep items-center btn-neutral rounded-l html2canvas-ignore';
-const imageContentCls = 'pswp__img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 object-contain';
 // eslint-disable-next-line
 const markdownCls = 'prose prose-p:m-0 prose-ul:m-0 prose-ul:leading-normal prose-li:m-0 prose-ol:m-0 prose-pre:w-full prose-pre:p-0 prose-pre:m-0 prose-pre:h-fit prose-pre:bg-black prose-pre:text-white w-0 flex-grow dark:prose-invert';
 
@@ -51,21 +49,6 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
   const [loading, setLoading] = useState<boolean>(false);
 
   const ref = useRef<HTMLDivElement>(null);
-
-  // TODO 用semi的Image
-  const renderImage = useCallback((d: Con) => (
-    <Item content={<img alt="" className={imageContentCls} src={d.url} />}>
-      {({ ref: _ref, open }) => (
-        <img
-          alt=""
-          className="max-w-full max-h-full w-auto h-auto cursor-pointer"
-          ref={_ref as React.MutableRefObject<HTMLImageElement>}
-          onClick={open}
-          src={d.url}
-        />
-      )}
-    </Item>
-  ), []);
 
   const renderAvator = useCallback((character: 'user' | 'bot') => {
     const userUrl = USER_AVATOR || userAvator;
@@ -116,37 +99,33 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
 
   return (
     <div className="flex flex-col items-center text-sm dark:bg-gray-800" ref={ref}>
-      <Gallery withDownloadButton>
-        {data.map((d) => (
-          <div
-            key={d.key}
-            className={classNames(defaultClass, {
-              'dark:bg-gray-800': d.character === 'user',
-              'bg-gray-50 dark:bg-[#444654]': d.character !== 'user'
-            })}
-          >
-            <div className="text-base gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
-              <div className="w-[30px] flex flex-col relative items-end flex-shrink-0">
-                {renderAvator(d.character)}
-              </div>
-              <div className={markdownCls}>
-                {d.type === 'image' ? renderImage(d) : (
-                  <div
-                    className={classNames(conversationCls, {
-                      [styles.error]: d.error,
-                      [styles.loading]: !d.stop && d.character !== 'user',
-                      [styles.start]: d.character !== 'user' && !d.value
-                    })}
-                    dangerouslySetInnerHTML={{
-                      __html: d.character === 'user' ? d.value : marked(d.value, { highlight: highlightCode })
-                    }}
-                  />
-                )}
-              </div>
+      {data.map((d) => (
+        <div
+          key={d.key}
+          className={classNames(defaultClass, {
+            'dark:bg-gray-800': d.character === 'user',
+            'bg-gray-50 dark:bg-[#444654]': d.character !== 'user'
+          })}
+        >
+          <div className="text-base gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
+            <div className="w-[30px] flex flex-col relative items-end flex-shrink-0">
+              {renderAvator(d.character)}
+            </div>
+            <div className={markdownCls}>
+              <div
+                className={classNames(conversationCls, {
+                  [styles.error]: d.error,
+                  [styles.loading]: !d.stop && d.character !== 'user',
+                  [styles.start]: d.character !== 'user' && !d.value
+                })}
+                dangerouslySetInnerHTML={{
+                  __html: d.character === 'user' ? d.value : marked(d.value, { highlight: highlightCode })
+                }}
+              />
             </div>
           </div>
-        ))}
-      </Gallery>
+        </div>
+      ))}
       <div className="w-full h-48 flex items-center m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl py-4 px-12 md:py-6 flex-shrink-0 share-btn-custom" />
       <button type="button" className={classNames(shareBtnCls, styles.share)} onClick={handleClick}>
         {loading ? <Spin /> : (
