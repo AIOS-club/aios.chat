@@ -20,6 +20,7 @@ const options = {
   throwOnError: false
 };
 
+marked.setOptions({ gfm: true, highlight: highlightCode, renderer: new marked.Renderer() });
 marked.use(markedKatex(options));
 
 const clipboard = new ClipboardJS('.copy-button', {
@@ -118,9 +119,7 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
                   [styles.loading]: !d.stop && d.character !== 'user',
                   [styles.start]: d.character !== 'user' && !d.value
                 })}
-                dangerouslySetInnerHTML={{
-                  __html: d.character === 'user' ? d.value : marked(d.value, { highlight: highlightCode })
-                }}
+                dangerouslySetInnerHTML={{ __html: d.character === 'user' ? d.value : marked(d.value) }}
               />
             </div>
           </div>
