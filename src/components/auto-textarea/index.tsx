@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useRef, useState, useEffect } from 'react';
 import { Icon } from '@douyinfe/semi-ui';
 import Loading from '@/components/loading';
@@ -9,6 +10,7 @@ const placeholder = import.meta.env.VITE_DEFAULT_PLACEHOLDER;
 const AutoTextArea: React.FC<AutoTextAreaProps> = function AutoTextArea(props) {
   const {
     value,
+    disabled,
     loading,
     onButtonClick,
     onChange,
@@ -33,6 +35,7 @@ const AutoTextArea: React.FC<AutoTextAreaProps> = function AutoTextArea(props) {
       <textarea
         ref={textareaRef}
         data-id="root"
+        disabled={disabled}
         style={{ height: `${textareaHeight}px`, maxHeight: '200px' }}
         placeholder={placeholder}
         value={value}
@@ -43,7 +46,12 @@ const AutoTextArea: React.FC<AutoTextAreaProps> = function AutoTextArea(props) {
         className="m-0 w-full resize-none border-0 bg-transparent p-0 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent overflow-auto text-area-overflow"
       />
       {loading ? <Loading /> : (
-        <button type="button" className="send-btn absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent" onClick={onButtonClick}>
+        <button
+          disabled={disabled}
+          type="button"
+          className="send-btn absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+          onClick={onButtonClick}
+        >
           <Icon svg={<Lark />} style={{ display: 'inline' }} />
         </button>
       )}

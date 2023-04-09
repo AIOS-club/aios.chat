@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useContext, useState, useRef 
-} from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import {
   Icon, Modal, Popconfirm, Toast
 } from '@douyinfe/semi-ui';
@@ -8,8 +6,7 @@ import classNames from 'classnames';
 import TabItem from '@/components/tab-item';
 import ApiKeyInput from '@/components/api-key-input';
 import useIsMobile from '@/hooks/useIsMobile';
-import { Store } from '@/pages/index';
-import { ChatStoreProps } from '@/global';
+import useChatList from '@/hooks/useChatList';
 import Moon from '@/assets/svg/moon.svg';
 import Sun from '@/assets/svg/sun.svg';
 import Add from '@/assets/svg/add.svg';
@@ -22,7 +19,7 @@ const commonCls = 'flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-50
 export const Nav: React.FC<SideBarProps> = function Nav(props) {
   const {
     chatList, handleDeleteAll, apiKey, handleApiKeyChange 
-  } = useContext<ChatStoreProps>(Store);
+  } = useChatList();
 
   const { onNewChat = () => {} } = props;
 

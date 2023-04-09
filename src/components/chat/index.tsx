@@ -1,61 +1,42 @@
-import React, {
-  useRef, useState, useMemo, useContext
-} from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState, useMemo } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
 import axios from 'axios';
+import classNames from 'classnames';
+import { animated, useSpringValue } from '@react-spring/web';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/Conversation';
 import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
+import ChatHeader from '@/components/chat-header';
 import useIsMobile from '@/hooks/useIsMobile';
+import useChatList from '@/hooks/useChatList';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
 import { getCachePrompt, parseMarkdown } from '@/utils';
-import { Store } from '@/pages/index';
 import Refresh from '@/assets/svg/refresh.svg';
-import { ChatStoreProps } from '@/global';
+import { ChatProps } from './Chat';
+import styles from './Chat.module.less';
 
-const BOTTOM_TIPS = import.meta.env.VITE_DEFAULT_BOTTOM_TIPS;
 const API_HOST: string = import.meta.env.VITE_API_HOST;
 
 const { CancelToken } = axios;
 const source = CancelToken.source();
 
-const Chat: React.FC = function Chat() {
-  const [query] = useSearchParams();
+const Chat: React.FC<ChatProps> = function Chat(props) {
+  const { data, chatId: ChatID, title } = props;
 
-  const chatId = useMemo(() => query.get('chatId') || uuid(), [query]);
+  const { apiKey, handleChange } = useChatList();
 
-  const { chatList, apiKey, handleChange: handleChatListChange } = useContext<ChatStoreProps>(Store);
+  const chatId = useMemo(() => ChatID || uuid(), [ChatID]);
 
   const [value, setValue] = useState<string>('');
   const [isComposing, setIsComposing] = useState<boolean>(false); // 中文输入还在选词的时候敲回车不发请求
   const [loading, setLoading] = useState<boolean>(false);
-
-  const conversation = useMemo<Conversation[]>(() => {
-    if (chatId) {
-      const cur = chatList.find((chat) => chat.chatId === chatId);
-      return cur?.data || [];
-    }
-    return chatList[0]?.data || [];
-  }, [chatId, chatList]);
-
-  const chatIdRef = useRef<string>('');
+  const [conversation, setConversation] = useState<Conversation[]>(data || []);
 
   const isMobile = useIsMobile();
 
   const [scrollRef, scrollToBottom] = useScrollToBottom();
-
-  const isMutating = loading && chatId === chatIdRef.current;
-
-  const handleError = (id: string, data: Conversation[]) => {
-    const pre = [...data];
-    const [lastConversation] = pre.slice(-1);
-    const errorResult = { value: lastConversation.value || '', error: true, stop: true };
-    Object.assign(lastConversation, errorResult);
-    handleChatListChange(id, pre);
-  };
 
   const handleFetchAnswer = async (v: string, retry: boolean = false) => {
     if (!v) return;
@@ -78,13 +59,11 @@ const Chat: React.FC = function Chat() {
         }
       ];
     }
-    chatIdRef.current = chatId;
-    const curChatId = chatIdRef.current;
-    handleChatListChange(curChatId, curConversation, true);
+    setConversation(curConversation);
+    handleChange(chatId, curConversation, true);
+
     const messages = getCachePrompt([...curConversation], v.trimEnd()); // 获取上下文缓存的信息
 
-    const pre = [...curConversation];
-    const [lastConversation] = pre.slice(-1);
     setLoading(true);
 
     await axios({
@@ -97,18 +76,32 @@ const Chat: React.FC = function Chat() {
       onDownloadProgress({ event }) {
         const chunk: string = event.target?.responseText || '';
         try {
-          Object.assign(lastConversation, { value: parseMarkdown(chunk), error: false });
-          handleChatListChange(curChatId, pre);
+          setConversation((c) => {
+            const pre = [...c];
+            const [lastConversation] = pre.slice(-1);
+            Object.assign(lastConversation, { value: parseMarkdown(chunk), error: false });
+            return pre;
+          });
         } catch {
           source.cancel('something is wrong');
         }
       },
     }).catch(() => {
-      handleError(curChatId, curConversation);
+      setConversation((c) => {
+        const pre = [...c];
+        const [lastConversation] = pre.slice(-1);
+        Object.assign(lastConversation, { value: lastConversation.value || '', error: true, stop: true });
+        return pre;
+      });
     }).finally(() => {
       setLoading(false);
-      Object.assign(lastConversation, { stop: true });
-      handleChatListChange(curChatId, pre);
+      setConversation((c) => {
+        const pre = [...c];
+        const [lastConversation] = pre.slice(-1);
+        Object.assign(lastConversation, { stop: true });
+        handleChange(chatId, pre);
+        return pre;
+      });
       scrollToBottom();
     });
   };
@@ -116,7 +109,7 @@ const Chat: React.FC = function Chat() {
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     e.preventDefault();
-    if (isMutating) return;
+    if (loading) return;
     const v = value;
     setValue('');
     await handleFetchAnswer(v);
@@ -125,7 +118,7 @@ const Chat: React.FC = function Chat() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      if (isMutating || isComposing) return;
+      if (loading || isComposing) return;
       setValue('');
       const textArea = e.target as HTMLTextAreaElement;
       const v = textArea?.value?.trim();
@@ -152,7 +145,11 @@ const Chat: React.FC = function Chat() {
     if (!lastConversation.stop) return null;
 
     return (
-      <button type="button" className="btn flex justify-center gap-2 btn-neutral" onClick={async (e) => handleRetry(e, lastUserConversation)}>
+      <button
+        type="button"
+        className="btn flex justify-center gap-2 btn-neutral"
+        onClick={async (e) => handleRetry(e, lastUserConversation)}
+      >
         <Icon svg={<Refresh />} />
         Regenerate response
       </button>
@@ -160,22 +157,23 @@ const Chat: React.FC = function Chat() {
   };
 
   return (
-    <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
+    <animated.div className={classNames('flex flex-col overflow-hidden rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}>
+      <ChatHeader title={title || conversation[0]?.value} chatId={chatId} />
       <div className="flex-1 overflow-hidden relative">
-        <div className="h-full dark:bg-gray-800 relative">
+        <div className="h-full bg-white dark:bg-gray-800 relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
             {conversation.length > 0 ? <ConversationList data={conversation} /> : <ProjectSourceInfo />}
           </div>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
+      <div className="absolute md:px-4 bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
         <form className="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6">
           <div className="relative flex h-full flex-1 flex-col">
             <div className="w-full flex gap-2 justify-center mb-3">
               {renderRetryButton()}
             </div>
             <AutoTextArea
-              loading={isMutating}
+              loading={loading}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -185,11 +183,8 @@ const Chat: React.FC = function Chat() {
             />
           </div>
         </form>
-        <div className="px-3 pt-2 pb-3 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3 md:pb-6">
-          {BOTTOM_TIPS}
-        </div>
       </div>
-    </main>
+    </animated.div>
   );
 };
 

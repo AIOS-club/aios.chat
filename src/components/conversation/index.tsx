@@ -35,7 +35,7 @@ clipboard.on('error', () => {
   Toast.error('复制失败');
 });
 
-const defaultClass = 'w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group';
+const defaultClass = 'md:px-4 w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group';
 const conversationCls = 'answer min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap';
 const shareBtnCls = 'absolute top-10 right-0 w-16 h-7 flex justify-center break-keep items-center btn-neutral rounded-l html2canvas-ignore';
 // eslint-disable-next-line
@@ -104,7 +104,7 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
         <div
           key={d.key}
           className={classNames(defaultClass, {
-            'dark:bg-gray-800': d.character === 'user',
+            'bg-white dark:bg-gray-800': d.character === 'user',
             'bg-gray-50 dark:bg-[#444654]': d.character !== 'user'
           })}
         >
