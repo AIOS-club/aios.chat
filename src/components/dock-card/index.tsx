@@ -1,4 +1,4 @@
-import React, { useRef, useState, MouseEventHandler } from 'react';
+import React, { useRef, useState } from 'react';
 import { animated, useIsomorphicLayoutEffect, useSpringValue } from '@react-spring/web';
 import classNames from 'classnames';
 import { useDock } from '@/components/dock/DockContext';
@@ -8,7 +8,7 @@ import styles from './DockCard.module.less';
 
 interface DockCardProps {
   children: React.ReactNode
-  onClick: () => void
+  onClick: React.MouseEventHandler<HTMLButtonElement>
 }
 
 const INITIAL_HEIGHT = 48;

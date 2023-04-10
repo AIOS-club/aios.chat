@@ -1,7 +1,5 @@
-import { Conversation } from '@/components/conversation/Conversation';
+import { ChatList } from '@/global';
 
 export interface ChatProps {
-  data: Conversation[];
-  chatId?: string;
-  title?: string;
+  chat: ChatList;
 }

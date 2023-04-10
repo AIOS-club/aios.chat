@@ -10,6 +10,7 @@ export interface ChatList{
   title?: string;
   style?: React.CSSProperties;
   titleBlock?: boolean;
+  otherProps?: Record<string, any>;
 }
 
 export interface ChatStoreProps {

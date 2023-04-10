@@ -7,7 +7,6 @@ import ProjectSourceInfo from '@/components/project-source-info';
 import Dock from '@/components/dock';
 import DockCard from '@/components/dock-card';
 import Chat from '@/components/chat';
-import SideBar from '@/components/sidebar';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
@@ -68,6 +67,7 @@ function App () {
 
   const handleDeleteAll = useCallback(() => {
     setChatList([]);
+    setCurrentChat(undefined);
     localStorage?.removeItem('chatList');
   }, []);
 
@@ -83,7 +83,7 @@ function App () {
     });
   };
 
-  const handleOpenChat = (chat: ChatList) => {
+  const handleOpenChat = (chat: ChatList, _: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setCurrentChat(chat);
   };
 
@@ -101,26 +101,22 @@ function App () {
 
   return (
     <Store.Provider value={value}>
-      <div className="overflow-hidden w-full h-full relative dark:bg-gray-900">
+      <div className="overflow-hidden w-full h-full flex flex-col">
         <Header />
-        <ProjectSourceInfo />
-        {/* <HeaderBar onNewChat={handleNewChat} /> */}
-        {chatList.length > 0 && (
-          <Dock key={chatList.length}>
-            {chatList.map((chat) => (
-              <DockCard key={chat.chatId} onClick={() => handleOpenChat(chat)}>hello</DockCard>
-            ))}
-          </Dock>
-        )}
-        {currentChat && (
-          <Chat
-            key={currentChat.chatId}
-            data={currentChat.data}
-            chatId={currentChat.chatId}
-            title={currentChat.title}
-          />
-        )}
-        {/* <SideBar onNewChat={handleNewChat} /> */}
+        <div className="overflow-hidden relative grow dark:bg-gray-900">
+          <ProjectSourceInfo />
+          {/* <HeaderBar onNewChat={handleNewChat} /> */}
+          {chatList.length > 0 && (
+            <Dock key={chatList.length}>
+              {chatList.map((chat) => (
+                <DockCard key={chat.chatId} onClick={(event) => handleOpenChat(chat, event)}>
+                  hello
+                </DockCard>
+              ))}
+            </Dock>
+          )}
+          {currentChat && <Chat key={currentChat.chatId} chat={currentChat} />}
+        </div>
       </div>
     </Store.Provider>
   );

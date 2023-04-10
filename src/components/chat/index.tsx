@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
 import axios from 'axios';
 import classNames from 'classnames';
-import { animated, useSpringValue } from '@react-spring/web';
+import { animated, useSpringValue, useSpring } from '@react-spring/web';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/Conversation';
 import ConversationList from '@/components/conversation';
@@ -23,7 +23,9 @@ const { CancelToken } = axios;
 const source = CancelToken.source();
 
 const Chat: React.FC<ChatProps> = function Chat(props) {
-  const { data, chatId: ChatID, title } = props;
+  const { chat } = props;
+
+  const { data, chatId: ChatID, title } = chat;
 
   const { apiKey, handleChange } = useChatList();
 
@@ -37,6 +39,14 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   const isMobile = useIsMobile();
 
   const [scrollRef, scrollToBottom] = useScrollToBottom();
+
+  const width = useSpringValue('80%', { config: { mass: 0.1, tension: 320 } });
+  const height = useSpringValue('80%', { config: { mass: 0.1, tension: 320, } });
+
+  const handleResize = (size: string) => {
+    width.start(size).catch(() => {});
+    height.start(size).catch(() => {});
+  };
 
   const handleFetchAnswer = async (v: string, retry: boolean = false) => {
     if (!v) return;
@@ -95,13 +105,10 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       });
     }).finally(() => {
       setLoading(false);
-      setConversation((c) => {
-        const pre = [...c];
-        const [lastConversation] = pre.slice(-1);
-        Object.assign(lastConversation, { stop: true });
-        handleChange(chatId, pre);
-        return pre;
-      });
+      const pre = [...curConversation];
+      const [lastConversation] = pre.slice(-1);
+      Object.assign(lastConversation, { stop: true });
+      handleChange(chatId, pre);
       scrollToBottom();
     });
   };
@@ -157,8 +164,11 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   };
 
   return (
-    <animated.div className={classNames('flex flex-col overflow-hidden rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}>
-      <ChatHeader title={title || conversation[0]?.value} chatId={chatId} />
+    <animated.div
+      className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}
+      style={{ width, height }}
+    >
+      <ChatHeader onResize={handleResize} title={title || conversation[0]?.value} chatId={chatId} />
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full bg-white dark:bg-gray-800 relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>

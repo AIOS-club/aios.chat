@@ -1,7 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import {
-  Icon, Modal, Toast, Popconfirm 
-} from '@douyinfe/semi-ui';
+import { Icon, Modal, Toast, Popconfirm } from '@douyinfe/semi-ui';
 import Moon from '@/assets/svg/moon.svg';
 import Add from '@/assets/svg/add.svg';
 import Sun from '@/assets/svg/sun.svg';
@@ -62,7 +60,7 @@ const Header: React.FC = function Header() {
   }, [apiKey, handleApiKeyChange]);
 
   return (
-    <div className="sticky top-0 z-11 h-12 flex items-center justify-end border-b border-white/20 bg-gray-800 text-gray-200 sm:pl-3">
+    <div className="sticky shrink-0 top-0 z-11 h-12 flex items-center justify-end border-b border-white/20 bg-gray-800 text-gray-200 sm:pl-3">
       {chatList.length > 0 && (
         <Popconfirm
           title="确定要删除所有对话吗？"
