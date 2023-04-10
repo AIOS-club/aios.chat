@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Icon, { IconClose, IconCheckboxIndeterminate, IconExpand, IconShrink } from '@douyinfe/semi-icons';
+import { Popconfirm } from '@douyinfe/semi-ui';
 import useChatList from '@/hooks/useChatList';
 import { ChatHeaderProps } from './ChatHeader';
 
@@ -10,10 +11,8 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
 
   const { handleDelete, setCurrentChat, setDisplayDock } = useChatList();
 
-  const handleClose = useCallback((event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+  const handleClose = useCallback(() => {
     if (disabled) return;
-    event.stopPropagation();
-    event.preventDefault();
     handleDelete(chatId);
     onResize('0%');
     setDisplayDock(true);
@@ -38,7 +37,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
       <span className="flex-grow break-keep whitespace-nowrap overflow-x-hidden text-ellipsis">{title}</span>
       <div className="flex-shrink-0 flex items-center">
         <Icon className="cursor-pointer mx-2" svg={<IconCheckboxIndeterminate />} onClick={handleZoomOut} />
-        <Icon className="cursor-pointer mx-2" svg={<IconClose />} onClick={handleClose} />
+        <Popconfirm title="确定要删除该对话吗？" onConfirm={handleClose}>
+          <Icon className="cursor-pointer mx-2" svg={<IconClose />} />
+        </Popconfirm>
         <Icon className="cursor-pointer mx-2" svg={zoomFlag ? <IconShrink /> : <IconExpand />} onClick={handleZoom} />
       </div>
     </div>

@@ -112,7 +112,7 @@ function App () {
             <Dock key={chatList.length} display={displayDock}>
               {chatList.map((chat) => (
                 <DockCard key={chat.chatId} onClick={(event) => handleOpenChat(chat, event)}>
-                  hello
+                  chat
                 </DockCard>
               ))}
             </Dock>
