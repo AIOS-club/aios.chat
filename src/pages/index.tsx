@@ -75,6 +75,7 @@ function App () {
     const curChatId = uuid();
     const newChat = { chatId: curChatId, data: [] };
     setCurrentChat(newChat);
+    setDisplayDock(true);
     setChatList((pre) => {
       const cacheChatList = [...pre];
       cacheChatList.unshift(newChat);
