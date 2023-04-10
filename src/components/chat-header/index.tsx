@@ -8,7 +8,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
 
   const [zoomFlag, setZoomFlag] = useState<boolean>(false);
 
-  const { handleDelete, setCurrentChat } = useChatList();
+  const { handleDelete, setCurrentChat, setDisplayDock } = useChatList();
 
   const handleClose = useCallback((event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     if (disabled) return;
@@ -16,19 +16,22 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
     event.preventDefault();
     handleDelete(chatId);
     onResize('0%');
-  }, [chatId, disabled, handleDelete, onResize]);
+    setDisplayDock(true);
+  }, [chatId, disabled, handleDelete, onResize, setDisplayDock]);
 
   const handleZoomOut = useCallback((event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     if (disabled) return;
     event.stopPropagation();
     event.preventDefault();
     setCurrentChat(undefined);
-  }, [disabled, setCurrentChat]);
+    setDisplayDock(true);
+  }, [disabled, setCurrentChat, setDisplayDock]);
 
   const handleZoom = useCallback(() => {
     onResize(zoomFlag ? '80%' : '100%');
     setZoomFlag(!zoomFlag);
-  }, [onResize, zoomFlag]);
+    setDisplayDock(zoomFlag);
+  }, [onResize, setDisplayDock, zoomFlag]);
 
   return (
     <div className="chat-header w-full h-10 px-3 flex items-center bg-white text-gray-800 dark:text-gray-100 dark:bg-gray-700 border-b border-black/10">

@@ -1,7 +1,7 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-import { ChatStoreProps, ChatList, ChatListKey } from '@/global.d';
-import { Conversation } from '@/components/conversation/Conversation.d';
+import { ChatStoreProps, ChatList, ChatListKey } from '@/global';
+import { Conversation } from '@/components/conversation/Conversation';
 import Header from '@/components/header';
 import ProjectSourceInfo from '@/components/project-source-info';
 import Dock from '@/components/dock';
@@ -20,8 +20,8 @@ function App () {
   });
 
   const [apiKey, setApiKey] = useState<string>(() => localStorage?.getItem('API_KEY') || '');
-
   const [currentChat, setCurrentChat] = useState<ChatList>();
+  const [displayDock, setDisplayDock] = useState<boolean>(true);
 
   const handleApiKeyChange = (key: string) => {
     setApiKey(key);
@@ -93,6 +93,7 @@ function App () {
     handleApiKeyChange,
     setChatList,
     setCurrentChat,
+    setDisplayDock,
     handleChange,
     handleNewChat,
     handleDelete,
@@ -107,7 +108,7 @@ function App () {
           <ProjectSourceInfo />
           {/* <HeaderBar onNewChat={handleNewChat} /> */}
           {chatList.length > 0 && (
-            <Dock key={chatList.length}>
+            <Dock key={chatList.length} display={displayDock}>
               {chatList.map((chat) => (
                 <DockCard key={chat.chatId} onClick={(event) => handleOpenChat(chat, event)}>
                   hello
@@ -115,7 +116,11 @@ function App () {
               ))}
             </Dock>
           )}
-          {currentChat && <Chat key={currentChat.chatId} chat={currentChat} />}
+          {currentChat && (
+            <div className="w-full h-full absolute top-0 left-0 z-10 bg-transparent flex items-center justify-center">
+              <Chat key={currentChat.chatId} chat={currentChat} />
+            </div>
+          )}
         </div>
       </div>
     </Store.Provider>

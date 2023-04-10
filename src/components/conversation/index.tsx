@@ -16,16 +16,12 @@ import 'highlight.js/styles/github-dark.css';
 import 'photoswipe/dist/photoswipe.css';
 import 'katex/dist/katex.min.css'; // 加载katex的CSS文件
 
-const options = {
-  throwOnError: false
-};
+const options = { throwOnError: false };
 
 marked.setOptions({ gfm: true, highlight: highlightCode, renderer: new marked.Renderer() });
 marked.use(markedKatex(options));
 
-const clipboard = new ClipboardJS('.copy-button', {
-  text: (trigger: HTMLButtonElement) => decodeURIComponent(trigger.getAttribute('data-copy-text') || ''),
-});
+const clipboard = new ClipboardJS('.copy-button', { text: (trigger: HTMLButtonElement) => decodeURIComponent(trigger.getAttribute('data-copy-text') || ''), });
 
 clipboard.on('success', () => {
   Toast.success('复制成功');

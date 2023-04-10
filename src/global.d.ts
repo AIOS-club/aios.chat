@@ -18,6 +18,7 @@ export interface ChatStoreProps {
   chatList: ChatList[];
   setChatList: React.Dispatch<React.SetStateAction<ChatList[]>>;
   setCurrentChat: React.Dispatch<React.SetStateAction<ChatList | undefined>>;
+  setDisplayDock: React.Dispatch<React.SetStateAction<boolean>>;
   handleApiKeyChange: (key: string) => void;
   handleChange: (chatId: string, data: Conversation[], forceUpdate?: boolean) => void;
   handleDelete: (chatId: string) => void;

@@ -1,5 +1,5 @@
 import React, {
-  useMemo, useState, useRef, useCallback 
+  useMemo, useState, useRef, useCallback, useEffect 
 } from 'react';
 import { animated, useSpringValue } from '@react-spring/web';
 import { clamp } from '@react-spring/shared';
@@ -10,11 +10,12 @@ import styles from './Dock.module.less';
 
 interface DockProps {
   children: React.ReactNode
+  display: boolean;
 }
 
 export const DOCK_ZOOM_LIMIT = [-100, 50];
 
-function Dock({ children }: DockProps) {
+function Dock({ children, display }: DockProps) {
   const [hovered, setHovered] = useState(false);
   const [height, setHeight] = useState(0);
 
@@ -31,6 +32,13 @@ function Dock({ children }: DockProps) {
       if (dockRef.current) setHeight(dockRef.current.clientHeight);
     },
   });
+
+  const left = useSpringValue(12, { config: { mass: 0.1, tension: 320, } });
+
+  useEffect(() => {
+    left.start(display ? 12 : -100).catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [display]);
 
   useWindowResize(() => {
     if (dockRef.current) setHeight(dockRef.current.clientHeight);
@@ -58,6 +66,7 @@ function Dock({ children }: DockProps) {
         }}
         style={{
           y: '-50%',
+          left,
           scale: zoomLevel.to({ range: [-100, 1, 50], output: [2, 1, 0.5], }).to((value) => clamp(0.5, 2, value)),
         }}
       >
