@@ -37,7 +37,7 @@ const ChatIcon: React.FC<ChatIconProps> = function ChatIcon(props) {
   const id = useMemo(() => randomElement(EmojiIdList, chatId), [chatId]);
 
   return (
-    <Tooltip position="right" content={content} mouseEnterDelay={200} mouseLeaveDelay={201}>
+    <Tooltip position="right" trigger="hover" content={content} mouseEnterDelay={200} mouseLeaveDelay={201}>
       <div className="w-full h-full flex items-center justify-center">
         {/* @ts-expect-error */}
         <em-emoji id={id} size="2rem" />
