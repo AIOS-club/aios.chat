@@ -10,6 +10,7 @@ export interface ChatList{
   title?: string;
   style?: React.CSSProperties;
   titleBlock?: boolean;
+  icon?: string;
   otherProps?: Record<string, any>;
 }
 

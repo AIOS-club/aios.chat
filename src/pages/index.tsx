@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { v4 as uuid } from 'uuid';
 import { ChatStoreProps, ChatList, ChatListKey } from '@/global';
 import { Conversation } from '@/components/conversation/Conversation';
@@ -7,6 +7,7 @@ import ProjectSourceInfo from '@/components/project-source-info';
 import Dock from '@/components/dock';
 import DockCard from '@/components/dock-card';
 import Chat from '@/components/chat';
+import ChatIcon from '@/components/chat-icon';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
@@ -112,7 +113,7 @@ function App () {
             <Dock key={chatList.length} display={displayDock}>
               {chatList.map((chat) => (
                 <DockCard key={chat.chatId} onClick={(event) => handleOpenChat(chat, event)}>
-                  chat
+                  <ChatIcon chat={chat} />
                 </DockCard>
               ))}
             </Dock>

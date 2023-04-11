@@ -4,10 +4,13 @@ specifiers:
   '@andylacko/vite-svg-react-loader': ^3.0.3
   '@douyinfe/semi-icons': ^2.31.0
   '@douyinfe/semi-ui': ^2.25.0
+  '@emoji-mart/data': ^1.1.2
+  '@emoji-mart/react': ^1.1.1
   '@react-spring/shared': ^9.7.2
   '@react-spring/web': ^9.7.2
   '@tailwindcss/typography': ^0.5.9
   '@types/classnames': ^2.3.1
+  '@types/emoji-mart': ^3.0.9
   '@types/katex': ^0.16.0
   '@types/marked': ^4.0.8
   '@types/node': ^18.11.10
@@ -25,6 +28,7 @@ specifiers:
   clipboard: ^2.0.11
   concurrently: ^7.6.0
   cross-env: ^7.0.3
+  emoji-mart: ^5.5.2
   eslint: ^8.36.0
   eslint-config-airbnb: ^19.0.4
   eslint-config-airbnb-typescript: ^17.0.0
@@ -64,6 +68,8 @@ dependencies:
   '@andylacko/vite-svg-react-loader': 3.0.4_vite@4.2.0
   '@douyinfe/semi-icons': 2.31.0_react@18.2.0
   '@douyinfe/semi-ui': 2.31.0_biqbaboplfbrettd7655fr4n2y
+  '@emoji-mart/data': 1.1.2
+  '@emoji-mart/react': 1.1.1_kyrnz3vmphzqyjjk2ivrm6bcsu
   '@react-spring/shared': 9.7.2_react@18.2.0
   '@react-spring/web': 9.7.2_biqbaboplfbrettd7655fr4n2y
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
@@ -73,6 +79,7 @@ dependencies:
   classnames: 2.3.2
   clipboard: 2.0.11
   cross-env: 7.0.3
+  emoji-mart: 5.5.2
   highlight.js: 11.7.0
   html2canvas: 1.4.1
   katex: 0.16.4
@@ -96,6 +103,7 @@ dependencies:
 
 devDependencies:
   '@types/classnames': 2.3.1
+  '@types/emoji-mart': 3.0.9
   '@types/katex': 0.16.0
   '@types/marked': 4.0.8
   '@types/node': 18.15.3
@@ -1387,6 +1395,20 @@ packages:
       utility-types: 3.10.0
     dev: false
 
+  /@emoji-mart/data/1.1.2:
+    resolution: {integrity: sha512-1HP8BxD2azjqWJvxIaWAMyTySeZY0Osr83ukYjltPVkNXeJvTz7yDrPLBtnrD5uqJ3tg4CcLuuBW09wahqL/fg==}
+    dev: false
+
+  /@emoji-mart/react/1.1.1_kyrnz3vmphzqyjjk2ivrm6bcsu:
+    resolution: {integrity: sha512-NMlFNeWgv1//uPsvLxvGQoIerPuVdXwK/EUek8OOkJ6wVOWPUizRBJU0hDqWZCOROVpfBgCemaC3m6jDOXi03g==}
+    peerDependencies:
+      emoji-mart: ^5.2
+      react: ^16.8 || ^17 || ^18
+    dependencies:
+      emoji-mart: 5.5.2
+      react: 18.2.0
+    dev: false
+
   /@esbuild-kit/cjs-loader/2.4.2:
     resolution: {integrity: sha512-BDXFbYOJzT/NBEtp71cvsrGPwGAMGRB/349rwKuoxNSiKjPraNNnlK6MIIabViCjqZugu6j+xeMDlEkWdHHJSg==}
     dependencies:
@@ -1919,6 +1941,12 @@ packages:
     dependencies:
       '@types/ms': 0.7.31
     dev: false
+
+  /@types/emoji-mart/3.0.9:
+    resolution: {integrity: sha512-qdBo/2Y8MXaJ/2spKjDZocuq79GpnOhkwMHnK2GnVFa8WYFgfA+ei6sil3aeWQPCreOKIx9ogPpR5+7MaOqYAA==}
+    dependencies:
+      '@types/react': 18.0.28
+    dev: true
 
   /@types/estree/1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
@@ -2808,6 +2836,10 @@ packages:
 
   /electron-to-chromium/1.4.332:
     resolution: {integrity: sha512-c1Vbv5tuUlBFp0mb3mCIjw+REEsgthRgNE8BlbEDKmvzb8rxjcVki6OkQP83vLN34s0XCxpSkq7AZNep1a6xhw==}
+
+  /emoji-mart/5.5.2:
+    resolution: {integrity: sha512-Sqc/nso4cjxhOwWJsp9xkVm8OF5c+mJLZJFoFfzRuKO+yWiN7K8c96xmtughYb0d/fZ8UC6cLIQ/p4BR6Pv3/A==}
+    dev: false
 
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
