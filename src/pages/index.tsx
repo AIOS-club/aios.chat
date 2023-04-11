@@ -1,17 +1,17 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { ChatStoreProps, ChatList } from '@/global.d';
-import { Conversation } from '@/components/conversation/Conversation.d';
-import SideBar from '@/components/sidebar';
-import HeaderBar from '@/components/header';
+import { ChatStoreProps, ChatList, ChatListKey } from '@/global';
+import { Conversation } from '@/components/conversation/Conversation';
+import Header from '@/components/header';
+import ProjectSourceInfo from '@/components/project-source-info';
+import Dock from '@/components/dock';
+import DockCard from '@/components/dock-card';
 import Chat from '@/components/chat';
+import ChatIcon from '@/components/chat-icon';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
 function App () {
-  const navigate = useNavigate();
-
   const [chatList, setChatList] = useState<ChatList[]>(() => {
     if (localStorage?.getItem('chatList')) {
       const data = JSON.parse(localStorage.getItem('chatList') || '[]');
@@ -21,6 +21,8 @@ function App () {
   });
 
   const [apiKey, setApiKey] = useState<string>(() => localStorage?.getItem('API_KEY') || '');
+  const [currentChat, setCurrentChat] = useState<ChatList>();
+  const [displayDock, setDisplayDock] = useState<boolean>(true);
 
   const handleApiKeyChange = (key: string) => {
     setApiKey(key);
@@ -41,25 +43,13 @@ function App () {
     });
   };
 
-  const handleTitleChange = (chatId: string, title: string) => {
-    if (!title) return;
+  const handleChatValueChange = (chatId: string, key: ChatListKey, value: any) => {
+    if (!key) return;
     setChatList((pre) => {
-      const cacheChatList = [...pre];
-      const changeChat = cacheChatList.find((chat) => chat.chatId === chatId);
+      const cacheChatList: ChatList[] = [...pre];
+      const changeChat: any = cacheChatList.find((chat) => chat.chatId === chatId);
       if (changeChat) {
-        changeChat.title = title;
-      }
-      localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
-      return cacheChatList;
-    });
-  };
-
-  const handleTitleBlock = (chatId: string) => {
-    setChatList((pre) => {
-      const cacheChatList = [...pre];
-      const changeChat = cacheChatList.find((chat) => chat.chatId === chatId);
-      if (changeChat) {
-        changeChat.titleBlock = true;
+        changeChat[key] = value;
       }
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
@@ -74,48 +64,66 @@ function App () {
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
-    navigate('/');
-  }, [navigate]);
+  }, []);
 
   const handleDeleteAll = useCallback(() => {
     setChatList([]);
+    setCurrentChat(undefined);
     localStorage?.removeItem('chatList');
-    navigate('/');
-  }, [navigate]);
+  }, []);
 
-  const handleNewChat = useCallback(() => {
+  const handleNewChat = () => {
     const curChatId = uuid();
     const newChat = { chatId: curChatId, data: [] };
+    setCurrentChat(newChat);
+    setDisplayDock(true);
     setChatList((pre) => {
       const cacheChatList = [...pre];
       cacheChatList.unshift(newChat);
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
-    navigate(`/?chatId=${curChatId}`);
-  }, [navigate]);
+  };
+
+  const handleOpenChat = (chat: ChatList, _: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setCurrentChat(chat);
+  };
 
   const value = useMemo(() => ({
     chatList,
     apiKey,
     handleApiKeyChange,
     setChatList,
+    setCurrentChat,
+    setDisplayDock,
     handleChange,
     handleNewChat,
     handleDelete,
     handleDeleteAll,
-    handleTitleChange,
-    handleTitleBlock,
-  }), [chatList, apiKey, handleDelete, handleDeleteAll, handleNewChat]);
+  }), [chatList, apiKey, handleDelete, handleDeleteAll]);
 
   return (
     <Store.Provider value={value}>
-      <div className="overflow-hidden w-full h-full relative">
-        <div className="flex h-full flex-1 flex-col md:pl-[260px]">
-          <HeaderBar onNewChat={handleNewChat} />
-          <Chat />
+      <div className="overflow-hidden w-full h-full flex flex-col">
+        <Header />
+        <div className="overflow-hidden relative grow dark:bg-gray-900">
+          <ProjectSourceInfo />
+          {/* <HeaderBar onNewChat={handleNewChat} /> */}
+          {chatList.length > 0 && (
+            <Dock key={chatList.length} display={displayDock}>
+              {chatList.map((chat) => (
+                <DockCard key={chat.chatId} onClick={(event) => handleOpenChat(chat, event)}>
+                  <ChatIcon chat={chat} />
+                </DockCard>
+              ))}
+            </Dock>
+          )}
+          {currentChat && (
+            <div className="w-full h-full absolute top-0 left-0 z-10 bg-transparent flex items-center justify-center">
+              <Chat key={currentChat.chatId} chat={currentChat} />
+            </div>
+          )}
         </div>
-        <SideBar onNewChat={handleNewChat} />
       </div>
     </Store.Provider>
   );

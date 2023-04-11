@@ -1,11 +1,11 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
 import { Icon } from '@douyinfe/semi-ui';
-import { Store } from '@/pages/index';
 import Chat from '@/assets/svg/chat.svg';
 import Delete from '@/assets/svg/delete.svg';
-import { ChatList, ChatStoreProps } from '@/global';
+import useChatList from '@/hooks/useChatList';
+import { ChatList } from '@/global';
 
 interface TabItemProps {
   chat: ChatList;
@@ -16,7 +16,7 @@ const defaultCls = 'flex py-3 px-3 items-center gap-3 relative rounded-md hover:
 const TabItem: React.FC<TabItemProps> = function TabItem({ chat }) {
   const { chatId, data, title } = chat;
 
-  const { handleDelete: handleChatDelete } = useContext<ChatStoreProps>(Store);
+  const { handleDelete: handleChatDelete } = useChatList();
 
   const [query] = useSearchParams();
 

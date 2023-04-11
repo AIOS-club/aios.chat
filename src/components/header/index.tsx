@@ -1,80 +1,91 @@
-/* eslint-disable max-len */
-import React, { useState, useRef } from 'react';
-import { Modal } from '@douyinfe/semi-ui';
-import Bread from '@/assets/svg/bread.svg';
-import Close from '@/assets/svg/close.svg';
-import AddOne from '@/assets/svg/add-one.svg';
-import { Nav } from '@/components/sidebar';
-import { SideBarProps } from '@/components/sidebar/Sidebar';
+import React, { useState, useCallback, useRef } from 'react';
+import { Icon, Modal, Toast, Popconfirm } from '@douyinfe/semi-ui';
+import Moon from '@/assets/svg/moon.svg';
+import Add from '@/assets/svg/add.svg';
+import Sun from '@/assets/svg/sun.svg';
+import Delete from '@/assets/svg/delete.svg';
+import Key from '@/assets/svg/key.svg';
+import ApiKeyInput from '@/components/api-key-input';
+import useChatList from '@/hooks/useChatList';
 
-const useNewChat = (onNewChat: any) => {
-  const handleNewChat = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onNewChat();
-  };
-  return handleNewChat;
-};
+const commonCls = 'flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm';
+export type Mode = 'light' | 'dark' | false;
 
-const HeaderBar: React.FC<SideBarProps> = function HeaderBar(props) {
-  const { onNewChat = () => {} } = props;
+const Header: React.FC = function Header() {
+  const {
+    handleNewChat, apiKey, handleApiKeyChange, chatList, handleDeleteAll 
+  } = useChatList();
 
-  const handleNewChat = useNewChat(onNewChat);
+  const apiKeyRef = useRef<any>();
 
-  const [visible, setVisible] = useState(false);
-
-  const onClose = () => {
-    setVisible(false);
-  };
-
-  const showModal = () => {
-    setVisible(true);
-  };
-
-  const modalDom = useRef(null);
-
-  const clickMask = (e: React.MouseEvent) => {
-    if (modalDom.current === e.target) {
-      onClose();
+  const [mode, setMode] = useState<Mode>(() => {
+    if (typeof window.matchMedia === 'function') {
+      const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return darkMode ? 'dark' : 'light';
     }
-  };
+    return false; // 表示不支持暗色模式
+  });
+
+  const handleChangeMode = useCallback(() => {
+    const html = document.getElementsByTagName('html')[0];
+    if (mode === 'light') {
+      setMode('dark');
+      html.classList.remove('light');
+      html.classList.add('dark');
+      html.style.colorScheme = 'dark';
+    } else {
+      setMode('light');
+      html.classList.remove('dark');
+      html.classList.add('light');
+      html.style.colorScheme = 'light';
+    }
+  }, [mode]);
+
+  const handleInputKey = useCallback(() => {
+    const preApiKey = apiKey;
+    apiKeyRef.current = Modal.info({
+      header: <div className="py-6 font-semibold">输入API KEY</div>,
+      style: { top: '100px', maxWidth: '100%' },
+      bodyStyle: { marginLeft: 0 },
+      content: <ApiKeyInput handleApiKeyChange={handleApiKeyChange} localApiKey={apiKey} />,
+      okText: '保存',
+      onOk: () => {
+        Toast.success('保存成功');
+      },
+      onCancel: () => {
+        handleApiKeyChange(preApiKey);
+        apiKeyRef.current?.destroy();
+      }
+    });
+  }, [apiKey, handleApiKeyChange]);
 
   return (
-    <div className="sticky top-0 z-10 flex items-center border-b border-white/20 bg-gray-800 pl-1 pt-1 text-gray-200 sm:pl-3 md:hidden">
-      <div>
-        <button 
-          type="button" 
-          className="-ml-0.5 -mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white dark:hover:text-white" 
-          onClick={showModal}
+    <div className="sticky shrink-0 top-0 z-11 h-12 flex items-center justify-end border-b border-white/20 bg-gray-800 text-gray-200 sm:pl-3">
+      {chatList.length > 0 && (
+        <Popconfirm
+          title="确定要删除所有对话吗？"
+          content="删除后所有对话都会清除，无法恢复"
+          onConfirm={() => {
+            handleDeleteAll();
+            Toast.success('删除成功');
+          }}
         >
-          <span className="sr-only">打开侧边栏</span>
-          <Bread />
-        </button>
-        <Modal title={null} footer={null} visible={visible} onOk={onClose} onCancel={onClose} style={{ width: 0 }} motion={false} closable={false} maskClosable>
-          <div className="fixed inset-0 z-40 flex" onClick={clickMask} ref={modalDom}>
-            <div className="relative flex w-full max-w-xs flex-1 flex-col bg-gray-900 translate-x-0" id="headlessui-dialog-panel-:r1:" data-headlessui-state="open">
-              <div className="absolute top-0 right-0 -mr-12 pt-2 opacity-100">
-                <button
-                  type="button"
-                  className="ml-1 flex h-10 w-10 items-center justify-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                  onClick={onClose}
-                >
-                  <span className="sr-only">关闭侧边栏</span>
-                  <Close />
-                </button>
-              </div>
-              <Nav onNewChat={onNewChat} />
-            </div>
-            <div className="w-14 flex-shrink-0" />
-          </div>
-        </Modal>
-      </div>
-      <h1 className="flex-1 text-center text-base font-normal">新对话</h1>
-      <button type="button" className="px-3" onClick={handleNewChat}>
-        <AddOne />
+          <button className={commonCls} type="button">
+            <Icon svg={<Delete />} />
+          </button>
+        </Popconfirm>
+      )}
+      <button className={commonCls} onClick={handleNewChat} type="button">
+        <Icon svg={<Add />} />
+      </button>
+      <button className={commonCls} type="button" onClick={handleInputKey}>
+        <Icon svg={<Key />} />
+      </button>
+      <button className={commonCls} onClick={handleChangeMode} type="button">
+        <Icon svg={mode === 'dark' ? <Sun /> : <Moon />} />
       </button>
     </div>
   );
 };
 
-export default HeaderBar;
+export default Header;

@@ -1,5 +1,5 @@
 import { Conversation } from '@/components/conversation/Conversation.d';
-import { Messages } from '@/global.d';
+import { Messages, ChatList } from '@/global.d';
 
 const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
 
@@ -38,4 +38,20 @@ function parseMarkdown(chunk: string): string {
   return text;
 }
 
-export { getCachePrompt, parseMarkdown };
+function findMaxZIndex(arr: ChatList[]): number {
+  let maxZIndex = Number.MIN_SAFE_INTEGER;
+  let maxZIndexElement;
+  arr.forEach((element) => {
+    const { zIndex } = (element.style || {});
+    const zIndexNumber = parseInt(`${zIndex || 10}`, 10);
+    if (element) {
+      if (zIndexNumber > maxZIndex) {
+        maxZIndex = zIndexNumber;
+        maxZIndexElement = element;
+      }
+    }
+  });
+  return maxZIndex > 0 ? maxZIndex + 1 : 10;
+}
+
+export { getCachePrompt, parseMarkdown, findMaxZIndex };

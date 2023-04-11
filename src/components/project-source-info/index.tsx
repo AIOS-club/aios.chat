@@ -6,7 +6,7 @@ const { Text } = Typography;
 
 const ProjectSourceInfo: React.FC = function ProjectSourceInfo() {
   return (
-    <div className="flex flex-col items-center h-full dark:bg-gray-800 pt-32">
+    <div className="flex flex-col items-center justify-center h-full dark:bg-gray-800 pb-32">
       <Image preview={false} height="200" width="200" src={AIOSLOGO} />
       <Typography className="text-gray-600 font-medium my-8 dark:text-gray-300 text-xl">
         本网站由
