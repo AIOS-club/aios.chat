@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { v4 as uuid } from 'uuid';
-import { ChatStoreProps, ChatList, ChatListKey } from '@/global';
+import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
 import { Conversation } from '@/components/conversation/Conversation';
 import Header from '@/components/header';
 import ProjectSourceInfo from '@/components/project-source-info';
@@ -20,13 +20,23 @@ function App () {
     return [{ chatId: uuid(), data: [] }];
   });
 
-  const [apiKey, setApiKey] = useState<string>(() => localStorage?.getItem('API_KEY') || '');
+  const [config, setConfig] = useState<Config>(() => {
+    if (localStorage?.getItem('config')) {
+      return JSON.parse(localStorage.getItem('config') || '{}');
+    } 
+    return {
+      apiKey: '', stream: true, temperature: 0.8, presence_penalty: -1.0, frequency_penalty: 1.0, model: 'gpt-3.5-turbo'
+    };
+  });
   const [currentChat, setCurrentChat] = useState<ChatList | undefined>(() => (chatList && chatList.length > 0 ? chatList[0] : { chatId: uuid(), data: [] }));
   const [displayDock, setDisplayDock] = useState<boolean>(true);
 
-  const handleApiKeyChange = (key: string) => {
-    setApiKey(key);
-    localStorage?.setItem('API_KEY', key);
+  const handleConfigChange = (_config: Config) => {
+    if (_config && typeof _config === 'object') {
+      const data = { ..._config };
+      setConfig(data);
+      localStorage?.setItem('config', JSON.stringify(data));
+    }
   };
 
   const handleChange = (chatId: string, data: Conversation[], forceUpdate: boolean = false) => {
@@ -91,8 +101,8 @@ function App () {
 
   const value = useMemo(() => ({
     chatList,
-    apiKey,
-    handleApiKeyChange,
+    config,
+    handleConfigChange,
     setChatList,
     setCurrentChat,
     setDisplayDock,
@@ -101,7 +111,7 @@ function App () {
     handleDelete,
     handleDeleteAll,
     handleChatValueChange,
-  }), [chatList, apiKey, handleDelete, handleDeleteAll]);
+  }), [chatList, config, handleDelete, handleDeleteAll]);
 
   return (
     <Store.Provider value={value}>

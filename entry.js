@@ -7,6 +7,7 @@ const frontEnv = {
   VITE_DEFAULT_BOTTOM_TIPS: '""',
   VITE_API_HOST: 'http://localhost:3000/aios-chat',
   VITE_CACHE_TIMES: 10,
+  VITE_ONLY_TEXT: true,
   VITE_BASE_URL: '/',
   VITE_AI_AVATOR_URL: '""',
   VITE_USER_USER_URL:'""',
