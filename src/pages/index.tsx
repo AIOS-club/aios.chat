@@ -17,11 +17,11 @@ function App () {
       const data = JSON.parse(localStorage.getItem('chatList') || '[]');
       return data;
     }
-    return [];
+    return [{ chatId: uuid(), data: [] }];
   });
 
   const [apiKey, setApiKey] = useState<string>(() => localStorage?.getItem('API_KEY') || '');
-  const [currentChat, setCurrentChat] = useState<ChatList>();
+  const [currentChat, setCurrentChat] = useState<ChatList | undefined>(() => (chatList && chatList.length > 0 ? chatList[0] : { chatId: uuid(), data: [] }));
   const [displayDock, setDisplayDock] = useState<boolean>(true);
 
   const handleApiKeyChange = (key: string) => {
