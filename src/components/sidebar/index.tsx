@@ -1,10 +1,9 @@
 import React, { useCallback, useState, useRef } from 'react';
-import {
-  Icon, Modal, Popconfirm, Toast
-} from '@douyinfe/semi-ui';
+import { Icon, Modal, Popconfirm, Toast } from '@douyinfe/semi-ui';
 import classNames from 'classnames';
+import { IconSetting } from '@douyinfe/semi-icons';
 import TabItem from '@/components/tab-item';
-import ApiKeyInput from '@/components/api-key-input';
+import ConfigSetting from '@/components/config-setting';
 import useIsMobile from '@/hooks/useIsMobile';
 import useChatList from '@/hooks/useChatList';
 import Moon from '@/assets/svg/moon.svg';
@@ -17,15 +16,13 @@ import { Mode, SideBarProps } from './Sidebar';
 const commonCls = 'flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm';
 
 export const Nav: React.FC<SideBarProps> = function Nav(props) {
-  const {
-    chatList, handleDeleteAll, apiKey, handleApiKeyChange 
-  } = useChatList();
+  const { chatList, handleDeleteAll, config, handleConfigChange } = useChatList();
 
   const { onNewChat = () => {} } = props;
 
   const isMobile = useIsMobile();
 
-  const apiKeyRef = useRef<any>();
+  const configRef = useRef<any>();
 
   const [mode, setMode] = useState<Mode>(() => {
     if (typeof window.matchMedia === 'function') {
@@ -50,23 +47,29 @@ export const Nav: React.FC<SideBarProps> = function Nav(props) {
     }
   }, [mode]);
 
-  const handleInputKey = useCallback(() => {
-    const preApiKey = apiKey;
-    apiKeyRef.current = Modal.info({
-      header: <div className="py-6 font-semibold">输入API KEY</div>,
+  const handleChangeSetting = useCallback(() => {
+    const preConfig = { ...(config || {}) };
+    configRef.current = Modal.info({
+      header: (
+        <div className="py-6 font-semibold flex items-center">
+          <IconSetting className="mr-2" />
+          Setting
+        </div>
+      ),
       style: { top: '100px', maxWidth: '100%' },
       bodyStyle: { marginLeft: 0 },
-      content: <ApiKeyInput handleApiKeyChange={handleApiKeyChange} localApiKey={apiKey} />,
+      content: <ConfigSetting handleConfigChange={handleConfigChange} config={config} />,
       okText: '保存',
       onOk: () => {
         Toast.success('保存成功');
+        configRef.current?.destroy();
       },
       onCancel: () => {
-        handleApiKeyChange(preApiKey);
-        apiKeyRef.current?.destroy();
+        handleConfigChange(preConfig);
+        configRef.current?.destroy();
       }
     });
-  }, [apiKey, handleApiKeyChange]);
+  }, [config, handleConfigChange]);
 
   return (
     <div className={`flex h-full w-full flex-1 items-start border-white/20 ${isMobile ? 'scrollbar-trigger' : ''}`}>
@@ -95,7 +98,7 @@ export const Nav: React.FC<SideBarProps> = function Nav(props) {
             </button>
           </Popconfirm>
         )}
-        <button className={commonCls} type="button" onClick={handleInputKey}>
+        <button className={commonCls} type="button" onClick={handleChangeSetting}>
           <Icon svg={<Key />} />
           自定义 API KEY
         </button>

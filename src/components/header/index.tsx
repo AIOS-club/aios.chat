@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Icon, Modal, Toast, Popconfirm } from '@douyinfe/semi-ui';
+import { IconSetting } from '@douyinfe/semi-icons';
 import Moon from '@/assets/svg/moon.svg';
 import Add from '@/assets/svg/add.svg';
 import Sun from '@/assets/svg/sun.svg';
 import Delete from '@/assets/svg/delete.svg';
-import Key from '@/assets/svg/key.svg';
-import ApiKeyInput from '@/components/api-key-input';
+import ConfigSetting from '@/components/config-setting';
 import useChatList from '@/hooks/useChatList';
 
 const commonCls = 'flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm';
@@ -13,10 +13,10 @@ export type Mode = 'light' | 'dark' | false;
 
 const Header: React.FC = function Header() {
   const {
-    handleNewChat, apiKey, handleApiKeyChange, chatList, handleDeleteAll 
+    handleNewChat, config, handleConfigChange, chatList, handleDeleteAll 
   } = useChatList();
 
-  const apiKeyRef = useRef<any>();
+  const configRef = useRef<any>();
 
   const [mode, setMode] = useState<Mode>(() => {
     if (typeof window.matchMedia === 'function') {
@@ -41,23 +41,29 @@ const Header: React.FC = function Header() {
     }
   }, [mode]);
 
-  const handleInputKey = useCallback(() => {
-    const preApiKey = apiKey;
-    apiKeyRef.current = Modal.info({
-      header: <div className="py-6 font-semibold">输入API KEY</div>,
+  const handleChangeSetting = useCallback(() => {
+    const preConfig = { ...(config || {}) };
+    configRef.current = Modal.info({
+      header: (
+        <div className="py-6 font-semibold flex items-center">
+          <IconSetting className="mr-2" />
+          Setting
+        </div>
+      ),
       style: { top: '100px', maxWidth: '100%' },
       bodyStyle: { marginLeft: 0 },
-      content: <ApiKeyInput handleApiKeyChange={handleApiKeyChange} localApiKey={apiKey} />,
+      content: <ConfigSetting handleConfigChange={handleConfigChange} config={config} />,
       okText: '保存',
       onOk: () => {
         Toast.success('保存成功');
+        configRef.current?.destroy();
       },
       onCancel: () => {
-        handleApiKeyChange(preApiKey);
-        apiKeyRef.current?.destroy();
+        handleConfigChange(preConfig);
+        configRef.current?.destroy();
       }
     });
-  }, [apiKey, handleApiKeyChange]);
+  }, [config, handleConfigChange]);
 
   return (
     <div className="sticky shrink-0 top-0 z-11 h-12 flex items-center justify-end border-b border-white/20 bg-gray-800 text-gray-200 sm:pl-3">
@@ -78,8 +84,8 @@ const Header: React.FC = function Header() {
       <button className={commonCls} onClick={handleNewChat} type="button">
         <Icon svg={<Add />} />
       </button>
-      <button className={commonCls} type="button" onClick={handleInputKey}>
-        <Icon svg={<Key />} />
+      <button className={commonCls} type="button" onClick={handleChangeSetting}>
+        <IconSetting />
       </button>
       <button className={commonCls} onClick={handleChangeMode} type="button">
         <Icon svg={mode === 'dark' ? <Sun /> : <Moon />} />

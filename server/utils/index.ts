@@ -1,8 +1,7 @@
-import moment from 'moment';
 import { ChatCompletionRequestMessage } from 'openai';
 
 export const ErrorMessage: { [key: number]: string } = {
-  400: '您的对话上下文tokens长度过大, 请减少提问内容',
+  400: 'Bad Request',
   401: 'API KEY ERROR',
   403: '服务器拒绝访问',
   429: '请求频率过高，请稍后再试',
@@ -11,15 +10,6 @@ export const ErrorMessage: { [key: number]: string } = {
   504: '网关超时，请稍后再试',
   500: '服务器繁忙，请稍后再试',
 };
-
-const systemMessages: ChatCompletionRequestMessage[] = [
-  { role: 'system', content: '请以markdown的形式返回答案' },
-];
-
-function getSystemMessage (): ChatCompletionRequestMessage[] {
-  const currentTime: ChatCompletionRequestMessage = { role: 'system', content: `现在的北京时间是: ${moment().format('YYYY-MM-DD HH:mm:ss')} ${moment().format('dddd')}` };
-  return [currentTime, ...systemMessages];
-}
 
 /**
  * 解析stream流的字符串
@@ -49,4 +39,4 @@ function parseStreamText(data: string) {
   return result;
 }
 
-export { getSystemMessage, parseStreamText };
+export { parseStreamText };

@@ -12,12 +12,13 @@ import ChatHeader from '@/components/chat-header';
 import useIsMobile from '@/hooks/useIsMobile';
 import useChatList from '@/hooks/useChatList';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
-import { getCachePrompt, parseMarkdown } from '@/utils';
+import { getCachePrompt, parseMarkdown, parseStreamText, getSystemMessages } from '@/utils';
 import Refresh from '@/assets/svg/refresh.svg';
 import { ChatProps } from './Chat';
 import styles from './Chat.module.less';
 
 const API_HOST: string = import.meta.env.VITE_API_HOST;
+const ONLY_TEXT: string = import.meta.env.VITE_ONLY_TEXT;
 
 const { CancelToken } = axios;
 const source = CancelToken.source();
@@ -27,7 +28,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
   const { data, chatId: ChatID, title, icon } = chat;
 
-  const { apiKey, handleChange } = useChatList();
+  const { config, handleChange } = useChatList();
 
   const chatId = useMemo(() => ChatID || uuid(), [ChatID]);
 
@@ -72,24 +73,29 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     setConversation(curConversation);
     handleChange(chatId, curConversation, true);
 
-    const messages = getCachePrompt([...curConversation], v.trimEnd()); // 获取上下文缓存的信息
+    const messages = getSystemMessages().concat(getCachePrompt([...curConversation], v.trimEnd())); // 获取上下文缓存的信息
 
     setLoading(true);
+
+    const headers = config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : {};
+    const { apiKey, ...body } = config;
 
     await axios({
       url: API_HOST,
       timeout: 300000,
       method: 'POST',
       responseType: 'stream',
-      data: { messages, apiKey },
+      headers: { ...headers },
+      data: { messages, ...body },
       cancelToken: source.token,
       onDownloadProgress({ event }) {
         const chunk: string = event.target?.responseText || '';
+        const parseChunk = ONLY_TEXT === 'true' ? chunk : parseStreamText(chunk);
         try {
           setConversation((c) => {
             const pre = [...c];
             const [lastConversation] = pre.slice(-1);
-            Object.assign(lastConversation, { value: parseMarkdown(chunk), error: false });
+            Object.assign(lastConversation, { value: parseMarkdown(parseChunk), error: false });
             return pre;
           });
         } catch {
