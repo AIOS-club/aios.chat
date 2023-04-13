@@ -41,7 +41,7 @@ const Header: React.FC = function Header() {
     }
   }, [mode]);
 
-  const handleInputKey = useCallback(() => {
+  const handleChangeSetting = useCallback(() => {
     const preConfig = { ...(config || {}) };
     configRef.current = Modal.info({
       header: (
@@ -84,7 +84,7 @@ const Header: React.FC = function Header() {
       <button className={commonCls} onClick={handleNewChat} type="button">
         <Icon svg={<Add />} />
       </button>
-      <button className={commonCls} type="button" onClick={handleInputKey}>
+      <button className={commonCls} type="button" onClick={handleChangeSetting}>
         <IconSetting />
       </button>
       <button className={commonCls} onClick={handleChangeMode} type="button">

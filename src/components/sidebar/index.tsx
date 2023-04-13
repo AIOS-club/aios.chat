@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useRef } from 'react';
 import { Icon, Modal, Popconfirm, Toast } from '@douyinfe/semi-ui';
 import classNames from 'classnames';
+import { IconSetting } from '@douyinfe/semi-icons';
 import TabItem from '@/components/tab-item';
 import ConfigSetting from '@/components/config-setting';
 import useIsMobile from '@/hooks/useIsMobile';
@@ -46,16 +47,22 @@ export const Nav: React.FC<SideBarProps> = function Nav(props) {
     }
   }, [mode]);
 
-  const handleInputKey = useCallback(() => {
-    const preConfig = config;
+  const handleChangeSetting = useCallback(() => {
+    const preConfig = { ...(config || {}) };
     configRef.current = Modal.info({
-      header: <div className="py-6 font-semibold">Setting</div>,
+      header: (
+        <div className="py-6 font-semibold flex items-center">
+          <IconSetting className="mr-2" />
+          Setting
+        </div>
+      ),
       style: { top: '100px', maxWidth: '100%' },
       bodyStyle: { marginLeft: 0 },
-      content: <ConfigSetting handleConfigChange={handleConfigChange} localConfig={config} />,
+      content: <ConfigSetting handleConfigChange={handleConfigChange} config={config} />,
       okText: '保存',
       onOk: () => {
         Toast.success('保存成功');
+        configRef.current?.destroy();
       },
       onCancel: () => {
         handleConfigChange(preConfig);
@@ -91,7 +98,7 @@ export const Nav: React.FC<SideBarProps> = function Nav(props) {
             </button>
           </Popconfirm>
         )}
-        <button className={commonCls} type="button" onClick={handleInputKey}>
+        <button className={commonCls} type="button" onClick={handleChangeSetting}>
           <Icon svg={<Key />} />
           自定义 API KEY
         </button>
