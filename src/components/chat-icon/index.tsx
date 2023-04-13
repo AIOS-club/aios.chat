@@ -10,7 +10,7 @@ interface ChatIconProps {
 const ChatIcon: React.FC<ChatIconProps> = function ChatIcon(props) {
   const { chat } = props;
   return (
-    <Suspense fallback={<span>loading...</span>}>
+    <Suspense fallback={<span>...</span>}>
       <ChatIconComponent chat={chat} />
     </Suspense>
   );

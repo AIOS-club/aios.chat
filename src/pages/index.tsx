@@ -100,6 +100,7 @@ function App () {
     handleNewChat,
     handleDelete,
     handleDeleteAll,
+    handleChatValueChange,
   }), [chatList, apiKey, handleDelete, handleDeleteAll]);
 
   return (

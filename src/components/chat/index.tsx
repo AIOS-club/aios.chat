@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
 import axios from 'axios';
 import classNames from 'classnames';
-import { animated, useSpringValue, useSpring } from '@react-spring/web';
+import { animated, useSpringValue } from '@react-spring/web';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/Conversation';
 import ConversationList from '@/components/conversation';
@@ -25,7 +25,7 @@ const source = CancelToken.source();
 const Chat: React.FC<ChatProps> = function Chat(props) {
   const { chat } = props;
 
-  const { data, chatId: ChatID, title } = chat;
+  const { data, chatId: ChatID, title, icon } = chat;
 
   const { apiKey, handleChange } = useChatList();
 
@@ -43,9 +43,9 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   const width = useSpringValue('80%', { config: { mass: 0.1, tension: 320 } });
   const height = useSpringValue('80%', { config: { mass: 0.1, tension: 320, } });
 
-  const handleResize = (size: string) => {
-    width.start(size).catch(() => {});
-    height.start(size).catch(() => {});
+  const handleResize = (widthSize: string, heightSize: string) => {
+    width.start(widthSize).catch(() => {});
+    height.start(heightSize).catch(() => {});
   };
 
   const handleFetchAnswer = async (v: string, retry: boolean = false) => {
@@ -168,7 +168,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}
       style={{ width, height }}
     >
-      <ChatHeader onResize={handleResize} title={title || conversation[0]?.value} chatId={chatId} />
+      <ChatHeader onResize={handleResize} title={title || conversation[0]?.value} chatId={chatId} icon={icon} />
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full bg-white dark:bg-gray-800 relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
