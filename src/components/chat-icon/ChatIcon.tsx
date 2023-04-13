@@ -37,8 +37,10 @@ const ChatIcon: React.FC<ChatIconProps> = function ChatIcon(props) {
 
   const id = useMemo(() => randomElement(EmojiIdList, chatId), [chatId]);
 
+  const renderContent = useMemo(() => <div className="max-h-80 p-1 overflow-hidden">{content}</div>, [content]);
+
   return (
-    <Tooltip position="right" trigger="hover" content={content} mouseEnterDelay={200} mouseLeaveDelay={201}>
+    <Tooltip position="right" trigger="hover" content={renderContent} mouseEnterDelay={200} mouseLeaveDelay={201}>
       <div className="w-full h-full flex items-center justify-center">
         <Emoji id={icon?.id || id} size="2rem" />
       </div>
