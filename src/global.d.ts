@@ -1,8 +1,9 @@
 import React from "react";
 import { SiteConfig } from "./hooks/useWebConfigModel";
 import { Conversation } from "./components/conversation/Conversation";
+import { IconProps } from "@/components/icon-picker/IconPicker";
 
-export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock';
+export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'icon' | 'otherProps';
 
 export interface ChatList{
   chatId: string;
@@ -10,7 +11,7 @@ export interface ChatList{
   title?: string;
   style?: React.CSSProperties;
   titleBlock?: boolean;
-  icon?: string;
+  icon?: IconProps;
   otherProps?: Record<string, any>;
 }
 
