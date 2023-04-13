@@ -6,6 +6,7 @@ import { Popconfirm, Modal, Toast } from '@douyinfe/semi-ui';
 import useChatList from '@/hooks/useChatList';
 import ChatConfig from '@/components/chat-config';
 import { ChatHeaderProps } from './ChatHeader';
+import Emoji from '../emoji';
 
 const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
   const {
@@ -60,6 +61,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
     <div className="chat-header w-full h-10 px-3 flex items-center bg-white text-gray-800 dark:text-gray-100 dark:bg-gray-700 border-b border-black/10">
       <div className="flex items-center flex-grow">
         <IconSetting className="cursor-pointer mr-2 flex-shrink-0" onClick={handleSetting} />
+        <Emoji className="flex-shrink-0 mr-2" icon={icon} size="1rem" />
         <span className="flex-grow w-0 break-keep whitespace-nowrap overflow-x-hidden text-ellipsis">{title}</span>
       </div>
       <div className="flex-shrink-0 flex items-center">

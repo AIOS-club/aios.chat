@@ -45,7 +45,7 @@ const IconPicker: React.FC<IconPickerProps> = function IconPicker(props) {
             <IconClose size="small" />
           </div>
         )}
-        {icon?.id ? <Emoji size="2rem" id={icon?.id} shortcodes={icon?.shortcodes} skin={icon?.skin || 1} /> : null}
+        {icon?.id ? <Emoji size="2rem" icon={icon} /> : null}
       </div>
     </Dropdown>
   );
