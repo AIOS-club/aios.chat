@@ -1,17 +1,13 @@
 import React, { lazy, Suspense } from 'react';
-import { ChatList } from '@/global';
+import { ChatIconProps } from './ChatIconPorps';
 
 const ChatIconComponent = lazy(async () => import('./ChatIcon'));
 
-interface ChatIconProps {
-  chat: ChatList;
-}
-
 const ChatIcon: React.FC<ChatIconProps> = function ChatIcon(props) {
-  const { chat } = props;
+  const { chat, className, size } = props;
   return (
     <Suspense fallback={<span>...</span>}>
-      <ChatIconComponent chat={chat} />
+      <ChatIconComponent chat={chat} className={className} size={size} />
     </Suspense>
   );
 };

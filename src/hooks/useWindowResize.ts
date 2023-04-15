@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import useCallbackRef from './useCallbackRef';
 
 function useWindowResize(callback: (width: number, height: number) => void) {

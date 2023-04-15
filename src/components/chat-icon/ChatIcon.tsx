@@ -1,15 +1,9 @@
 import React, { useMemo } from 'react';
 import data from '@emoji-mart/data';
-import { init } from 'emoji-mart';
 import { Tooltip } from '@douyinfe/semi-ui';
+import classNames from 'classnames';
 import Emoji from '@/components/emoji';
-import { ChatList } from '@/global';
-
-interface ChatIconProps {
-  chat: ChatList;
-}
-
-init({ data }).catch(() => {});
+import { ChatIconProps } from './ChatIconPorps';
 
 const { emojis } = data as Record<string, any>;
 
@@ -29,7 +23,7 @@ function randomElement(arr: any[], str: string) {
 }
 
 const ChatIcon: React.FC<ChatIconProps> = function ChatIcon(props) {
-  const { chat } = props;
+  const { chat, className, size } = props;
 
   const { chatId, title, data: conversation, icon } = chat;
 
@@ -41,8 +35,8 @@ const ChatIcon: React.FC<ChatIconProps> = function ChatIcon(props) {
 
   return (
     <Tooltip position="right" trigger="hover" content={renderContent} mouseEnterDelay={200} mouseLeaveDelay={201}>
-      <div className="w-full h-full flex items-center justify-center">
-        <Emoji id={icon?.id || id} size="2rem" />
+      <div className={classNames(className, 'h-full flex items-center justify-center')}>
+        <Emoji id={icon?.id || id} size={size || '2rem'} />
       </div>
     </Tooltip>
   );

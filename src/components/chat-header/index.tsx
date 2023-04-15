@@ -3,10 +3,10 @@ import Icon, {
   IconClose, IconCheckboxIndeterminate, IconExpand, IconShrink, IconSetting 
 } from '@douyinfe/semi-icons';
 import { Popconfirm, Modal, Toast } from '@douyinfe/semi-ui';
-import useChatList from '@/hooks/useChatList';
 import ChatConfig from '@/components/chat-config';
+import Emoji from '@/components/emoji';
+import useChatList from '@/hooks/useChatList';
 import { ChatHeaderProps } from './ChatHeader';
-import Emoji from '../emoji';
 
 const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
   const {
@@ -45,6 +45,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
   const handleSetting = useCallback(() => {
     chatConfigRef.current = Modal.info({
       title: '修改对话信息',
+      style: { maxWidth: '100%' },
       content: <ChatConfig chatId={chatId} originTitle={title} originIcon={icon} handleChange={handleChatValueChange} />,
       onOk: () => {
         Toast.success('修改成功');

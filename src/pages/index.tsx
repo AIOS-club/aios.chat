@@ -8,6 +8,7 @@ import Dock from '@/components/dock';
 import DockCard from '@/components/dock-card';
 import Chat from '@/components/chat';
 import ChatIcon from '@/components/chat-icon';
+import useIsMobile from '@/hooks/useIsMobile';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
@@ -28,8 +29,11 @@ function App () {
       apiKey: '', stream: true, temperature: 0.8, presence_penalty: -1.0, frequency_penalty: 1.0, model: 'gpt-3.5-turbo'
     };
   });
+
   const [currentChat, setCurrentChat] = useState<ChatList | undefined>(() => (chatList && chatList.length > 0 ? chatList[0] : { chatId: uuid(), data: [] }));
   const [displayDock, setDisplayDock] = useState<boolean>(true);
+
+  const isMobile = useIsMobile();
 
   const handleConfigChange = (_config: Config) => {
     if (_config && typeof _config === 'object') {
@@ -102,6 +106,7 @@ function App () {
   const value = useMemo(() => ({
     chatList,
     config,
+    currentChat,
     handleConfigChange,
     setChatList,
     setCurrentChat,
@@ -111,7 +116,7 @@ function App () {
     handleDelete,
     handleDeleteAll,
     handleChatValueChange,
-  }), [chatList, config, handleDelete, handleDeleteAll]);
+  }), [chatList, config, currentChat, handleDelete, handleDeleteAll]);
 
   return (
     <Store.Provider value={value}>
@@ -119,8 +124,7 @@ function App () {
         <Header />
         <div className="overflow-hidden relative grow dark:bg-gray-900">
           <ProjectSourceInfo />
-          {/* <HeaderBar onNewChat={handleNewChat} /> */}
-          {chatList.length > 0 && (
+          {chatList.length > 0 && !isMobile && (
             <Dock key={chatList.length} display={displayDock}>
               {chatList.map((chat) => (
                 <DockCard key={chat.chatId} onClick={(event) => handleOpenChat(chat, event)}>

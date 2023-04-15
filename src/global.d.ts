@@ -27,6 +27,7 @@ export interface ChatList{
 export interface ChatStoreProps {
   config: Config;
   chatList: ChatList[];
+  currentChat?: ChatList;
   setChatList: React.Dispatch<React.SetStateAction<ChatList[]>>;
   setCurrentChat: React.Dispatch<React.SetStateAction<ChatList | undefined>>;
   setDisplayDock: React.Dispatch<React.SetStateAction<boolean>>;
