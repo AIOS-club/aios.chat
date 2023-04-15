@@ -41,8 +41,8 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
   const [scrollRef, scrollToBottom] = useScrollToBottom();
 
-  const width = useSpringValue('80%', { config: { mass: 0.1, tension: 320 } });
-  const height = useSpringValue('80%', { config: { mass: 0.1, tension: 320, } });
+  const width = useSpringValue(isMobile ? '100%' : '80%', { config: { mass: 0.1, tension: 320 } });
+  const height = useSpringValue(isMobile ? '100%' : '80%', { config: { mass: 0.1, tension: 320, } });
 
   const handleResize = (widthSize: string, heightSize: string) => {
     width.start(widthSize).catch(() => {});
@@ -174,7 +174,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}
       style={{ width, height }}
     >
-      <ChatHeader onResize={handleResize} title={title || conversation[0]?.value} chatId={chatId} icon={icon} />
+      {!isMobile && <ChatHeader onResize={handleResize} title={title || conversation[0]?.value} chatId={chatId} icon={icon} />}
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full bg-white dark:bg-gray-800 relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
