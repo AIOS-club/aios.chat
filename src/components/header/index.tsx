@@ -90,14 +90,15 @@ const Header: React.FC = function Header() {
             </button>
           </Popconfirm>
         )}
-        <button className={commonCls} onClick={handleNewChat} type="button">
-          <Icon svg={<Add />} />
-        </button>
         <button className={commonCls} type="button" onClick={handleChangeSetting}>
           <IconSetting />
         </button>
         <button className={commonCls} onClick={handleChangeMode} type="button">
           <Icon svg={mode === 'dark' ? <Sun /> : <Moon />} />
+        </button>
+        <button className={commonCls} onClick={handleNewChat} type="button">
+          <Icon svg={<Add />} />
+          New Chat
         </button>
       </div>
       <SideSheet

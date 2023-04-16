@@ -38,7 +38,7 @@ const shareBtnCls = 'absolute top-10 right-0 w-16 h-7 flex justify-center break-
 const markdownCls = 'prose prose-p:m-0 prose-ul:m-0 prose-ul:leading-normal prose-li:m-0 prose-ol:m-0 prose-pre:w-full prose-pre:p-0 prose-pre:m-0 prose-pre:h-fit prose-pre:bg-black prose-pre:text-white w-0 flex-grow dark:prose-invert';
 
 const AI_AVATOR = import.meta.env.VITE_AI_AVATOR_URL;
-const USER_AVATOR = import.meta.env.VITE_USER_USER_URL;
+const USER_AVATOR = import.meta.env.VITE_USER_AVATOR_URL;
 
 const Conversation: React.FC<ConversationProps> = function Conversation(props) {
   const { data } = props;

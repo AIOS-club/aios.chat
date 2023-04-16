@@ -49,6 +49,9 @@ VITE_DEFAULT_BOTTOM_TIPS=''
 # API_HOST
 VITE_API_HOST='http://localhost:3000/aios-chat'
 
+# 是否只返回文字内容 它意味着是否需要前端解析
+VITE_ONLY_TEXT=true
+
 # 最多缓存的对话次数 不包括system信息
 VITE_CACHE_TIMES=10
 
@@ -59,7 +62,13 @@ VITE_BASE_URL='/' # BASE_URL
 VITE_AI_AVATOR_URL=''
 
 # user avator
-VITE_USER_USER_URL=''
+VITE_USER_AVATOR_URL=''
+
+# logo url
+VITE_LOGO_URL=''
+
+# info
+VITE_INFO=''
 ```
 
 
@@ -80,7 +89,7 @@ VITE_USER_USER_URL=''
 - [ ] 添加后端BFF层
 - [ ] 添加http和socks代理配置或提供一些预置的openai接口代理
 - [ ] 访问权限控制
-- [ ] 可修改openai的模型（3.5、3.0）可修改接口参数temperature、model、temperature、frequency_penalty、presence_penalty
+- [x] 可修改openai的模型（3.5、3.0）可修改接口参数temperature、frequency_penalty、presence_penalty
 - [ ] 多语言支持
 - [ ] 一键部署文档
 - [ ] GitHub pages自动部署
