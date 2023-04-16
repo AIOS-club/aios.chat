@@ -10,7 +10,8 @@ const frontEnv = {
   VITE_ONLY_TEXT: true,
   VITE_BASE_URL: '/',
   VITE_AI_AVATOR_URL: '""',
-  VITE_USER_USER_URL:'""',
+  VITE_LOGO_URL:'""',
+  VITE_USER_AVATOR_URL:'""',
 };
 
 // 设置后端默认值

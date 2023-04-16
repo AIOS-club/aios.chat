@@ -9,8 +9,10 @@ interface ImportMetaEnv {
   readonly VITE_BASE_URL: string
   readonly VITE_DEFAULT_PLACEHOLDER: string
   readonly VITE_DEFAULT_BOTTOM_TIPS: string
-  readonly VITE_USER_USER_URL: string
+  readonly VITE_USER_AVATOR_URL: string
   readonly VITE_AI_AVATOR_URL: string
+  readonly VITE_LOGO_URL: string
+  readonly VITE_INFO: string
 }
 
 interface ImportMeta {
