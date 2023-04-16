@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@douyinfe/semi-ui';
 import Delete from '@/assets/svg/delete.svg';
-import Emoji from '@/components/emoji';
 import useChatList from '@/hooks/useChatList';
 import { ChatList } from '@/global';
 import ChatIcon from '../chat-icon';
@@ -11,10 +10,10 @@ interface TabItemProps {
   chat: ChatList;
 }
 
-const defaultCls = 'w-full my-2 border border-black/20 flex text-black p-3 items-center relative rounded-md break-all group';
+const defaultCls = 'w-calc-full my-2 mx-1 border border-black/20 flex text-black p-3 items-center relative rounded-md break-all group';
 
 const TabItem: React.FC<TabItemProps> = function TabItem({ chat }) {
-  const { chatId, data, title, icon } = chat;
+  const { chatId, data, title } = chat;
 
   const { handleDelete: handleChatDelete, currentChat, setCurrentChat } = useChatList();
 
