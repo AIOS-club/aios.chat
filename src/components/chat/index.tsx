@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
 import axios from 'axios';
@@ -14,14 +14,12 @@ import useChatList from '@/hooks/useChatList';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
 import { getCachePrompt, parseMarkdown, parseStreamText, getSystemMessages } from '@/utils';
 import Refresh from '@/assets/svg/refresh.svg';
+import Stop from '@/assets/svg/stop.svg';
 import { ChatProps } from './Chat';
 import styles from './Chat.module.less';
 
 const API_HOST: string = import.meta.env.VITE_API_HOST;
 const ONLY_TEXT: string = import.meta.env.VITE_ONLY_TEXT;
-
-const { CancelToken } = axios;
-const source = CancelToken.source();
 
 const Chat: React.FC<ChatProps> = function Chat(props) {
   const { chat } = props;
@@ -43,6 +41,8 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
   const width = useSpringValue(isMobile ? '100%' : '80%', { config: { mass: 0.1, tension: 320 } });
   const height = useSpringValue(isMobile ? '100%' : '80%', { config: { mass: 0.1, tension: 320, } });
+
+  const abortControllerRef = useRef<AbortController>();
 
   const handleResize = (widthSize: string, heightSize: string) => {
     width.start(widthSize).catch(() => {});
@@ -75,6 +75,8 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
     const messages = getSystemMessages().concat(getCachePrompt([...curConversation], v.trimEnd())); // 获取上下文缓存的信息
 
+    abortControllerRef.current = new AbortController();
+
     setLoading(true);
 
     const headers = config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : {};
@@ -87,7 +89,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       responseType: 'stream',
       headers: { ...headers },
       data: { messages, ...body },
-      cancelToken: source.token,
+      signal: abortControllerRef.current.signal,
       onDownloadProgress({ event }) {
         const chunk: string = event.target?.responseText || '';
         const parseChunk = ONLY_TEXT === 'true' ? chunk : parseStreamText(chunk);
@@ -99,7 +101,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
             return pre;
           });
         } catch {
-          source.cancel('something is wrong');
+          abortControllerRef.current?.abort();
         }
       },
     }).catch(() => {
@@ -111,6 +113,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       });
     }).finally(() => {
       setLoading(false);
+      abortControllerRef.current = undefined;
       const pre = [...curConversation];
       const [lastConversation] = pre.slice(-1);
       Object.assign(lastConversation, { stop: true });
@@ -155,16 +158,19 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     if (!length) return null;
     const lastUserConversation = conversation[length - 2];
     const lastConversation = conversation[length - 1];
-    if (!lastConversation.stop) return null;
+    if (!lastConversation.stop && !loading) return null;
 
     return (
       <button
         type="button"
         className="btn flex justify-center gap-2 btn-neutral"
-        onClick={async (e) => handleRetry(e, lastUserConversation)}
+        onClick={async (e) => {
+          if (loading) abortControllerRef.current?.abort();
+          else { await handleRetry(e, lastUserConversation); }
+        }}
       >
-        <Icon svg={<Refresh />} />
-        Regenerate response
+        <Icon svg={loading ? <Stop /> : <Refresh />} />
+        {`${loading ? 'Stop generating' : 'Regenerate response'}`}
       </button>
     );
   };

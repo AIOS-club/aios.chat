@@ -85,8 +85,8 @@ function findMaxZIndex(arr: ChatList[]): number {
 
 function getSystemMessages(): Messages[] {
   return [
-    { role: 'system', content: '请以markdown的形式返回答案' },
-    { role: 'system', content: `现在的北京时间是: ${moment().format('YYYY-MM-DD HH:mm:ss')} ${moment().format('dddd')}` }
+    { role: 'system', content: 'Return the answer in markdown format' },
+    { role: 'system', content: `Current Beijing time is:: ${moment().format('YYYY-MM-DD HH:mm:ss')} ${moment().format('dddd')}` }
   ];
 }
 
