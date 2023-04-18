@@ -34,7 +34,7 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
       style={{ ...rest, width: size, height: size }}
       onClick={() => setOpen((pre) => !pre)}
     >
-      <div className="bg-white w-4/5 h-4/5 flex flex-wrap items-start rounded-md content-start overflow-y-scroll">
+      <div className="bg-white w-4/5 h-4/5 flex flex-wrap items-start rounded-md content-start overflow-y-scroll scrollbar-hide">
         {transition((style, item) => (
           <animated.div
             key={item.chatId}
