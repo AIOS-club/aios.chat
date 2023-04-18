@@ -90,10 +90,19 @@ function getSystemMessages(): Messages[] {
   ];
 }
 
+function randomBrightColor(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i += 1) {
+    hash = (hash * 31 + str.charCodeAt(i)) % 240; // 使用常数31作为散列因子
+  }
+  return `hsl(${hash}, 100%, 50%)`; // 转为 HSL 颜色，并设置饱和度和亮度
+}
+
 export {
   getCachePrompt,
   parseMarkdown,
   findMaxZIndex,
   parseStreamText,
-  getSystemMessages 
+  getSystemMessages,
+  randomBrightColor,
 };

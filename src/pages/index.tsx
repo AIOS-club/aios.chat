@@ -2,13 +2,16 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { v4 as uuid } from 'uuid';
 import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
 import { Conversation } from '@/components/conversation/Conversation';
+import { randomBrightColor } from '@/utils';
 import Header from '@/components/header';
 import ProjectSourceInfo from '@/components/project-source-info';
 import Dock from '@/components/dock';
 import DockCard from '@/components/dock-card';
 import Chat from '@/components/chat';
 import ChatIcon from '@/components/chat-icon';
+import LaunchPad from '@/components/launch-pad';
 import useIsMobile from '@/hooks/useIsMobile';
+import useDockCount from '@/hooks/useDockCount';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
@@ -32,8 +35,11 @@ function App () {
 
   const [currentChat, setCurrentChat] = useState<ChatList | undefined>(() => (chatList && chatList.length > 0 ? chatList[0] : { chatId: uuid(), data: [] }));
   const [displayDock, setDisplayDock] = useState<boolean>(true);
+  const [openLaunch, setOpenLaunch] = useState<boolean>(false);
 
   const isMobile = useIsMobile();
+
+  const dockCount = useDockCount();
 
   const handleConfigChange = (_config: Config) => {
     if (_config && typeof _config === 'object') {
@@ -99,7 +105,7 @@ function App () {
     });
   };
 
-  const handleOpenChat = (chat: ChatList, _: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleOpenChat = (chat: ChatList) => {
     setCurrentChat(chat);
   };
 
@@ -118,19 +124,35 @@ function App () {
     handleChatValueChange,
   }), [chatList, config, currentChat, handleDelete, handleDeleteAll]);
 
+  const displayChatList = chatList.slice(0, dockCount);
+  const hiddenChatList = chatList.slice(dockCount, chatList.length);
+
   return (
     <Store.Provider value={value}>
       <div className="overflow-hidden w-full h-full flex flex-col">
         <Header />
         <div className="overflow-hidden relative grow dark:bg-gray-900">
           <ProjectSourceInfo />
-          {chatList.length > 0 && !isMobile && (
+          {displayChatList.length > 0 && !isMobile && (
             <Dock key={chatList.length} display={displayDock}>
-              {chatList.map((chat) => (
-                <DockCard key={chat.chatId} onClick={(event) => handleOpenChat(chat, event)}>
+              {displayChatList.map((chat) => (
+                <DockCard key={chat.chatId} onClick={() => handleOpenChat(chat)}>
                   <ChatIcon chat={chat} />
                 </DockCard>
               ))}
+              {hiddenChatList.length > 0 && (
+                <DockCard onClick={() => setOpenLaunch(true)}>
+                  <div id="launch" className="w-full h-full flex flex-wrap justify-center items-center p-[2px]">
+                    {hiddenChatList.slice(0, 9).map((chat) => (
+                      <div
+                        key={chat.chatId}
+                        className="w-1/5 h-1/5 m-[2px] rounded-sm"
+                        style={{ background: randomBrightColor(chat.chatId) }}
+                      />
+                    ))}
+                  </div>
+                </DockCard>
+              )}
             </Dock>
           )}
           {currentChat && (
@@ -140,6 +162,7 @@ function App () {
           )}
         </div>
       </div>
+      <LaunchPad chatList={chatList} open={openLaunch} setOpen={setOpenLaunch} onClickItem={setCurrentChat} />
     </Store.Provider>
   );
 }

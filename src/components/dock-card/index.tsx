@@ -1,20 +1,16 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { animated, useIsomorphicLayoutEffect, useSpringValue } from '@react-spring/web';
 import classNames from 'classnames';
 import { useDock } from '@/components/dock/DockContext';
 import useMousePosition from '@/hooks/useMousePosition';
 import useWindowResize from '@/hooks/useWindowResize';
+import { DockCardProps } from './DockCard';
 import styles from './DockCard.module.less';
-
-interface DockCardProps {
-  children: React.ReactNode
-  onClick: React.MouseEventHandler<HTMLButtonElement>
-}
 
 const INITIAL_HEIGHT = 48;
 
 function DockCard({ children, onClick }: DockCardProps) {
-  const [elCenterX, setElCenterX] = useState<number>(0);
+  const [elCenterY, setElCenterY] = useState<number>(0);
 
   const cardRef = useRef<HTMLButtonElement>(null);
 
@@ -38,13 +34,13 @@ function DockCard({ children, onClick }: DockCardProps) {
     onChange: ({ value }) => {
       const mouseY = value.y;
       if (dock.height > 0) {
-        const transformedValue = INITIAL_HEIGHT + 32 * Math.cos((((mouseY - elCenterX) / dock.height) * Math.PI) / 2) ** 12;
+        const transformedValue = INITIAL_HEIGHT + 32 * Math.cos((((mouseY - elCenterY) / dock.height) * Math.PI) / 2) ** 12;
         if (dock.hovered) {
           size.start(transformedValue).catch(() => {});
         }
       }
     },
-  }, [elCenterX, dock]);
+  }, [elCenterY, dock]);
 
   useIsomorphicLayoutEffect(() => {
     if (!dock.hovered) {
@@ -55,7 +51,7 @@ function DockCard({ children, onClick }: DockCardProps) {
   useWindowResize(() => {
     if (cardRef.current) {
       const { y } = cardRef.current.getBoundingClientRect();
-      setElCenterX(y + INITIAL_HEIGHT / 2);
+      setElCenterY(y + INITIAL_HEIGHT / 2);
     }
   });
 
