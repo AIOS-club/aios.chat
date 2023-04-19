@@ -26,7 +26,7 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
 
   useLayoutEffect(() => {
     handleSetOriginLocation();
-  }, []);
+  }, [chatList.length]);
 
   useWindowResize(handleSetOriginLocation);
 
