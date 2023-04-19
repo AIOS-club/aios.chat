@@ -1,15 +1,48 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   useTransition, useSpring, useSpringRef, config, animated, useChain
 } from '@react-spring/web';
 import ChatIcon from '@/components/chat-icon';
 import { LaunchPadProps } from './LaunchPad';
+import useWindowResize from '@/hooks/useWindowResize';
 
 const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
   const { chatList, open, setOpen, onClickItem } = props;
 
   const springApi = useSpringRef();
   const transApi = useSpringRef();
+
+  const [originLeft, setLeft] = useState(0);
+  const [originTop, setTop] = useState(0);
+
+  const handleSetOriginLocation = () => {
+    const launchElement = document.getElementById('launch') as HTMLDivElement;
+    if (launchElement) {
+      const { top, left } = launchElement.getBoundingClientRect();
+      setLeft(left);
+      setTop(top);
+    }
+  };
+
+  useLayoutEffect(() => {
+    handleSetOriginLocation();
+  }, []);
+
+  useWindowResize(handleSetOriginLocation);
+
+  const [{ left, top }, api] = useSpring(() => ({
+    left: originLeft,
+    top: originTop,
+    config: { frequency: 0.4 },
+  }), [originLeft, originTop]);
+
+  useEffect(() => {
+    if (open) {
+      api.start({ left: 0, top: 0 });
+    } else {
+      api.start({ left: originLeft, top: originTop });
+    }
+  }, [open, api, originLeft, originTop]);
 
   const { size, ...rest } = useSpring({
     ref: springApi,
@@ -20,7 +53,7 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
 
   const transition = useTransition(open ? chatList : [], {
     ref: transApi,
-    trail: 100 / chatList.length,
+    trail: 200 / chatList.length,
     from: { opacity: 0, scale: 0 },
     enter: { opacity: 1, scale: 1 },
     leave: { opacity: 0, scale: 0 },
@@ -30,11 +63,13 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
 
   return (
     <animated.div
-      className="fixed top-0 left-0 z-[999] flex justify-center items-center bg-[#16161a]/60"
-      style={{ ...rest, width: size, height: size }}
+      className="fixed z-[999] flex justify-center items-center bg-[#16161a]/60"
       onClick={() => setOpen((pre) => !pre)}
+      style={{
+        ...rest, width: size, height: size, left, top,
+      }}
     >
-      <div className="bg-white w-4/5 h-4/5 flex flex-wrap items-start rounded-md content-start overflow-y-scroll scrollbar-hide">
+      <div className="bg-white dark:bg-slate-900 w-4/5 h-4/5 flex flex-wrap items-start rounded-md content-start overflow-y-scroll scrollbar-hide">
         {transition((style, item) => (
           <animated.div
             key={item.chatId}
@@ -42,8 +77,8 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
             style={{ ...style }}
             onClick={() => onClickItem(item)}
           >
-            <ChatIcon chat={item} className="border border-gray-200 rounded-md" />
-            <div className="w-full text-gray-800 text-center my-2 text-ellipsis overflow-hidden break-keep whitespace-nowrap">
+            <ChatIcon chat={item} className="border border-gray-200 rounded-md dark:border-slate-800 dark:bg-slate-800" />
+            <div className="w-full text-gray-800 dark:text-white text-center my-2 text-ellipsis overflow-hidden break-keep whitespace-nowrap">
               {item.title || item.data[0]?.value || '[empty]'}
             </div>
           </animated.div>
