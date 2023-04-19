@@ -13,8 +13,6 @@ interface DockProps {
   display: boolean;
 }
 
-export const DOCK_ZOOM_LIMIT = [-100, 50];
-
 function Dock({ children, display }: DockProps) {
   const [hovered, setHovered] = useState(false);
   const [height, setHeight] = useState(0);
