@@ -34,7 +34,7 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
       style={{ ...rest, width: size, height: size }}
       onClick={() => setOpen((pre) => !pre)}
     >
-      <div className="bg-white w-4/5 h-4/5 flex flex-wrap items-start rounded-md content-start overflow-y-scroll scrollbar-hide">
+      <div className="bg-white dark:bg-slate-900 w-4/5 h-4/5 flex flex-wrap items-start rounded-md content-start overflow-y-scroll scrollbar-hide">
         {transition((style, item) => (
           <animated.div
             key={item.chatId}
@@ -42,8 +42,8 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
             style={{ ...style }}
             onClick={() => onClickItem(item)}
           >
-            <ChatIcon chat={item} className="border border-gray-200 rounded-md" />
-            <div className="w-full text-gray-800 text-center my-2 text-ellipsis overflow-hidden break-keep whitespace-nowrap">
+            <ChatIcon chat={item} className="border border-gray-200 rounded-md dark:border-slate-800 dark:bg-slate-800" />
+            <div className="w-full text-gray-800 dark:text-white text-center my-2 text-ellipsis overflow-hidden break-keep whitespace-nowrap">
               {item.title || item.data[0]?.value || '[empty]'}
             </div>
           </animated.div>
