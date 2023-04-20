@@ -1,16 +1,16 @@
 {
-  "name": "ai",
+  "name": "aios.chat",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
-    "inst": "npm i -g pnpm && pnpm i && cd ./server && pnpm i && cd ..",
+    "inst": "npm i -g pnpm && pnpm i && cd ./api && pnpm i && cd ..",
     "dev:env": "node entry.js && npm run dev",
-    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:koa\"",
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:express\"",
     "dev:vite": "vite",
-    "dev:koa": "cross-env NODE_ENV=development nodemon --exec esno watch server/app.ts",
-    "build": "npm run build:vite && npm run build:koa",
+    "dev:express": "cross-env NODE_ENV=development nodemon --exec esno watch api/src/app.ts",
+    "build": "npm run build:vite && npm run build:express",
     "build:vite": "tsc && vite build",
-    "build:koa": "cross-env NODE_ENV=production tsup server/app.ts --out-dir dist/server --format cjs",
+    "build:express": "cross-env NODE_ENV=production tsup api/src/app.ts --out-dir dist/ --format cjs",
     "preview": "vite preview",
     "lint": "eslint --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --max-warnings 999"
   },
