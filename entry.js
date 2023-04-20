@@ -3,7 +3,7 @@ const os = require('os');
 
 // 设置前端默认值
 const frontEnv = {
-  VITE_DEFAULT_PLACEHOLDER: '发消息给AI',
+  VITE_DEFAULT_PLACEHOLDER: 'Send a message to AI',
   VITE_DEFAULT_BOTTOM_TIPS: '""',
   VITE_API_HOST: 'http://localhost:3000/aios-chat',
   VITE_CACHE_TIMES: 10,
@@ -41,6 +41,6 @@ if (!fs.existsSync('.env.development')) {
   fs.writeFileSync('.env.development', frontEnvString);
 }
 
-if (!fs.existsSync('./server/.env.development')) {
-  fs.writeFileSync('./server/.env.development', backEnvString);
+if (!fs.existsSync('./api/.env.development')) {
+  fs.writeFileSync('./api/.env.development', backEnvString);
 }

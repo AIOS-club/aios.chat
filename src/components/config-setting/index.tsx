@@ -50,7 +50,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
           '-2': '-2', '-1': '-1', 0: '0', 1: '1', 2: '2' 
         }}
       />
-      <Form.Switch field="stream" initValue={config.stream || true} disabled />
+      <Form.Switch field="stream" initValue={config.stream} />
     </Form>
   );
 };
