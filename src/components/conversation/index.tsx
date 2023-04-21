@@ -6,9 +6,9 @@ import ClipboardJS from 'clipboard';
 import { marked } from 'marked';
 import markedKatex from 'marked-katex-extension-ts';
 import { Toast, Spin, Icon } from '@douyinfe/semi-ui';
+import { IconUser } from '@douyinfe/semi-icons';
 import Share from '@/assets/svg/share.svg';
 import aiAvator from '@/assets/img/aiAvator.jpg';
-import userAvator from '@/assets/img/userAvator.png';
 import { highlightCode, imgLoad } from './utils';
 import { ConversationProps } from './Conversation';
 import styles from './Conversation.module.less';
@@ -48,7 +48,10 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
   const ref = useRef<HTMLDivElement>(null);
 
   const renderAvator = useCallback((character: 'user' | 'bot') => {
-    const userUrl = USER_AVATOR || userAvator;
+    if (character === 'user' && !USER_AVATOR) {
+      return <IconUser className="w-full h-full flex items-center justify-center" size="large" />;
+    }
+    const userUrl = USER_AVATOR;
     const aiUrl = AI_AVATOR || aiAvator;
     return <img className="rounded-sm" alt="" src={character === 'user' ? userUrl : aiUrl} />;
   }, []);
