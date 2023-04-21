@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
 import { animated, useSpringValue } from '@react-spring/web';
 import ProjectSourceInfo from '@/components/project-source-info';
@@ -92,8 +92,8 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       signal: abortControllerRef.current.signal,
       onDownloadProgress({ event }) {
         const chunk: string = event.target?.responseText || '';
-        const parseChunk = ONLY_TEXT === 'true' ? chunk : parseStreamText(chunk);
         try {
+          const parseChunk = ONLY_TEXT === 'true' ? chunk : parseStreamText(chunk);
           setConversation((c) => {
             const pre = [...c];
             const [lastConversation] = pre.slice(-1);
@@ -104,11 +104,14 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
           abortControllerRef.current?.abort();
         }
       },
-    }).catch(() => {
+    }).catch((error: AxiosError) => {
+      const res = error.response?.data;
+      const errorObj = res && typeof res === 'string' ? JSON.parse(res) : res;
+      const errorMsg = errorObj?.error?.message || errorObj?.message || '';
       setConversation((c) => {
         const pre = [...c];
         const [lastConversation] = pre.slice(-1);
-        Object.assign(lastConversation, { value: lastConversation.value || '', error: true, stop: true });
+        Object.assign(lastConversation, { value: lastConversation.value || errorMsg, error: true, stop: true });
         return pre;
       });
     }).finally(() => {
