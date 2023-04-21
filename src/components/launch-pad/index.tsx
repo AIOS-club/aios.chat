@@ -2,12 +2,17 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   useTransition, useSpring, useSpringRef, config, animated, useChain
 } from '@react-spring/web';
+import classNames from 'classnames';
 import ChatIcon from '@/components/chat-icon';
 import { LaunchPadProps } from './LaunchPad';
 import useWindowResize from '@/hooks/useWindowResize';
 
+const chatIconCls = 'border-2 border-gray-200 rounded-md dark:border-slate-800 dark:bg-slate-800';
+
 const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
-  const { chatList, open, setOpen, onClickItem } = props;
+  const {
+    chatList, currentChat, open, setOpen, onClickItem 
+  } = props;
 
   const springApi = useSpringRef();
   const transApi = useSpringRef();
@@ -77,7 +82,10 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
             style={{ ...style }}
             onClick={() => onClickItem(item)}
           >
-            <ChatIcon chat={item} className="border border-gray-200 rounded-md dark:border-slate-800 dark:bg-slate-800" />
+            <ChatIcon
+              chat={item}
+              className={classNames(chatIconCls, { 'border-[#000] dark:border-[#fff]': item.chatId === currentChat?.chatId })}
+            />
             <div className="w-full text-gray-800 dark:text-white text-center my-2 text-ellipsis overflow-hidden break-keep whitespace-nowrap">
               {item.title || item.data[0]?.value || '[empty]'}
             </div>
