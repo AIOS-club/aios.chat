@@ -9,7 +9,7 @@ import styles from './DockCard.module.less';
 
 const INITIAL_HEIGHT = 48;
 
-function DockCard({ children, onClick }: DockCardProps) {
+function DockCard({ children, checked, onClick }: DockCardProps) {
   const [elCenterY, setElCenterY] = useState<number>(0);
 
   const cardRef = useRef<HTMLButtonElement>(null);
@@ -60,7 +60,7 @@ function DockCard({ children, onClick }: DockCardProps) {
       <animated.button
         ref={cardRef}
         onClick={onClick}
-        className={classNames(styles.dockCard, 'dark:bg-slate-800')}
+        className={classNames(styles.dockCard, 'dark:bg-slate-800', { 'border-2 border-[#000] dark:border-[#fff]': checked, })}
         style={{ width: size, height: size, x, }}
       >
         {children}

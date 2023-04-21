@@ -100,8 +100,10 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
             Object.assign(lastConversation, { value: parseMarkdown(parseChunk), error: false });
             return pre;
           });
-        } catch {
-          abortControllerRef.current?.abort();
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error(error);
+          // abortControllerRef.current?.abort();
         }
       },
     }).catch((error: AxiosError) => {

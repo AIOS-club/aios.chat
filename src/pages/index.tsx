@@ -136,23 +136,21 @@ function App () {
           {displayChatList.length > 0 && !isMobile && (
             <Dock key={chatList.length} display={displayDock}>
               {displayChatList.map((chat) => (
-                <DockCard key={chat.chatId} onClick={() => handleOpenChat(chat)}>
+                <DockCard key={chat.chatId} checked={chat.chatId === currentChat?.chatId} onClick={() => handleOpenChat(chat)}>
                   <ChatIcon chat={chat} />
                 </DockCard>
               ))}
-              {hiddenChatList.length > 0 && (
-                <DockCard onClick={() => setOpenLaunch(true)}>
-                  <div id="launch" className="w-full h-full flex flex-wrap justify-center items-center p-[2px]">
-                    {hiddenChatList.slice(0, 9).map((chat) => (
-                      <div
-                        key={chat.chatId}
-                        className="w-1/5 h-1/5 m-[2px] rounded-sm"
-                        style={{ background: randomBrightColor(chat.chatId) }}
-                      />
-                    ))}
-                  </div>
-                </DockCard>
-              )}
+              <DockCard onClick={() => setOpenLaunch(true)} checked={hiddenChatList.some((chat) => chat.chatId === currentChat?.chatId)}>
+                <div id="launch" className="w-full h-full flex flex-wrap justify-center items-center p-[2px]">
+                  {chatList.slice(0, 9).map((chat) => (
+                    <div
+                      key={chat.chatId}
+                      className="w-1/5 h-1/5 m-[2px] rounded-sm"
+                      style={{ background: randomBrightColor(chat.chatId) }}
+                    />
+                  ))}
+                </div>
+              </DockCard>
             </Dock>
           )}
           {currentChat && (
@@ -162,7 +160,13 @@ function App () {
           )}
         </div>
       </div>
-      <LaunchPad chatList={chatList} open={openLaunch} setOpen={setOpenLaunch} onClickItem={setCurrentChat} />
+      <LaunchPad
+        currentChat={currentChat}
+        chatList={chatList}
+        open={openLaunch}
+        setOpen={setOpenLaunch}
+        onClickItem={setCurrentChat}
+      />
     </Store.Provider>
   );
 }
