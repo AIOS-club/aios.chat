@@ -101,6 +101,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
             return pre;
           });
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error(error);
           // abortControllerRef.current?.abort();
         }
