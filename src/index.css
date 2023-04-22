@@ -8,39 +8,12 @@ html {
   height: 100%;
 }
 
-.font-sans {
-  font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-}
-
 html {
   -webkit-text-size-adjust: 100%;
   font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   line-height: 1.5;
   tab-size: 4;
   font-size: 14px;
-}
-
-textarea {
-  --tw-shadow: 0 0 transparent;
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: #fff;
-  border-color: #8e8ea0;
-  border-radius: 0;
-  border-width: 1px;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  padding: 0.5rem 0.75rem;
-  color: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  margin: 0;
-  padding: 0;
-}
-
-textarea:focus {
-  outline: none;
 }
 
 .dark .dark\:bg-gray-700 {
@@ -58,26 +31,6 @@ textarea:focus {
   color: rgba(236, 236, 241, var(--tw-text-opacity));
 }
 
-.dark .dark\:text-gray-100 {
-  --tw-text-opacity: 1;
-  color: rgba(236, 236, 241, var(--tw-text-opacity));
-}
-
-.dark .dark\:border-gray-900\/50 {
-  border-color: rgba(32, 33, 35, .5);
-}
-
-.bg-gray-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(247, 247, 248, var(--tw-bg-opacity));
-}
-
-.bg-gray-900 {
-  --tw-bg-opacity: 1;
-  /* background-color: rgba(32, 33, 35, var(--tw-bg-opacity)); */
-  background-color: #1b2d47;
-}
-
 .dark .dark\:bg-gray-800 {
   --tw-bg-opacity: 1;
   background-color: rgba(52, 53, 65, var(--tw-bg-opacity)) !important;
@@ -89,18 +42,6 @@ textarea:focus {
 
 .dark .dark\:bg-vert-dark-gradient {
   background-image: linear-gradient(180deg, rgba(53, 55, 64, 0), #353740 58.85%);
-}
-
-.btn {
-  align-items: center;
-  border-color: transparent;
-  border-radius: 0.25rem;
-  border-width: 1px;
-  display: inline-flex;
-  font-size: .875rem;
-  line-height: 1.25rem;
-  padding: 0.5rem 0.75rem;
-  pointer-events: auto;
 }
 
 .btn-neutral {
@@ -123,158 +64,6 @@ textarea:focus {
   color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
 
-.text-base {
-  font-size: 1rem;
-  line-height: 1.75;
-}
-
-/* 以下是自定义的样式，暂时先不提取 */
-.answer {
-  word-break: break-word;
-}
-
-.text-area-overflow {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-
-.text-area-overflow::-webkit-scrollbar {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  display: none;
-}
-
-.input-area {
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
 .semi-button-primary {
   background-color: var(--semi-color-primary)
-}
-
-.hidden-scroll-bar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.hidden-scroll-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.send-btn {
-  transform: rotate(90deg) !important;
-}
-
-code.hljs,
-code[class*=language-],
-pre[class*=language-] {
-  word-wrap: normal;
-  line-height: 2;
-  text-align: left;
-  word-break: normal;
-  word-spacing: normal;
-  font-family: Söhne Mono, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
-}
-
-table {
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: sans-serif;
-  overflow: auto;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-.dark table {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-}
-
-table th,
-table td {
-  padding: 12px 15px !important;
-}
-
-table thead {
-  background-color: #bfdfff;
-}
-
-table tbody {
-  background-color: #f5f5f5;
-}
-
-table tbody tr:nth-of-type(even) {
-  background-color: #efefef;
-}
-
-.dark table thead {
-  background-color: #000;
-}
-
-.dark table tbody {
-  background-color: #ddd;
-  color: #000;
-}
-
-.dark table tr:nth-of-type(even) {
-  background-color: #c2c2c2;
-}
-
-.hljs-comment {
-  color: hsla(0, 0%, 100%, .5) !important;
-}
-
-.hljs-meta {
-  color: hsla(0, 0%, 100%, .6) !important;
-}
-
-.hljs-built_in,
-.hljs-class .hljs-title {
-  color: #e9950c !important;
-}
-
-.hljs-doctag,
-.hljs-formula,
-.hljs-keyword,
-.hljs-literal {
-  color: #2e95d3 !important;
-}
-
-.hljs-addition,
-.hljs-attribute,
-.hljs-meta-string,
-.hljs-regexp,
-.hljs-string {
-  color: #00a67d !important;
-}
-
-.hljs-attr,
-.hljs-number,
-.hljs-selector-attr,
-.hljs-selector-class,
-.hljs-selector-pseudo,
-.hljs-template-variable,
-.hljs-type,
-.hljs-variable {
-  color: #df3079 !important;
-}
-
-.hljs-bullet,
-.hljs-link,
-.hljs-selector-id,
-.hljs-symbol,
-.hljs-title {
-  color: #f22c3d !important;
-}
-
-.katex {
-  line-height: 3.2;
-}
-
-@media screen and (max-width: 768px) {
-  .pswp__top-bar {
-    top: unset;
-    bottom: 2rem;
-  }
 }

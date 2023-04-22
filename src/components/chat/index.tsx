@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
 import { animated, useSpringValue } from '@react-spring/web';
 import ProjectSourceInfo from '@/components/project-source-info';
-import { Conversation } from '@/components/conversation/Conversation';
+import { Conversation } from '@/components/conversation/ConversationProps';
 import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
 import ChatHeader from '@/components/chat-header';

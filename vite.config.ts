@@ -1,7 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
-import AutoImport from 'unplugin-auto-import/vite';
 import Pages from 'vite-plugin-pages';
 import legacy from '@vitejs/plugin-legacy';
 import svgLoader from '@andylacko/vite-svg-react-loader';
@@ -33,11 +32,6 @@ export default defineConfig(({ mode }) => {
         targets: ['defaults', 'not IE 11'],
         // polyfills: ['es.array.at', 'es.string.match-all'],
         // modernPolyfills: [],
-      }),
-      // https://github.com/antfu/unplugin-auto-import
-      AutoImport({
-        imports: ['react', 'react-router-dom'],
-        dts: true,
       }),
     ],
     css: {

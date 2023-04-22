@@ -36,6 +36,17 @@ module.exports = {
           '&::-webkit-scrollbar': {
             display: 'block'
           }
+        },
+        '.btn': {
+          'align-items': 'center',
+          'border-color': 'transparent',
+          'border-radius': '0.25rem',
+          'border-width': '1px',
+          'display': 'inline-flex',
+          'font-size': '.875rem',
+          'line-height': '1.25rem',
+          'padding': '0.5rem 0.75rem',
+          'pointer-events': 'auto',
         }
       }, ['responsive'])
     })

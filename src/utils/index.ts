@@ -1,5 +1,4 @@
-import moment from 'moment';
-import { Conversation } from '@/components/conversation/Conversation.d';
+import { Conversation } from '@/components/conversation/ConversationProps';
 import { Messages, ChatList } from '@/global';
 
 const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
@@ -72,6 +71,22 @@ function parseMarkdown(chunk: string): string {
   return text;
 }
 
+function getCurrentDate() {
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const date = new Date();
+
+  const year = date.getFullYear().toString();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const dayOfWeek = daysOfWeek[date.getDay()];
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${dayOfWeek}`;
+}
+
 function findMaxZIndex(arr: ChatList[]): number {
   let maxZIndex = Number.MIN_SAFE_INTEGER;
   let maxZIndexElement;
@@ -91,7 +106,7 @@ function findMaxZIndex(arr: ChatList[]): number {
 function getSystemMessages(): Messages[] {
   return [
     { role: 'system', content: 'Return the answer in markdown format' },
-    { role: 'system', content: `Current Beijing time is:: ${moment().format('YYYY-MM-DD HH:mm:ss')} ${moment().format('dddd')}` }
+    { role: 'system', content: `Current Beijing time is: ${getCurrentDate()}` }
   ];
 }
 
