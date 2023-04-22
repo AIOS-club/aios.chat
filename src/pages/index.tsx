@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { v4 as uuid } from 'uuid';
 import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
-import { Conversation } from '@/components/conversation/Conversation';
+import { Conversation } from '@/components/conversation/ConversationProps';
 import { randomBrightColor } from '@/utils';
 import Header from '@/components/header';
 import ProjectSourceInfo from '@/components/project-source-info';

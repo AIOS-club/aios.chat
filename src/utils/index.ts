@@ -1,4 +1,4 @@
-import { Conversation } from '@/components/conversation/Conversation.d';
+import { Conversation } from '@/components/conversation/ConversationProps';
 import { Messages, ChatList } from '@/global';
 
 const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
