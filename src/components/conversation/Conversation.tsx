@@ -13,7 +13,7 @@ import rehypeKatex from 'rehype-katex'; // katex
 import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Share from '@/assets/svg/share.svg';
 import aiAvator from '@/assets/img/aiAvator.jpg';
-import { ConversationProps } from './Conversation.d';
+import { ConversationProps } from './ConversationProps';
 import styles from './Conversation.module.less';
 import './github.css';
 import './katex.min.css';

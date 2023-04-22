@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { ConversationProps } from './Conversation.d';
+import { ConversationProps } from './ConversationProps';
 
 const ConversationCpm = lazy(async () => import('./Conversation'));
 
