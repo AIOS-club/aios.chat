@@ -63,7 +63,9 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
           language={language}
           PreTag="div"
           style={materialDark}
-          customStyle={{ width: '100%', overflow: 'auto', padding: '16px 12px', margin: '0', background: '#242c37' }}
+          customStyle={{
+            width: '100%', overflow: 'auto', padding: '16px 12px', margin: '0', background: '#242c37'
+          }}
           codeTagProps={{ style: { margin: 0 } }}
         >
           {code}
