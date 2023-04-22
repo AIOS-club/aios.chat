@@ -63,3 +63,7 @@ html {
   border-color: rgba(86, 88, 105, var(--tw-border-opacity));
   color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
+
+.semi-button-primary {
+  background-color: var(--semi-color-primary)
+}
