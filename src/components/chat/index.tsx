@@ -193,7 +193,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
           </div>
         </div>
       </div>
-      <div className="absolute md:px-4 bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
+      <div className="absolute md:px-4 max-md:pb-4 bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient">
         <form className="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6">
           <div className="relative flex h-full flex-1 flex-col">
             <div className="w-full flex gap-2 justify-center mb-3">
