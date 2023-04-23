@@ -6,9 +6,9 @@
   <h3 align="center">aios chat</h3>
 
   <p align="center">
-    <a>简体中文</a>
+    <a href="https://github.com/AIOS-club/aios.chat/">简体中文</a>
     ·
-    <a>English</a>
+    <a href="https://github.com/AIOS-club/aios.chat/blob/main/README.en.md">English</a>
   </p>
 
   <p align="center">
