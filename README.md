@@ -3,51 +3,57 @@
     <img src="src/assets/img/AIOS-LOGO.png" alt="Logo" width="120" height="80">
   </a>
 
-  <h3 align="center">aios chat 💬</h3>
+  <h3 align="center">aios chat</h3>
 
   <p align="center">
-    <a href="https://www.aios.chat">View Demo</a>
+    <a>简体中文</a>
     ·
-    <a href="https://github.com/AIOS-club/lite.aios.chat/issues">Report Bug</a>
+    <a>English</a>
+  </p>
+
+  <p align="center">
+    <a href="https://www.aios.chat">示例</a>
     ·
-    <a href="https://github.com/AIOS-club/lite.aios.chat/issues">Request Feature</a>
+    <a href="https://github.com/AIOS-club/lite.aios.chat/issues">问题反馈</a>
+    ·
+    <a href="https://github.com/AIOS-club/lite.aios.chat/issues">需求建议</a>
   </p>
 </div>
 
 <br />
 
-- [Preview](#preview)
-- [Introduction](#introduction)
-- [Get Started](#get-started)
-- [Environment variables](#environment-variables)
-- [Deploy](#deploy)
-- [Supported features](#supported-features)
-- [Roadmap](#roadmap)
-- [FAQ](#faq)
+- [预览](#预览)
+- [简介](#简介)
+- [开始使用](#开始使用)
+- [环境变量](#环境变量)
+- [部署](#部署)
+- [已支持的功能](#已支持的功能)
+- [后续要做的功能](#后续要做的功能)
+- [常见问题](#常见问题)
 - [License](#license)
 
-## Preview
+## 预览
 <img src="docs/preview.png" />
 <img src="docs/dark-preview.png" />
 <br />
 
-## Introduction
+## 简介
 本项目自带服务端用于本地开发和调试，也可直接部署至线上用于个人学习使用。
 想使用自己的API？也可以，客户端可接入本项目的服务端以及任何符合官方标准的api。
 
 推荐接入[AIOK](https://key.aios.chat)，国内免代理，首次注册免费赠送 100,000 points.
-## Get Started
+## 开始使用
 推荐采用```node 18.x.0```
 
 如果你本地安装了```nvm```, 可直接使用```nvm use```
 
 
 ```bash
-npm run inst # install
+npm run inst # 安装
 
-npm run dev # run
+npm run dev # 运行
 
-npm run dev:env # generate environment variable files during runtime
+npm run dev:env # 运行时生成环境变量文件
 ```
 
 > 使用```npm run dev:env```命令后，如果需要本地服务端，则需要在/api文件下生成的.env.development文件中填入正确可用的API KEY
@@ -63,7 +69,7 @@ VITE_API_HOST="https://api.openai.com/v1/chat/completions"
 
 <img src="docs/api-key.png" />
 
-## Environment variables
+## 环境变量
 请参考 **.env.example** 文件。<br />
 ```bash
 # 输入框的提示词
@@ -84,23 +90,23 @@ VITE_CACHE_TIMES=10
 # BASE_URL
 VITE_BASE_URL='/' # BASE_URL
 
-# ai avator
+# AI 头像url
 VITE_AI_AVATOR_URL=''
 
-# user avator
+# 用户头像url
 VITE_USER_AVATOR_URL=''
 
-# logo url
+# 首页logo url
 VITE_LOGO_URL=''
 
-# info
+# 首页logo下方的显示信息
 VITE_INFO=''
 ```
 
-## Deploy
-Waiting for update.
+## 部署
+后续更新
 
-## Supported features
+## 已支持的功能
 - 上下文对话
 - 历史会话
 - markdown渲染
@@ -109,7 +115,7 @@ Waiting for update.
 - 流式传输
 - 暗夜模式
 
-## Roadmap
+## 后续要做的功能
 - [x] github action（eslint）
 - [x] custom API key
 - [ ] 预设场景化机器人system应用
@@ -123,7 +129,7 @@ Waiting for update.
 - [ ] GitHub pages自动部署
 - [ ] docker-compose编写
 
-## FAQ
+## 常见问题
 
 Q:为什么使用官方接口后，返回的是一大串字符，没有解析？
 
