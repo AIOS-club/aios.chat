@@ -44,7 +44,8 @@
     "tailwindcss": "^3.2.4",
     "terser": "^5.16.3",
     "uuid": "^9.0.0",
-    "vite-plugin-pages": "^0.28.0"
+    "vite-plugin-pages": "^0.28.0",
+    "vite-plugin-pwa": "^0.14.7"
   },
   "devDependencies": {
     "@types/classnames": "^2.3.1",
