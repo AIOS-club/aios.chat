@@ -44,11 +44,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
 
   const handleSetting = useCallback(() => {
     chatConfigRef.current = Modal.info({
-      title: '修改对话信息',
+      title: 'Conversation configuration',
       style: { maxWidth: '100%' },
       content: <ChatConfig chatId={chatId} originTitle={title} originIcon={icon} handleChange={handleChatValueChange} />,
+      okText: 'Save',
+      cancelText: 'Cancel',
       onOk: () => {
-        Toast.success('修改成功');
+        Toast.success('Modification successful');
       },
       onCancel: () => {
         handleChatValueChange?.(chatId, 'title', title);
@@ -67,7 +69,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
       </div>
       <div className="flex-shrink-0 flex items-center">
         <IconCheckboxIndeterminate className="cursor-pointer mx-2" onClick={handleZoomOut} />
-        <Popconfirm title="确定要删除该对话吗？" onConfirm={handleClose}>
+        <Popconfirm okText="Confirm" cancelText="Cancel" title="Are you sure you want to delete this conversation?" onConfirm={handleClose}>
           <IconClose className="cursor-pointer mx-2" />
         </Popconfirm>
         <Icon className="cursor-pointer mx-2" svg={zoomFlag ? <IconShrink /> : <IconExpand />} onClick={handleZoom} />

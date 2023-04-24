@@ -12,14 +12,14 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
     <Form labelPosition="left" style={{ padding: '20px 0' }}>
       <Picker
         field="icon"
-        label="图标"
+        label="Icon"
         closeable
         icon={originIcon}
         onSelect={(icon) => handleChange?.(chatId, 'icon', icon)}
       />
       <Form.Input
         field="title"
-        label="标题"
+        label="Title"
         initValue={originTitle}
         onChange={(value) => handleChange?.(chatId, 'title', value)}
       />
