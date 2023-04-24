@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import Pages from 'vite-plugin-pages';
 import legacy from '@vitejs/plugin-legacy';
+import { VitePWA } from 'vite-plugin-pwa';
 import svgLoader from '@andylacko/vite-svg-react-loader';
 
 export default defineConfig(({ mode }) => {
@@ -33,6 +34,17 @@ export default defineConfig(({ mode }) => {
         // polyfills: ['es.array.at', 'es.string.match-all'],
         // modernPolyfills: [],
       }),
+      VitePWA({
+        registerType: 'autoUpdate',
+        injectRegister: 'auto',
+        manifest: {
+          name: 'aios.chat',
+          short_name: 'aois.chat',
+          icons: [
+            { src: '/logo.svg', sizes: '192x192', type: 'image/svg+xml' },
+          ],
+        },
+      })
     ],
     css: {
       modules: {

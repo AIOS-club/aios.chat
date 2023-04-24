@@ -36,7 +36,7 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
 
   const renderAvator = useCallback((character: 'user' | 'bot') => {
     if (character === 'user' && !USER_AVATOR) {
-      return <IconUser className="w-full h-full flex items-center justify-center" size="large" />;
+      return <IconUser className="w-full flex items-center justify-center" size="large" />;
     }
     const userUrl = USER_AVATOR;
     const aiUrl = AI_AVATOR || aiAvator;
