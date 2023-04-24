@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { v4 as uuid } from 'uuid';
+import { IconPlus } from '@douyinfe/semi-icons';
 import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import { randomBrightColor } from '@/utils';
@@ -150,6 +151,9 @@ function App () {
                     />
                   ))}
                 </div>
+              </DockCard>
+              <DockCard onClick={handleNewChat}>
+                <IconPlus className="w-full h-full flex items-center justify-center" size="large" />
               </DockCard>
             </Dock>
           )}
