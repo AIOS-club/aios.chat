@@ -36,7 +36,7 @@ const TabItem: React.FC<TabItemProps> = function TabItem({ chat }) {
     >
       <ChatIcon chat={chat} size="1rem" className="mr-2" />
       <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative text-left">
-        {title || data[0]?.value || '新对话'}
+        {title || data[0]?.value || 'New Chat'}
       </div>
       {actived && <Icon svg={<Delete />} onClick={handleDelete} />}
     </button>

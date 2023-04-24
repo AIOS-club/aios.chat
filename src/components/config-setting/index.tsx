@@ -22,7 +22,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
       <Form.Slider
         field="temperature"
         initValue={config.temperature ?? 0.8}
-        label={{ text: 'temperature', extra: labelTips('较高的值会使输出更加随机') }}
+        label={{ text: 'temperature', extra: labelTips('A higher value will make the output more random.') }}
         min={0}
         max={2}
         step={0.1}
@@ -31,7 +31,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
       <Form.Slider
         field="presence_penalty"
         initValue={config.presence_penalty ?? -1.0}
-        label={{ text: 'presence_penalty', extra: labelTips('较高的值会容易改变对话的主题') }}
+        label={{ text: 'presence_penalty', extra: labelTips('A higher value will make it easier to shift the conversation topic.') }}
         min={-2}
         max={2}
         step={0.1}
@@ -42,7 +42,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
       <Form.Slider
         field="frequency_penalty"
         initValue={config.frequency_penalty ?? 1.0}
-        label={{ text: 'frequency_penalty', extra: labelTips('值越高，输出的重复度越低') }}
+        label={{ text: 'frequency_penalty', extra: labelTips('The higher the value, the lower the repetition rate of the output.') }}
         min={-2}
         max={2}
         step={0.1}

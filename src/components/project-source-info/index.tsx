@@ -12,9 +12,9 @@ const ProjectSourceInfo: React.FC = function ProjectSourceInfo() {
     if (INFO) return INFO;
     return (
       <>
-        本网站由
+        This website is provided with APIs and web services by the 
         <Text className="mx-1 text-xl" link={{ href: 'https://github.com/AIOS-club', target: '_blank' }}>AIOS</Text>
-        社区提供API和网页服务
+        community.
       </>
     );
   }, []);

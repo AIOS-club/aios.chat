@@ -58,9 +58,10 @@ const Header: React.FC = function Header() {
       style: { top: '100px', maxWidth: '100%' },
       bodyStyle: { marginLeft: 0 },
       content: <ConfigSetting handleConfigChange={handleConfigChange} config={config} />,
-      okText: '保存',
+      okText: 'Save',
+      cancelText: 'Cancel',
       onOk: () => {
-        Toast.success('保存成功');
+        Toast.success('Save successful');
         configRef.current?.destroy();
       },
       onCancel: () => {
@@ -78,11 +79,13 @@ const Header: React.FC = function Header() {
       <div className="flex-grow flex items-center justify-end">
         {chatList.length > 0 && (
           <Popconfirm
-            title="确定要删除所有对话吗？"
-            content="删除后所有对话都会清除，无法恢复"
+            title="Are you sure you want to delete all conversations?"
+            content="Once deleted, all conversations will be removed and cannot be restored."
+            okText="Confirm"
+            cancelText="Cancel"
             onConfirm={() => {
               handleDeleteAll();
-              Toast.success('删除成功');
+              Toast.success('Deletion successful');
             }}
           >
             <button className={commonCls} type="button">
@@ -103,7 +106,7 @@ const Header: React.FC = function Header() {
       </div>
       <SideSheet
         closable
-        title="会话记录"
+        title="Conversation history"
         width="60%"
         headerStyle={{ padding: '12px' }}
         bodyStyle={{ padding: 0 }}
