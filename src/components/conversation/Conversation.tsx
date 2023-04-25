@@ -19,7 +19,7 @@ import './github.css';
 import './katex.min.css';
 
 const defaultClass = 'md:px-4 w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group';
-const conversationCls = 'min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap';
+const conversationCls = 'min-h-[20px] flex flex-col items-start gap-4';
 const shareBtnCls = 'absolute top-10 right-0 w-10 h-7 flex justify-center items-center btn-neutral rounded-l html2canvas-ignore';
 const markdownCls = 'markdown-body w-0 flex-grow';
 
