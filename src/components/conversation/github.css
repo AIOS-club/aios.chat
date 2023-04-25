@@ -6,7 +6,7 @@
   background-color: transparent;
   font-size: 1.05rem;
   word-wrap: break-word;
-  line-height: 1.5;
+  line-height: 1.8;
   color-scheme: light;
   --color-prettylights-syntax-comment: #6e7781;
   --color-prettylights-syntax-constant: #0550ae;
@@ -408,7 +408,7 @@
   padding-left: 2em;
 }
 
-ol, ul, menu {
+ul {
   list-style: unset !important;
 }
 
