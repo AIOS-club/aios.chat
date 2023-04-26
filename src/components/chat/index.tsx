@@ -124,7 +124,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
         return pre;
       });
       if (statusCode === 401) {
-        open(); // 没key时弹出弹窗
+        open(errorMsg); // 没key时弹出弹窗
       }
     }).finally(() => {
       setLoading(false);
