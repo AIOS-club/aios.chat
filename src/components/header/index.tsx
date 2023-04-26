@@ -1,26 +1,22 @@
-import React, { useState, useCallback, useRef } from 'react';
-import {
-  Icon, Modal, Toast, Popconfirm, SideSheet 
-} from '@douyinfe/semi-ui';
+import React, { useState, useCallback } from 'react';
+import { Icon, Toast, Popconfirm, SideSheet } from '@douyinfe/semi-ui';
 import { IconMenu, IconSetting } from '@douyinfe/semi-icons';
 import classNames from 'classnames';
 import Moon from '@/assets/svg/moon.svg';
 import Add from '@/assets/svg/add.svg';
 import Sun from '@/assets/svg/sun.svg';
 import Delete from '@/assets/svg/delete.svg';
-import ConfigSetting from '@/components/config-setting';
 import TabItem from '@/components/tab-item';
+import useConfigSetting from '@/components/config-setting/useConfigSetting';
 import useChatList from '@/hooks/useChatList';
 
 const commonCls = 'flex py-3 px-3 items-center shrink-0 gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm';
 export type Mode = 'light' | 'dark' | false;
 
 const Header: React.FC = function Header() {
-  const {
-    handleNewChat, config, handleConfigChange, chatList, handleDeleteAll 
-  } = useChatList();
+  const { handleNewChat, chatList, handleDeleteAll } = useChatList();
 
-  const configRef = useRef<any>();
+  const open = useConfigSetting();
 
   const [visible, setVisible] = useState<boolean>(false);
   const [mode, setMode] = useState<Mode>(() => {
@@ -46,31 +42,6 @@ const Header: React.FC = function Header() {
     }
   }, [mode]);
 
-  const handleChangeSetting = useCallback(() => {
-    const preConfig = { ...(config || {}) };
-    configRef.current = Modal.info({
-      header: (
-        <div className="py-6 font-semibold flex items-center">
-          <IconSetting className="mr-2" />
-          Setting
-        </div>
-      ),
-      style: { top: '100px', maxWidth: '100%' },
-      bodyStyle: { marginLeft: 0 },
-      content: <ConfigSetting handleConfigChange={handleConfigChange} config={config} />,
-      okText: 'Save',
-      cancelText: 'Cancel',
-      onOk: () => {
-        Toast.success('Save successful');
-        configRef.current?.destroy();
-      },
-      onCancel: () => {
-        handleConfigChange(preConfig);
-        configRef.current?.destroy();
-      }
-    });
-  }, [config, handleConfigChange]);
-
   return (
     <div className="sticky shrink-0 top-0 z-11 h-12 flex items-center justify-between border-b border-white/20 bg-gray-800 text-gray-200 sm:pl-3">
       <button className={classNames(commonCls, 'hidden', 'max-md:flex')} type="button" onClick={() => setVisible(true)}>
@@ -93,7 +64,7 @@ const Header: React.FC = function Header() {
             </button>
           </Popconfirm>
         )}
-        <button className={commonCls} type="button" onClick={handleChangeSetting}>
+        <button className={commonCls} type="button" onClick={open}>
           <IconSetting />
         </button>
         <button className={commonCls} onClick={handleChangeMode} type="button">

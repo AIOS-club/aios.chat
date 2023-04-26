@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { animated, useSpringValue } from '@react-spring/web';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/ConversationProps';
+import useConfigSetting from '@/components/config-setting/useConfigSetting';
 import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
 import ChatHeader from '@/components/chat-header';
@@ -38,6 +39,8 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   const isMobile = useIsMobile();
 
   const [scrollRef, scrollToBottom] = useScrollToBottom();
+
+  const open = useConfigSetting();
 
   const width = useSpringValue(isMobile ? '100%' : '80%', { config: { mass: 0.1, tension: 320 } });
   const height = useSpringValue(isMobile ? '100%' : '80%', { config: { mass: 0.1, tension: 320, } });
@@ -92,22 +95,26 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       signal: abortControllerRef.current.signal,
       onDownloadProgress({ event }) {
         const chunk: string = event.target?.responseText || '';
-        try {
-          const parseChunk = ONLY_TEXT === 'true' ? chunk : parseStreamText(chunk);
-          setConversation((c) => {
-            const pre = [...c];
-            const [lastConversation] = pre.slice(-1);
-            Object.assign(lastConversation, { value: parseMarkdown(parseChunk), error: false });
-            return pre;
-          });
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error(error);
-          // abortControllerRef.current?.abort();
+        const statusCode = event.target?.status;
+        if (statusCode === 200) {
+          try {
+            const parseChunk = ONLY_TEXT === 'true' ? chunk : parseStreamText(chunk);
+            setConversation((c) => {
+              const pre = [...c];
+              const [lastConversation] = pre.slice(-1);
+              Object.assign(lastConversation, { value: parseMarkdown(parseChunk), error: false });
+              return pre;
+            });
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+            // abortControllerRef.current?.abort();
+          }
         }
       },
     }).catch((error: AxiosError) => {
       const res = error.response?.data;
+      const statusCode = error.response?.status;
       const errorObj = res && typeof res === 'string' ? JSON.parse(res) : res;
       const errorMsg = errorObj?.error?.message || errorObj?.message || '';
       setConversation((c) => {
@@ -116,6 +123,9 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
         Object.assign(lastConversation, { value: lastConversation.value || errorMsg, error: true, stop: true });
         return pre;
       });
+      if (statusCode === 401) {
+        open(); // 没key时弹出弹窗
+      }
     }).finally(() => {
       setLoading(false);
       abortControllerRef.current = undefined;
