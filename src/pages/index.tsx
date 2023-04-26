@@ -34,13 +34,28 @@ function App () {
     };
   });
 
-  const [currentChat, setCurrentChat] = useState<ChatList | undefined>(() => (chatList && chatList.length > 0 ? chatList[0] : { chatId: uuid(), data: [] }));
+  const [currentChat, setChat] = useState<ChatList | undefined>(() => {
+    if (localStorage?.getItem('currentChat')) {
+      return JSON.parse(localStorage.getItem('currentChat') || '{}');
+    }
+    return chatList && chatList.length > 0 ? chatList[0] : { chatId: uuid(), data: [] };
+  });
+
   const [displayDock, setDisplayDock] = useState<boolean>(true);
   const [openLaunch, setOpenLaunch] = useState<boolean>(false);
 
   const isMobile = useIsMobile();
 
   const dockCount = useDockCount();
+
+  const setCurrentChat = (chat?: ChatList) => {
+    setChat(chat);
+    if (chat) {
+      localStorage?.setItem('currentChat', JSON.stringify(chat));
+    } else {
+      localStorage?.removeItem('currentChat');
+    }
+  };
 
   const handleConfigChange = (_config: Config) => {
     if (_config && typeof _config === 'object') {
@@ -93,7 +108,7 @@ function App () {
     localStorage?.removeItem('chatList');
   }, []);
 
-  const handleNewChat = () => {
+  const handleNewChat = useCallback(() => {
     const curChatId = uuid();
     const newChat = { chatId: curChatId, data: [] };
     setCurrentChat(newChat);
@@ -104,11 +119,7 @@ function App () {
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
-  };
-
-  const handleOpenChat = (chat: ChatList) => {
-    setCurrentChat(chat);
-  };
+  }, []);
 
   const value = useMemo(() => ({
     chatList,
@@ -123,7 +134,7 @@ function App () {
     handleDelete,
     handleDeleteAll,
     handleChatValueChange,
-  }), [chatList, config, currentChat, handleDelete, handleDeleteAll]);
+  }), [chatList, config, currentChat, handleDelete, handleNewChat, handleDeleteAll]);
 
   const displayChatList = chatList.slice(0, dockCount);
   const hiddenChatList = chatList.slice(dockCount, chatList.length);
@@ -137,7 +148,7 @@ function App () {
           {displayChatList.length > 0 && !isMobile && (
             <Dock key={chatList.length} display={displayDock}>
               {displayChatList.map((chat) => (
-                <DockCard key={chat.chatId} checked={chat.chatId === currentChat?.chatId} onClick={() => handleOpenChat(chat)}>
+                <DockCard key={chat.chatId} checked={chat.chatId === currentChat?.chatId} onClick={() => setCurrentChat(chat)}>
                   <ChatIcon chat={chat} />
                 </DockCard>
               ))}

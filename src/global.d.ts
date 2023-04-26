@@ -29,7 +29,6 @@ export interface ChatStoreProps {
   chatList: ChatList[];
   currentChat?: ChatList;
   setChatList: React.Dispatch<React.SetStateAction<ChatList[]>>;
-  setCurrentChat: React.Dispatch<React.SetStateAction<ChatList | undefined>>;
   setDisplayDock: React.Dispatch<React.SetStateAction<boolean>>;
   handleConfigChange: (config: Config) => void;
   handleChange: (chatId: string, data: Conversation[], forceUpdate?: boolean) => void;
@@ -37,6 +36,7 @@ export interface ChatStoreProps {
   handleChatValueChange?: (chatId: string, key: ChatListKey, value: any) => void;
   handleDeleteAll: () => void;
   handleNewChat: () => void;
+  setCurrentChat: (chat?: ChatList) => void;
 }
 
 export interface Messages {
