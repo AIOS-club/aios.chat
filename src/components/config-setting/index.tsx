@@ -18,7 +18,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
   return (
     <Form labelPosition="left" onValueChange={handleValuesChange}>
       <Form.Select field="model" initValue={config.model || 'gpt-3.5-turbo'} disabled />
-      <Form.Input field="apiKey" initValue={config.apiKey} />
+      <Form.Input field="apiKey" initValue={config.apiKey} showClear />
       <Form.Slider
         field="temperature"
         initValue={config.temperature ?? 0.8}
