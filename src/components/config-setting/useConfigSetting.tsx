@@ -9,7 +9,7 @@ function useConfigSetting() {
 
   const configRef = useRef<any>();
 
-  const open = useCallback(() => {
+  const open = useCallback((tips?: string) => {
     const preConfig = { ...(config || {}) };
     configRef.current = Modal.info({
       header: (
@@ -20,7 +20,7 @@ function useConfigSetting() {
       ),
       style: { top: '100px', maxWidth: '100%' },
       bodyStyle: { marginLeft: 0 },
-      content: <ConfigSetting handleConfigChange={handleConfigChange} config={config} />,
+      content: <ConfigSetting tips={tips} handleConfigChange={handleConfigChange} config={config} />,
       okText: 'Save',
       cancelText: 'Cancel',
       onOk: () => {

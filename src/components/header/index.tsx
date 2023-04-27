@@ -64,7 +64,7 @@ const Header: React.FC = function Header() {
             </button>
           </Popconfirm>
         )}
-        <button className={commonCls} type="button" onClick={open}>
+        <button className={commonCls} type="button" onClick={() => open()}>
           <IconSetting />
         </button>
         <button className={commonCls} onClick={handleChangeMode} type="button">

@@ -5,7 +5,7 @@ import { ConfigSettingProps } from './ConfigSetting';
 import { Config } from '@/global';
 
 const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props) {
-  const { handleConfigChange, config } = props;
+  const { handleConfigChange, config, tips } = props;
 
   const handleValuesChange = useCallback((values: Config) => {
     handleConfigChange(values);
@@ -17,6 +17,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
 
   return (
     <Form labelPosition="left" onValueChange={handleValuesChange}>
+      {tips ? <div className="text-[#ff0000]">{tips}</div> : null}
       <Form.Select field="model" initValue={config.model || 'gpt-3.5-turbo'} disabled />
       <Form.Input field="apiKey" initValue={config.apiKey} showClear />
       <Form.Slider
