@@ -30,7 +30,13 @@ function App () {
       return JSON.parse(localStorage.getItem('config') || '{}');
     } 
     return {
-      apiKey: '', stream: true, temperature: 0.8, presence_penalty: -1.0, frequency_penalty: 1.0, model: 'gpt-3.5-turbo'
+      apiHost: import.meta.env.VITE_API_HOST,
+      apiKey: '',
+      stream: true,
+      temperature: 0.8,
+      presence_penalty: -1.0,
+      frequency_penalty: 1.0,
+      model: 'gpt-3.5-turbo',
     };
   });
 

@@ -13,6 +13,7 @@ interface ImportMetaEnv {
   readonly VITE_AI_AVATOR_URL: string
   readonly VITE_LOGO_URL: string
   readonly VITE_INFO: string
+  readonly VITE_ONLY_TEXT: string
 }
 
 interface ImportMeta {

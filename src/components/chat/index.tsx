@@ -83,10 +83,10 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     setLoading(true);
 
     const headers = config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : {};
-    const { apiKey, ...body } = config;
+    const { apiKey, apiHost, ...body } = config;
 
     await axios({
-      url: API_HOST,
+      url: apiHost || API_HOST,
       timeout: 300000,
       method: 'POST',
       responseType: 'stream',
@@ -120,7 +120,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       setConversation((c) => {
         const pre = [...c];
         const [lastConversation] = pre.slice(-1);
-        Object.assign(lastConversation, { value: lastConversation.value || errorMsg, error: true, stop: true });
+        Object.assign(lastConversation, { value: lastConversation.value || errorMsg || 'something is wrong', error: true, stop: true });
         return pre;
       });
       if (statusCode === 401) {
