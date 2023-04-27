@@ -146,7 +146,7 @@ function App () {
         <div className="overflow-hidden relative grow dark:bg-gray-900">
           <ProjectSourceInfo />
           {displayChatList.length > 0 && !isMobile && (
-            <Dock key={chatList.length} display={displayDock}>
+            <Dock key={`${chatList[0]?.chatId}${chatList.length}`} display={displayDock}>
               {displayChatList.map((chat) => (
                 <DockCard key={chat.chatId} checked={chat.chatId === currentChat?.chatId} onClick={() => setCurrentChat(chat)}>
                   <ChatIcon chat={chat} />
@@ -180,7 +180,17 @@ function App () {
         chatList={chatList}
         open={openLaunch}
         setOpen={setOpenLaunch}
-        onClickItem={setCurrentChat}
+        onDeleteItem={handleDelete}
+        onClickItem={(chat) => {
+          setCurrentChat(chat);
+          // 启动台选中的会话默认放到第一个？
+          setChatList((pre) => {
+            const curChatIndex = pre.findIndex((p) => p.chatId === chat?.chatId);
+            pre.splice(curChatIndex, 1);
+            if (chat) pre.unshift(chat);
+            return pre;
+          });
+        }}
       />
     </Store.Provider>
   );

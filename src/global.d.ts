@@ -14,7 +14,7 @@ export interface Config {
   stream: boolean; // 流式传输
 }
 
-export interface ChatList{
+export interface ChatList {
   chatId: string;
   data: Conversation[];
   title?: string;

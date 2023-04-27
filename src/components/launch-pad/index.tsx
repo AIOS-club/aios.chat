@@ -3,15 +3,16 @@ import {
   useTransition, useSpring, useSpringRef, config, animated, useChain
 } from '@react-spring/web';
 import classNames from 'classnames';
+import { IconClose } from '@douyinfe/semi-icons';
 import ChatIcon from '@/components/chat-icon';
-import { LaunchPadProps } from './LaunchPad';
 import useWindowResize from '@/hooks/useWindowResize';
+import { LaunchPadProps } from './LaunchPad';
 
 const chatIconCls = 'border-2 border-gray-200 rounded-md dark:border-slate-800 dark:bg-slate-800';
 
 const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
   const {
-    chatList, currentChat, open, setOpen, onClickItem 
+    chatList, currentChat, open, setOpen, onClickItem, onDeleteItem
   } = props;
 
   const springApi = useSpringRef();
@@ -78,7 +79,7 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
         {transition((style, item) => (
           <animated.div
             key={item.chatId}
-            className="w-20 h-20 my-16 mx-12 cursor-pointer"
+            className="w-20 h-20 my-16 mx-12 cursor-pointer relative"
             style={{ ...style }}
             onClick={() => onClickItem(item)}
           >
@@ -88,6 +89,15 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
             />
             <div className="w-full text-gray-800 dark:text-white text-center my-2 text-ellipsis overflow-hidden break-keep whitespace-nowrap">
               {item.title || item.data[0]?.value || '[empty]'}
+            </div>
+            <div
+              className="w-5 h-5 flex justify-center items-center absolute top-0 right-0 cursor-pointer translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteItem(item.chatId);
+              }}
+            >
+              <IconClose size="small" />
             </div>
           </animated.div>
         ))}
