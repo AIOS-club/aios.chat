@@ -6,4 +6,5 @@ export interface LaunchPadProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onClickItem: (chat?: ChatList) => void;
+  onDeleteItem: (chatId: string) => void;
 }

@@ -30,7 +30,13 @@ function App () {
       return JSON.parse(localStorage.getItem('config') || '{}');
     } 
     return {
-      apiKey: '', stream: true, temperature: 0.8, presence_penalty: -1.0, frequency_penalty: 1.0, model: 'gpt-3.5-turbo'
+      apiHost: import.meta.env.VITE_API_HOST,
+      apiKey: '',
+      stream: true,
+      temperature: 0.8,
+      presence_penalty: -1.0,
+      frequency_penalty: 1.0,
+      model: 'gpt-3.5-turbo',
     };
   });
 
@@ -79,8 +85,11 @@ function App () {
     });
   };
 
-  const handleChatValueChange = (chatId: string, key: ChatListKey, value: any) => {
+  const handleChatValueChange = useCallback((chatId: string, key: ChatListKey, value: any) => {
     if (!key) return;
+    if (chatId === currentChat?.chatId) {
+      setCurrentChat({ ...currentChat, [key]: value });
+    }
     setChatList((pre) => {
       const cacheChatList: ChatList[] = [...pre];
       const changeChat: any = cacheChatList.find((chat) => chat.chatId === chatId);
@@ -90,7 +99,7 @@ function App () {
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
-  };
+  }, [currentChat]);
 
   const handleDelete = useCallback((chatId: string) => {
     setChatList((pre) => {
@@ -134,7 +143,7 @@ function App () {
     handleDelete,
     handleDeleteAll,
     handleChatValueChange,
-  }), [chatList, config, currentChat, handleDelete, handleNewChat, handleDeleteAll]);
+  }), [chatList, config, currentChat, handleChatValueChange, handleDelete, handleDeleteAll, handleNewChat]);
 
   const displayChatList = chatList.slice(0, dockCount);
   const hiddenChatList = chatList.slice(dockCount, chatList.length);
@@ -146,7 +155,7 @@ function App () {
         <div className="overflow-hidden relative grow dark:bg-gray-900">
           <ProjectSourceInfo />
           {displayChatList.length > 0 && !isMobile && (
-            <Dock key={chatList.length} display={displayDock}>
+            <Dock key={`${chatList[0]?.chatId}${chatList.length}`} display={displayDock}>
               {displayChatList.map((chat) => (
                 <DockCard key={chat.chatId} checked={chat.chatId === currentChat?.chatId} onClick={() => setCurrentChat(chat)}>
                   <ChatIcon chat={chat} />
@@ -180,7 +189,17 @@ function App () {
         chatList={chatList}
         open={openLaunch}
         setOpen={setOpenLaunch}
-        onClickItem={setCurrentChat}
+        onDeleteItem={handleDelete}
+        onClickItem={(chat) => {
+          setCurrentChat(chat);
+          // 启动台选中的会话默认放到第一个？
+          setChatList((pre) => {
+            const curChatIndex = pre.findIndex((p) => p.chatId === chat?.chatId);
+            pre.splice(curChatIndex, 1);
+            if (chat) pre.unshift(chat);
+            return pre;
+          });
+        }}
       />
     </Store.Provider>
   );

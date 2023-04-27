@@ -103,11 +103,15 @@ function findMaxZIndex(arr: ChatList[]): number {
   return maxZIndex > 0 ? maxZIndex + 1 : 10;
 }
 
-function getSystemMessages(): Messages[] {
-  return [
+function getSystemMessages(message?: string): Messages[] {
+  const systemMessages: Messages[] = [
     { role: 'system', content: 'Return the answer in markdown format' },
     { role: 'system', content: `Current Beijing time is: ${getCurrentDate()}` }
   ];
+  if (message) {
+    systemMessages.push({ role: 'system', content: message });
+  }
+  return systemMessages;
 }
 
 function randomBrightColor(str: string): string {

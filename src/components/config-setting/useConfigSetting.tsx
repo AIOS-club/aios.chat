@@ -18,7 +18,7 @@ function useConfigSetting() {
           Setting
         </div>
       ),
-      style: { top: '100px', maxWidth: '100%' },
+      style: { top: '20px', maxWidth: '100%' },
       bodyStyle: { marginLeft: 0 },
       content: <ConfigSetting tips={tips} handleConfigChange={handleConfigChange} config={config} />,
       okText: 'Save',

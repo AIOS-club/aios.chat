@@ -4,6 +4,8 @@ import { IconHelpCircle } from '@douyinfe/semi-icons';
 import { ConfigSettingProps } from './ConfigSetting';
 import { Config } from '@/global';
 
+const API_HOST: string = import.meta.env.VITE_API_HOST;
+
 const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props) {
   const { handleConfigChange, config, tips } = props;
 
@@ -19,6 +21,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
     <Form labelPosition="left" onValueChange={handleValuesChange}>
       {tips ? <div className="text-[#ff0000]">{tips}</div> : null}
       <Form.Select field="model" initValue={config.model || 'gpt-3.5-turbo'} disabled />
+      <Form.Input field="apiHost" initValue={config.apiHost || API_HOST} showClear />
       <Form.Input field="apiKey" initValue={config.apiKey} showClear />
       <Form.Slider
         field="temperature"
@@ -37,7 +40,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
         max={2}
         step={0.1}
         marks={{
-          '-2': '-2', '-1': '-1', 0: '0', 1: '1', 2: '2' 
+          '-2': '-2', '-1': '-1', 0: '0', 1: '1', 2: '2'
         }}
       />
       <Form.Slider
@@ -48,7 +51,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
         max={2}
         step={0.1}
         marks={{
-          '-2': '-2', '-1': '-1', 0: '0', 1: '1', 2: '2' 
+          '-2': '-2', '-1': '-1', 0: '0', 1: '1', 2: '2'
         }}
       />
       <Form.Switch field="stream" initValue={config.stream} />

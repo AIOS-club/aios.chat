@@ -3,10 +3,11 @@ import { SiteConfig } from "./hooks/useWebConfigModel";
 import { Conversation } from "./components/conversation/Conversation";
 import { IconProps } from "@/components/icon-picker/IconPicker";
 
-export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'icon' | 'otherProps';
+export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'icon' | 'otherProps' | 'systemMessage';
 
 export interface Config {
   apiKey: string;
+  apiHost: string;
   model: string;
   temperature: number; // 输出更加随机 较高的值会使输出更加随机 0 - 2
   presence_penalty: number; // 不轻易改变对话主题 越高越容易改变话题 -2.0 - 2.0
@@ -14,11 +15,12 @@ export interface Config {
   stream: boolean; // 流式传输
 }
 
-export interface ChatList{
+export interface ChatList {
   chatId: string;
   data: Conversation[];
   title?: string;
   style?: React.CSSProperties;
+  systemMessage?: string;
   titleBlock?: boolean;
   icon?: IconProps;
   otherProps?: Record<string, any>;
