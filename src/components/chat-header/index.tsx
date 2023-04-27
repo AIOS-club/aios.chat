@@ -10,7 +10,7 @@ import { ChatHeaderProps } from './ChatHeader';
 
 const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
   const {
-    title, chatId, disabled, onResize, icon
+    title, chatId, disabled, onResize, icon, systemMessage
   } = props;
 
   const [zoomFlag, setZoomFlag] = useState<boolean>(false);
@@ -46,19 +46,30 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
     chatConfigRef.current = Modal.info({
       title: 'Conversation configuration',
       style: { maxWidth: '100%' },
-      content: <ChatConfig chatId={chatId} originTitle={title} originIcon={icon} handleChange={handleChatValueChange} />,
+      bodyStyle: { marginLeft: '0' },
+      content: (
+        <ChatConfig
+          chatId={chatId}
+          originTitle={title}
+          originIcon={icon}
+          handleChange={handleChatValueChange}
+          systemMessage={systemMessage}
+        />
+      ),
       okText: 'Save',
       cancelText: 'Cancel',
       onOk: () => {
         Toast.success('Modification successful');
       },
       onCancel: () => {
+        // TODO 需要优化
         handleChatValueChange?.(chatId, 'title', title);
         handleChatValueChange?.(chatId, 'icon', icon);
+        handleChatValueChange?.(chatId, 'icon', systemMessage);
         chatConfigRef.current?.destroy();
       }
     });
-  }, [title, icon, chatId, handleChatValueChange]);
+  }, [title, icon, chatId, systemMessage, handleChatValueChange]);
 
   return (
     <div className="chat-header w-full h-10 px-3 flex items-center bg-white text-gray-800 dark:text-gray-100 dark:bg-gray-700 border-b border-black/10">

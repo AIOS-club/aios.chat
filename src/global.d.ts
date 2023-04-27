@@ -3,7 +3,7 @@ import { SiteConfig } from "./hooks/useWebConfigModel";
 import { Conversation } from "./components/conversation/Conversation";
 import { IconProps } from "@/components/icon-picker/IconPicker";
 
-export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'icon' | 'otherProps';
+export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'icon' | 'otherProps' | 'systemMessage';
 
 export interface Config {
   apiKey: string;
@@ -20,6 +20,7 @@ export interface ChatList {
   data: Conversation[];
   title?: string;
   style?: React.CSSProperties;
+  systemMessage?: string;
   titleBlock?: boolean;
   icon?: IconProps;
   otherProps?: Record<string, any>;

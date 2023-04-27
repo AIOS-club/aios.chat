@@ -25,7 +25,9 @@ const ONLY_TEXT: string = import.meta.env.VITE_ONLY_TEXT;
 const Chat: React.FC<ChatProps> = function Chat(props) {
   const { chat } = props;
 
-  const { data, chatId: ChatID, title, icon } = chat;
+  const {
+    data, chatId: ChatID, title, icon, systemMessage
+  } = chat;
 
   const { config, handleChange } = useChatList();
 
@@ -76,7 +78,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     setConversation(curConversation);
     handleChange(chatId, curConversation, true);
 
-    const messages = getSystemMessages().concat(getCachePrompt([...curConversation], v.trimEnd())); // 获取上下文缓存的信息
+    const messages = getSystemMessages(systemMessage).concat(getCachePrompt([...curConversation], v.trimEnd())); // 获取上下文缓存的信息
 
     abortControllerRef.current = new AbortController();
 
@@ -158,10 +160,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     }
   };
 
-  const handleRetry = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    lastConversation: Conversation,
-  ) => {
+  const handleRetry = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, lastConversation: Conversation) => {
     e.stopPropagation();
     e.preventDefault();
     const { value: lastConversationValue } = lastConversation;
@@ -195,7 +194,15 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}
       style={{ width, height }}
     >
-      {!isMobile && <ChatHeader onResize={handleResize} title={title || conversation[0]?.value} chatId={chatId} icon={icon} />}
+      {!isMobile && (
+        <ChatHeader
+          onResize={handleResize}
+          title={title || conversation[0]?.value}
+          chatId={chatId}
+          icon={icon}
+          systemMessage={systemMessage}
+        />
+      )}
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full bg-white dark:bg-gray-800 relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
