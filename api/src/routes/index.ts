@@ -55,7 +55,7 @@ router.post('/aios-chat', async (req, res) => {
   const config = { responseType: stream ? 'stream' : 'json', headers: { authorization } };
 
   const answer = await callOpenAI(chatCompletionRequest, config, RETRIES);
-  
+
   if (answer instanceof Error) {
     let status = 500;
     let errorMessage = ErrorMessage['500'];
@@ -71,7 +71,7 @@ router.post('/aios-chat', async (req, res) => {
       const chunk = parseStreamText(data.toString()).content;
       res.write(chunk);
     });
-  
+
     answer.data.on('end', () => {
       res.end();
     });
