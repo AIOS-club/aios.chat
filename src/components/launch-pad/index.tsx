@@ -4,16 +4,17 @@ import {
 } from '@react-spring/web';
 import classNames from 'classnames';
 import { IconClose } from '@douyinfe/semi-icons';
+import { useSearchParams } from 'react-router-dom';
 import ChatIcon from '@/components/chat-icon';
 import useWindowResize from '@/hooks/useWindowResize';
 import { LaunchPadProps } from './LaunchPad';
 
-const chatIconCls = 'border-2 border-gray-200 rounded-md dark:border-slate-800 dark:bg-slate-800';
-
 const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
   const {
-    chatList, currentChat, open, setOpen, onClickItem, onDeleteItem
+    chatList, open, setOpen, onClickItem, onDeleteItem
   } = props;
+
+  const [query] = useSearchParams();
 
   const springApi = useSpringRef();
   const transApi = useSpringRef();
@@ -85,7 +86,10 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
           >
             <ChatIcon
               chat={item}
-              className={classNames(chatIconCls, { 'border-[#000] dark:border-[#fff]': item.chatId === currentChat?.chatId })}
+              className={classNames('border-2 rounded-md dark:bg-slate-800', {
+                'border-[#000] dark:border-[#fff]': item.chatId === query.get('chatId'),
+                'border-gray-200 dark:border-slate-800': item.chatId !== query.get('chatId')
+              })}
             />
             <div className="w-full text-gray-800 dark:text-white text-center my-2 text-ellipsis overflow-hidden break-keep whitespace-nowrap">
               {item.title || item.data[0]?.value || '[empty]'}
@@ -97,7 +101,7 @@ const LaunchPad: React.FC<LaunchPadProps> = function LaunchPad(props) {
                 onDeleteItem(item.chatId);
               }}
             >
-              <IconClose size="small" />
+              <IconClose size="small" className="dark:text-black" />
             </div>
           </animated.div>
         ))}

@@ -3,6 +3,7 @@ import Icon, {
   IconClose, IconCheckboxIndeterminate, IconExpand, IconShrink, IconSetting 
 } from '@douyinfe/semi-icons';
 import { Popconfirm, Modal, Toast } from '@douyinfe/semi-ui';
+import { useNavigate } from 'react-router-dom';
 import ChatConfig from '@/components/chat-config';
 import Emoji from '@/components/emoji';
 import useChatList from '@/hooks/useChatList';
@@ -17,7 +18,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
 
   const chatConfigRef = useRef<any>();
 
-  const { handleDelete, setCurrentChat, setDisplayDock, handleChatValueChange } = useChatList();
+  const { handleDelete, setDisplayDock, handleChatValueChange } = useChatList();
+
+  const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
     if (disabled) return;
@@ -30,9 +33,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
     if (disabled) return;
     event.stopPropagation();
     event.preventDefault();
-    setCurrentChat(undefined);
+    navigate('/');
     setDisplayDock(true);
-  }, [disabled, setCurrentChat, setDisplayDock]);
+  }, [disabled, setDisplayDock, navigate]);
 
   const handleZoom = useCallback(() => {
     const widthSize = zoomFlag ? '80%' : '100%';

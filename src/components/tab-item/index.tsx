@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@douyinfe/semi-ui';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Delete from '@/assets/svg/delete.svg';
 import useChatList from '@/hooks/useChatList';
 import { ChatList } from '@/global';
@@ -15,12 +16,16 @@ const defaultCls = 'w-calc-full my-2 mx-1 border border-black/20 flex text-black
 const TabItem: React.FC<TabItemProps> = function TabItem({ chat }) {
   const { chatId, data, title } = chat;
 
-  const { handleDelete: handleChatDelete, currentChat, setCurrentChat } = useChatList();
+  const [query] = useSearchParams();
 
-  const actived = useMemo(() => currentChat?.chatId === chatId, [currentChat, chatId]);
+  const navigate = useNavigate();
+
+  const { handleDelete: handleChatDelete } = useChatList();
+
+  const actived = useMemo(() => query.get('chatId') === chatId, [query, chatId]);
 
   const handleClick = () => {
-    setCurrentChat(chat);
+    navigate(`?chatId=${chatId}`);
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
