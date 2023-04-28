@@ -169,7 +169,6 @@ function App () {
         </div>
       </div>
       <LaunchPad
-        currentChat={currentChat}
         chatList={chatList}
         open={openLaunch}
         setOpen={setOpenLaunch}
