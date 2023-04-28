@@ -1,4 +1,5 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { IconPlus } from '@douyinfe/semi-icons';
 import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
@@ -17,6 +18,9 @@ import useDockCount from '@/hooks/useDockCount';
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
 function App () {
+  const navigate = useNavigate();
+  const [query] = useSearchParams();
+
   const [chatList, setChatList] = useState<ChatList[]>(() => {
     if (localStorage?.getItem('chatList')) {
       const data = JSON.parse(localStorage.getItem('chatList') || '[]');
@@ -40,28 +44,12 @@ function App () {
     };
   });
 
-  const [currentChat, setChat] = useState<ChatList | undefined>(() => {
-    if (localStorage?.getItem('currentChat')) {
-      return JSON.parse(localStorage.getItem('currentChat') || '{}');
-    }
-    return chatList && chatList.length > 0 ? chatList[0] : { chatId: uuid(), data: [] };
-  });
-
   const [displayDock, setDisplayDock] = useState<boolean>(true);
   const [openLaunch, setOpenLaunch] = useState<boolean>(false);
 
   const isMobile = useIsMobile();
 
   const dockCount = useDockCount();
-
-  const setCurrentChat = (chat?: ChatList) => {
-    setChat(chat);
-    if (chat) {
-      localStorage?.setItem('currentChat', JSON.stringify(chat));
-    } else {
-      localStorage?.removeItem('currentChat');
-    }
-  };
 
   const handleConfigChange = (_config: Config) => {
     if (_config && typeof _config === 'object') {
@@ -85,11 +73,8 @@ function App () {
     });
   };
 
-  const handleChatValueChange = useCallback((chatId: string, key: ChatListKey, value: any) => {
+  const handleChatValueChange = (chatId: string, key: ChatListKey, value: any) => {
     if (!key) return;
-    if (chatId === currentChat?.chatId) {
-      setCurrentChat({ ...currentChat, [key]: value });
-    }
     setChatList((pre) => {
       const cacheChatList: ChatList[] = [...pre];
       const changeChat: any = cacheChatList.find((chat) => chat.chatId === chatId);
@@ -99,9 +84,9 @@ function App () {
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
-  }, [currentChat]);
+  };
 
-  const handleDelete = useCallback((chatId: string) => {
+  const handleDelete = (chatId: string) => {
     setChatList((pre) => {
       const cacheChatList = [...pre];
       const delChatIndex = cacheChatList.findIndex((chat) => chat.chatId === chatId);
@@ -109,18 +94,18 @@ function App () {
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
-  }, []);
+  };
 
   const handleDeleteAll = useCallback(() => {
     setChatList([]);
-    setCurrentChat(undefined);
+    navigate('/');
     localStorage?.removeItem('chatList');
-  }, []);
+  }, [navigate]);
 
   const handleNewChat = useCallback(() => {
     const curChatId = uuid();
     const newChat = { chatId: curChatId, data: [] };
-    setCurrentChat(newChat);
+    navigate(`?chatId=${curChatId}`);
     setDisplayDock(true);
     setChatList((pre) => {
       const cacheChatList = [...pre];
@@ -128,25 +113,24 @@ function App () {
       localStorage?.setItem('chatList', JSON.stringify(cacheChatList));
       return cacheChatList;
     });
-  }, []);
+  }, [navigate]);
 
   const value = useMemo(() => ({
     chatList,
     config,
-    currentChat,
     handleConfigChange,
     setChatList,
-    setCurrentChat,
     setDisplayDock,
     handleChange,
     handleNewChat,
     handleDelete,
     handleDeleteAll,
     handleChatValueChange,
-  }), [chatList, config, currentChat, handleChatValueChange, handleDelete, handleDeleteAll, handleNewChat]);
+  }), [chatList, config, handleDeleteAll, handleNewChat]);
 
   const displayChatList = chatList.slice(0, dockCount);
   const hiddenChatList = chatList.slice(dockCount, chatList.length);
+  const currentChat = chatList.find((chat) => chat.chatId === query.get('chatId'));
 
   return (
     <Store.Provider value={value}>
@@ -157,11 +141,11 @@ function App () {
           {displayChatList.length > 0 && !isMobile && (
             <Dock key={`${chatList[0]?.chatId}${chatList.length}`} display={displayDock}>
               {displayChatList.map((chat) => (
-                <DockCard key={chat.chatId} checked={chat.chatId === currentChat?.chatId} onClick={() => setCurrentChat(chat)}>
+                <DockCard key={chat.chatId} checked={chat.chatId === query.get('chatId')} onClick={() => navigate(`?chatId=${chat.chatId}`)}>
                   <ChatIcon chat={chat} />
                 </DockCard>
               ))}
-              <DockCard onClick={() => setOpenLaunch(true)} checked={hiddenChatList.some((chat) => chat.chatId === currentChat?.chatId)}>
+              <DockCard onClick={() => setOpenLaunch(true)} checked={hiddenChatList.some((chat) => chat.chatId === query.get('chatId'))}>
                 <div id="launch" className="w-full h-full flex flex-wrap justify-center items-center p-[2px]">
                   {chatList.slice(0, 9).map((chat) => (
                     <div
@@ -191,14 +175,16 @@ function App () {
         setOpen={setOpenLaunch}
         onDeleteItem={handleDelete}
         onClickItem={(chat) => {
-          setCurrentChat(chat);
           // 启动台选中的会话默认放到第一个？
-          setChatList((pre) => {
-            const curChatIndex = pre.findIndex((p) => p.chatId === chat?.chatId);
-            pre.splice(curChatIndex, 1);
-            if (chat) pre.unshift(chat);
-            return pre;
-          });
+          if (chat) {
+            navigate(`?chatId=${chat?.chatId}`);
+            setChatList((pre) => {
+              const curChatIndex = pre.findIndex((p) => p.chatId === chat?.chatId);
+              pre.splice(curChatIndex, 1);
+              if (chat) pre.unshift(chat);
+              return pre;
+            });
+          }
         }}
       />
     </Store.Provider>
