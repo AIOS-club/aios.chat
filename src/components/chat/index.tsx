@@ -107,6 +107,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
               Object.assign(lastConversation, { value: parseMarkdown(parseChunk), error: false });
               return pre;
             });
+            scrollToBottom();
           } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);
