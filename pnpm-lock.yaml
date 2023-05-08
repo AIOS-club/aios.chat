@@ -49,6 +49,9 @@ dependencies:
   less:
     specifier: ^4.1.3
     version: 4.1.3
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   postcss:
     specifier: ^8.4.20
     version: 8.4.20
@@ -102,6 +105,9 @@ devDependencies:
   '@types/emoji-mart':
     specifier: ^3.0.9
     version: 3.0.9
+  '@types/lodash':
+    specifier: ^4.14.194
+    version: 4.14.194
   '@types/node':
     specifier: ^18.11.10
     version: 18.11.10
@@ -2320,6 +2326,10 @@ packages:
   /@types/katex@0.16.0:
     resolution: {integrity: sha512-hz+S3nV6Mym5xPbT9fnO8dDhBFQguMYpY0Ipxv06JMi1ORgnEM4M1ymWDUhUNer3ElLmT583opRo4RzxKmh9jw==}
     dev: false
+
+  /@types/lodash@4.14.194:
+    resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==}
+    dev: true
 
   /@types/mdast@3.0.11:
     resolution: {integrity: sha512-Y/uImid8aAwrEA24/1tcRZwpxX3pIFTSilcNDKSPn+Y2iDywSEachzRuvgAYYLR3wpGXAsMbv5lvKLDZLeYPAw==}
