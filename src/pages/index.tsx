@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { IconPlus } from '@douyinfe/semi-icons';
@@ -50,6 +50,13 @@ function App () {
   const isMobile = useIsMobile();
 
   const dockCount = useDockCount();
+
+  useEffect(() => {
+    const firstChatId = chatList[0]?.chatId;
+    if (!query.get('chatId') && firstChatId) {
+      navigate(`?chatId=${firstChatId}`);
+    }
+  }, [chatList, navigate, query]);
 
   const handleConfigChange = (_config: Config) => {
     if (_config && typeof _config === 'object') {
@@ -174,7 +181,6 @@ function App () {
         setOpen={setOpenLaunch}
         onDeleteItem={handleDelete}
         onClickItem={(chat) => {
-          // 启动台选中的会话默认放到第一个？
           if (chat) {
             navigate(`?chatId=${chat?.chatId}`);
             setChatList((pre) => {
