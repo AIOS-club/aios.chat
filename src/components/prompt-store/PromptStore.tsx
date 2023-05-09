@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import {
   Button, ButtonGroup, Modal, Popconfirm, Table, Toast 
 } from '@douyinfe/semi-ui';
+import { IconDelete, IconPlus, IconRedoStroked } from '@douyinfe/semi-icons';
 import PromptItem from './PromptItem';
 import { PromptStoreList } from './PromptStoreProps';
 
@@ -62,22 +63,24 @@ const PromptStore: React.FC = function PromptStore() {
 
   const renderOptions = useCallback((_: any, record: PromptStoreList, index: number) => (
     <ButtonGroup>
-      <Button type="secondary" onClick={() => handleChange(record)}>Change</Button>
-      <Button type="danger" onClick={() => handleDelete(index)}>Delete</Button>
+      <Button icon={<IconRedoStroked />} type="secondary" onClick={() => handleChange(record)}>Change</Button>
+      <Button icon={<IconDelete />} type="danger" onClick={() => handleDelete(index)}>Delete</Button>
     </ButtonGroup>
   ), [handleDelete]);
+
+  const renderText = useCallback((text: any) => <div className="text-overflow-l4">{text}</div>, []);
 
   return (
     <>
       <ButtonGroup style={{ padding: '0 10px', height: 60, justifyContent: 'flex-end', alignItems: 'center' }}>
-        <Button type="tertiary" onClick={() => setVisible(true)}>Add</Button>
+        <Button icon={<IconPlus />} type="tertiary" onClick={() => setVisible(true)}>Add</Button>
         <Popconfirm okText="Confirm" cancelText="Cancel" title="Are you sure?" onConfirm={handleClear}>
-          <Button type="danger">Delete all</Button>
+          <Button icon={<IconDelete />} type="danger">Delete all</Button>
         </Popconfirm>
       </ButtonGroup>
       <Table dataSource={data} pagination={{ formatPageText: false }} empty="No data">
         <Table.Column width="25%" title="Title" dataIndex="title" key="Title" />
-        <Table.Column width="45%" title="Content" dataIndex="content" key="Content" />
+        <Table.Column width="45%" title="Content" dataIndex="content" key="Content" render={renderText} />
         <Table.Column width="30%" title="Options" dataIndex="options" key="Options" render={renderOptions} />
       </Table>
       <Modal

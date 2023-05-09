@@ -47,6 +47,13 @@ module.exports = {
           'line-height': '1.25rem',
           'padding': '0.5rem 0.75rem',
           'pointer-events': 'auto',
+        },
+        '.text-overflow-l4': {
+          overflow: 'hidden',
+          'text-overflow': 'ellipsis',
+          display: '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': '4',
         }
       }, ['responsive'])
     })
