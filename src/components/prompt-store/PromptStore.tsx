@@ -42,14 +42,14 @@ const PromptStore: React.FC = function PromptStore() {
 
   const handleConfirm = (changeFlag: boolean, values?: PromptStoreList) => {
     if (values) {
-      if (!changeFlag && data?.some((d) => d.title === values.title)) {
+      if (!changeFlag && data?.some((d) => d.label === values.label)) {
         Toast.warning('title repeat');
         return;
       }
       setData((pre) => {
         const cacheData = [...(pre || [])];
         if (changeFlag) {
-          const changeData = cacheData.find((d) => d.title === values.title);
+          const changeData = cacheData.find((d) => d.label === values.label);
           if (changeData) Object.assign(changeData, { ...values });
         } else {
           cacheData.unshift(values);
@@ -79,8 +79,8 @@ const PromptStore: React.FC = function PromptStore() {
         </Popconfirm>
       </ButtonGroup>
       <Table dataSource={data} pagination={{ formatPageText: false }} empty="No data">
-        <Table.Column width="25%" title="Title" dataIndex="title" key="Title" />
-        <Table.Column width="45%" title="Content" dataIndex="content" key="Content" render={renderText} />
+        <Table.Column width="25%" title="Title" dataIndex="label" key="label" />
+        <Table.Column width="45%" title="Content" dataIndex="value" key="value" render={renderText} />
         <Table.Column width="30%" title="Options" dataIndex="options" key="Options" render={renderOptions} />
       </Table>
       <Modal

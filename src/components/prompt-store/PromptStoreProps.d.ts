@@ -1,6 +1,6 @@
 export interface PromptStoreList {
-  title: string;
-  content: string;
+  label: string;
+  value: string;
 }
 
 export interface PromptItemProps {

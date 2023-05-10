@@ -1,7 +1,13 @@
 import { useRef } from 'react';
 import throttle from 'lodash/throttle';
 
-function useScrollToBottom(): [React.MutableRefObject<any>, () => void] {
+interface DebouncedFunc<T extends (...args: any[]) => any> {
+  (...args: Parameters<T>): ReturnType<T> | undefined;
+  cancel: () => void;
+  flush: () => ReturnType<T> | undefined;
+}
+
+function useScrollToBottom(): [React.MutableRefObject<any>, DebouncedFunc<() => void>] {
   const ref = useRef<HTMLElement>();
 
   const scrollToBottom = throttle(() => {
