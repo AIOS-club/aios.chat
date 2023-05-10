@@ -3,6 +3,7 @@ import {
   Button, ButtonGroup, Modal, Popconfirm, Table, Toast 
 } from '@douyinfe/semi-ui';
 import { IconDelete, IconPlus, IconRedoStroked } from '@douyinfe/semi-icons';
+import { v4 as uuid } from 'uuid';
 import PromptItem from './PromptItem';
 import { PromptStoreList } from './PromptStoreProps';
 
@@ -49,10 +50,10 @@ const PromptStore: React.FC = function PromptStore() {
       setData((pre) => {
         const cacheData = [...(pre || [])];
         if (changeFlag) {
-          const changeData = cacheData.find((d) => d.label === values.label);
+          const changeData = cacheData.find((d) => d.key === values.key);
           if (changeData) Object.assign(changeData, { ...values });
         } else {
-          cacheData.unshift(values);
+          cacheData.unshift({ ...values, key: uuid() });
         }
         localStorage.setItem('PromptStore', JSON.stringify(cacheData));
         return cacheData;
@@ -79,7 +80,7 @@ const PromptStore: React.FC = function PromptStore() {
         </Popconfirm>
       </ButtonGroup>
       <Table dataSource={data} pagination={{ formatPageText: false }} empty="No data">
-        <Table.Column width="25%" title="Title" dataIndex="label" key="label" />
+        <Table.Column width="25%" title="Title" dataIndex="label" key="label" render={renderText} />
         <Table.Column width="45%" title="Content" dataIndex="value" key="value" render={renderText} />
         <Table.Column width="30%" title="Options" dataIndex="options" key="Options" render={renderOptions} />
       </Table>
@@ -87,6 +88,7 @@ const PromptStore: React.FC = function PromptStore() {
         visible={visible}
         title="Add a prompt"
         footer={null}
+        style={{ maxWidth: '100%' }}
         onCancel={handleClose}
       >
         <PromptItem values={initValues} onConfirm={handleConfirm} />

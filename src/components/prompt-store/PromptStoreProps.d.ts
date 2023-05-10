@@ -1,4 +1,5 @@
 export interface PromptStoreList {
+  key: string;
   label: string;
   value: string;
 }

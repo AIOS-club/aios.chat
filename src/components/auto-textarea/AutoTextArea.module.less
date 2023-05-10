@@ -14,18 +14,12 @@
 }
 
 .autoComplete {
-  padding-right: 36px;
-
   :global {
-    .semi-input-wrapper {
-      height: 0;
-      // background-color: transparent !important;
-      background-color: red;
-      border: none;
-
-      .semi-input-default {
-        height: 0;
-        padding: 0;
+    .semi-portal-inner {
+      width: 100%;
+      min-width: unset;
+      .semi-dropdown-item {
+        padding: 4px 16px;
       }
     }
   }
