@@ -33,8 +33,6 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
   const chatId = useMemo(() => ChatID || uuid(), [ChatID]);
 
-  const [value, setValue] = useState<string>('');
-  const [isComposing, setIsComposing] = useState<boolean>(false); // 中文输入还在选词的时候敲回车不发请求
   const [loading, setLoading] = useState<boolean>(false);
   const [conversation, setConversation] = useState<Conversation[]>(data || []);
 
@@ -120,6 +118,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       const statusCode = error.response?.status;
       const errorObj = res && typeof res === 'string' ? JSON.parse(res) : res;
       const errorMsg = errorObj?.error?.message || errorObj?.message || '';
+      // TODO 这里的state需要重新封装一个组件，更新正在stream中的state
       setConversation((c) => {
         const pre = [...c];
         const [lastConversation] = pre.slice(-1);
@@ -138,27 +137,6 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       handleChange(chatId, pre);
       scrollToBottom();
     });
-  };
-
-  const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (loading) return;
-    const v = value;
-    setValue('');
-    await handleFetchAnswer(v);
-  };
-
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      if (loading || isComposing) return;
-      setValue('');
-      const textArea = e.target as HTMLTextAreaElement;
-      const v = textArea?.value?.trim();
-      if (v && isMobile) textArea?.blur();
-      await handleFetchAnswer(v);
-    }
   };
 
   const handleRetry = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, lastConversation: Conversation) => {
@@ -191,10 +169,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   };
 
   return (
-    <animated.div
-      className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}
-      style={{ width, height }}
-    >
+    <animated.div className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)} style={{ width, height }}>
       {!isMobile && (
         <ChatHeader
           onResize={handleResize}
@@ -217,15 +192,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
             <div className="w-full flex gap-2 justify-center mb-3">
               {renderRetryButton()}
             </div>
-            <AutoTextArea
-              loading={loading}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onButtonClick={handleClick}
-              onCompositionStart={() => setIsComposing(true)}
-              onCompositionEnd={() => setIsComposing(false)}
-            />
+            <AutoTextArea loading={loading} onFetchAnswer={handleFetchAnswer} />
           </div>
         </form>
       </div>

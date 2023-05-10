@@ -48,9 +48,9 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
     const code = String(children);
     const match = /language-(\w+)/.exec(className || '');
     const language = match?.[1] || 'plainxt';
-    return !inline && match ? (
+    return !inline ? (
       <div className="w-full pt-8 relative text-white">
-        <div className="absolute top-0 left-0 px-6 bg-[#343541] w-full h-8 leading-8 flex justify-between">
+        <div className="absolute top-0 left-0 px-3 bg-[#343541] w-full h-8 leading-8 flex justify-between">
           <span className="flex-shrink-0">{language}</span>
           <CopyToClipboard text={code} onCopy={() => Toast.success('Copy successfully')}>
             <button type="button" className="w-0 flex-grow text-right cursor-pointer">
