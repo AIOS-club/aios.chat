@@ -118,8 +118,8 @@ VITE_INFO=''
 ## 后续要做的功能
 - [x] github action（eslint）
 - [x] custom API key
-- [ ] 预设场景化机器人system应用
-- [ ] prompt store
+- [x] 预设场景化机器人system应用
+- [x] prompt store
 - [ ] 添加后端BFF层
 - [ ] 添加http和socks代理配置或提供一些预置的openai接口代理
 - [ ] 访问权限控制

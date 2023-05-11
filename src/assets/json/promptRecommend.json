@@ -1,0 +1,16 @@
+[
+  {
+    "title": "awesome-chatgpt-prompts-zh",
+    "desc": "🧠 ChatGPT 中文调教指南",
+    "introduce": "ChatGPT 中文调教指南。各种场景使用指南。学习怎么让它听你的话。",
+    "downloadUrl": "https://raw.githubusercontent.com/PlexPt/awesome-chatgpt-prompts-zh/main/prompts-zh.json",
+    "origin": "https://github.com/PlexPt/awesome-chatgpt-prompts-zh"
+  },
+  {
+    "title": "awesome-chatgpt-prompts",
+    "desc": "🧠 Awesome ChatGPT Prompts",
+    "introduce": "This repo includes ChatGPT prompt curation to use ChatGPT better.",
+    "downloadUrl": "https://raw.githubusercontent.com/f/awesome-chatgpt-prompts/main/prompts.csv",
+    "origin": "https://github.com/f/awesome-chatgpt-prompts"
+  }
+]
