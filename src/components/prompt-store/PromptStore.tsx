@@ -1,11 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef, useMemo } from 'react';
 import {
   Button, ButtonGroup, Modal, Popconfirm, Table, Toast 
 } from '@douyinfe/semi-ui';
-import { IconDelete, IconPlus, IconRedoStroked } from '@douyinfe/semi-icons';
+import {
+  IconDelete, IconPlus, IconRedoStroked, IconImport, IconCloud
+} from '@douyinfe/semi-icons';
 import { v4 as uuid } from 'uuid';
 import PromptItem from './PromptItem';
+import ImportFromLocal from './ImportFromLocal';
 import { PromptStoreList } from './PromptStoreProps';
+import ImportFromOnline from './ImportFromOnline';
 
 const PromptStore: React.FC = function PromptStore() {
   const [data, setData] = useState<PromptStoreList[]>(() => {
@@ -18,6 +22,11 @@ const PromptStore: React.FC = function PromptStore() {
   const [visible, setVisible] = useState<boolean>(false);
 
   const [initValues, setInitValues] = useState<PromptStoreList>();
+
+  const localRef = useRef<any>();
+  const onlineRef = useRef<any>();
+
+  const scroll = useMemo(() => ({ y: '50vh', x: '100%' }), []);
 
   const handleClear = () => {
     setData([]);
@@ -62,6 +71,42 @@ const PromptStore: React.FC = function PromptStore() {
     }
   };
 
+  const handleImportData = (json: unknown) => {
+    setData((pre) => {
+      const cacheData = [...(pre || [])];
+      if (Array.isArray(json)) {
+        cacheData.unshift(...json);
+      } else if (typeof json === 'object') {
+        const formatJson = json as PromptStoreList;
+        cacheData.unshift({ ...formatJson });
+      }
+      localStorage.setItem('PromptStore', JSON.stringify(cacheData));
+      return cacheData;
+    });
+    localRef.current?.destroy?.();
+    onlineRef.current?.destroy?.();
+  };
+
+  const handeImport = () => {
+    localRef.current = Modal.info({
+      title: 'Import from local',
+      icon: null,
+      style: { maxWidth: '100%' },
+      content: <ImportFromLocal onConfirm={handleImportData} />,
+      footer: null,
+    });
+  };
+
+  const handleImportOnline = () => {
+    onlineRef.current = Modal.info({
+      title: 'Import from online',
+      icon: null,
+      style: { maxWidth: '100%', width: '800px' },
+      content: <ImportFromOnline onConfirm={handleImportData} />,
+      footer: null,
+    });
+  };
+
   const renderOptions = useCallback((_: any, record: PromptStoreList, index: number) => (
     <ButtonGroup>
       <Button icon={<IconRedoStroked />} type="secondary" onClick={() => handleChange(record)}>Change</Button>
@@ -75,11 +120,13 @@ const PromptStore: React.FC = function PromptStore() {
     <>
       <ButtonGroup style={{ padding: '0 10px', height: 60, justifyContent: 'flex-end', alignItems: 'center' }}>
         <Button icon={<IconPlus />} type="tertiary" onClick={() => setVisible(true)}>Add</Button>
+        <Button icon={<IconImport />} type="tertiary" onClick={handeImport}>Import</Button>
+        <Button icon={<IconCloud />} type="tertiary" onClick={handleImportOnline}>Import online</Button>
         <Popconfirm okText="Confirm" cancelText="Cancel" title="Are you sure?" onConfirm={handleClear}>
           <Button icon={<IconDelete />} type="danger">Delete all</Button>
         </Popconfirm>
       </ButtonGroup>
-      <Table dataSource={data} pagination={{ formatPageText: false }} empty="No data">
+      <Table dataSource={data} pagination={{ formatPageText: false }} empty="No data" scroll={scroll}>
         <Table.Column width="25%" title="Title" dataIndex="label" key="label" render={renderText} />
         <Table.Column width="45%" title="Content" dataIndex="value" key="value" render={renderText} />
         <Table.Column width="30%" title="Options" dataIndex="options" key="Options" render={renderOptions} />
