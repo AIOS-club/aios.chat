@@ -10,15 +10,6 @@ dependencies:
   '@douyinfe/semi-ui':
     specifier: ^2.25.0
     version: 2.25.0(react-dom@18.2.0)(react@18.2.0)
-  '@emoji-mart/data':
-    specifier: ^1.1.2
-    version: 1.1.2
-  '@emoji-mart/react':
-    specifier: ^1.1.1
-    version: 1.1.1(emoji-mart@5.5.2)(react@18.2.0)
-  '@react-spring/shared':
-    specifier: ^9.7.2
-    version: 9.7.2(react@18.2.0)
   '@react-spring/web':
     specifier: ^9.7.2
     version: 9.7.2(react-dom@18.2.0)(react@18.2.0)
@@ -40,9 +31,6 @@ dependencies:
   cross-env:
     specifier: ^7.0.3
     version: 7.0.3
-  emoji-mart:
-    specifier: ^5.5.2
-    version: 5.5.2
   html2canvas:
     specifier: ^1.4.1
     version: 1.4.1
@@ -105,9 +93,6 @@ devDependencies:
   '@types/classnames':
     specifier: ^2.3.1
     version: 2.3.1
-  '@types/emoji-mart':
-    specifier: ^3.0.9
-    version: 3.0.9
   '@types/lodash':
     specifier: ^4.14.194
     version: 4.14.194
@@ -1474,20 +1459,6 @@ packages:
       utility-types: 3.10.0
     dev: false
 
-  /@emoji-mart/data@1.1.2:
-    resolution: {integrity: sha512-1HP8BxD2azjqWJvxIaWAMyTySeZY0Osr83ukYjltPVkNXeJvTz7yDrPLBtnrD5uqJ3tg4CcLuuBW09wahqL/fg==}
-    dev: false
-
-  /@emoji-mart/react@1.1.1(emoji-mart@5.5.2)(react@18.2.0):
-    resolution: {integrity: sha512-NMlFNeWgv1//uPsvLxvGQoIerPuVdXwK/EUek8OOkJ6wVOWPUizRBJU0hDqWZCOROVpfBgCemaC3m6jDOXi03g==}
-    peerDependencies:
-      emoji-mart: ^5.2
-      react: ^16.8 || ^17 || ^18
-    dependencies:
-      emoji-mart: 5.5.2
-      react: 18.2.0
-    dev: false
-
   /@esbuild-kit/cjs-loader@2.4.2:
     resolution: {integrity: sha512-BDXFbYOJzT/NBEtp71cvsrGPwGAMGRB/349rwKuoxNSiKjPraNNnlK6MIIabViCjqZugu6j+xeMDlEkWdHHJSg==}
     dependencies:
@@ -2292,12 +2263,6 @@ packages:
     dependencies:
       '@types/ms': 0.7.31
     dev: false
-
-  /@types/emoji-mart@3.0.9:
-    resolution: {integrity: sha512-qdBo/2Y8MXaJ/2spKjDZocuq79GpnOhkwMHnK2GnVFa8WYFgfA+ei6sil3aeWQPCreOKIx9ogPpR5+7MaOqYAA==}
-    dependencies:
-      '@types/react': 18.0.25
-    dev: true
 
   /@types/estree@0.0.39:
     resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
@@ -3325,10 +3290,6 @@ packages:
 
   /electron-to-chromium@1.4.369:
     resolution: {integrity: sha512-LfxbHXdA/S+qyoTEA4EbhxGjrxx7WK2h6yb5K2v0UCOufUKX+VZaHbl3svlzZfv9sGseym/g3Ne4DpsgRULmqg==}
-
-  /emoji-mart@5.5.2:
-    resolution: {integrity: sha512-Sqc/nso4cjxhOwWJsp9xkVm8OF5c+mJLZJFoFfzRuKO+yWiN7K8c96xmtughYb0d/fZ8UC6cLIQ/p4BR6Pv3/A==}
-    dev: false
 
   /emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}

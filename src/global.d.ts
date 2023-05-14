@@ -1,9 +1,8 @@
 import React from "react";
 import { SiteConfig } from "./hooks/useWebConfigModel";
 import { Conversation } from "./components/conversation/Conversation";
-import { IconProps } from "@/components/icon-picker/IconPicker";
 
-export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'icon' | 'otherProps' | 'systemMessage';
+export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'otherProps' | 'systemMessage';
 
 export interface Config {
   apiKey: string;
@@ -22,7 +21,6 @@ export interface ChatList {
   style?: React.CSSProperties;
   systemMessage?: string;
   titleBlock?: boolean;
-  icon?: IconProps;
   otherProps?: Record<string, any>;
 }
 
@@ -30,7 +28,6 @@ export interface ChatStoreProps {
   config: Config;
   chatList: ChatList[];
   setChatList: React.Dispatch<React.SetStateAction<ChatList[]>>;
-  setDisplayDock: React.Dispatch<React.SetStateAction<boolean>>;
   handleConfigChange: (config: Config) => void;
   handleChange: (chatId: string, data: Conversation[], forceUpdate?: boolean) => void;
   handleDelete: (chatId: string) => void;

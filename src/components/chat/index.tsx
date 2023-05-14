@@ -26,7 +26,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   const { chat } = props;
 
   const {
-    data, chatId: ChatID, title, icon, systemMessage
+    data, chatId: ChatID, title, systemMessage
   } = chat;
 
   const { config, handleChange } = useChatList();
@@ -175,7 +175,6 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
           onResize={handleResize}
           title={title || conversation[0]?.value}
           chatId={chatId}
-          icon={icon}
           systemMessage={systemMessage}
         />
       )}

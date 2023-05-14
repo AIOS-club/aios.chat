@@ -5,7 +5,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import Delete from '@/assets/svg/delete.svg';
 import useChatList from '@/hooks/useChatList';
 import { ChatList } from '@/global';
-import ChatIcon from '../chat-icon';
 
 interface TabItemProps {
   chat: ChatList;
@@ -39,7 +38,6 @@ const TabItem: React.FC<TabItemProps> = function TabItem({ chat }) {
       onClick={handleClick}
       type="button"
     >
-      <ChatIcon chat={chat} size="1rem" className="mr-2" />
       <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative text-left">
         {title || data[0]?.value || 'New Chat'}
       </div>
