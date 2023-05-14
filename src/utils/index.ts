@@ -103,4 +103,5 @@ export {
   parseMarkdown,
   parseStreamText,
   getSystemMessages,
+  getCurrentDate,
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { SiteConfig } from "./hooks/useWebConfigModel";
 import { Conversation } from "./components/conversation/Conversation";
 
-export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'otherProps' | 'systemMessage';
+export type ChatListKey = 'chatId' | 'title' | 'style' | 'titleBlock' | 'lastUpdateTime' | 'otherProps' | 'systemMessage';
 
 export interface Config {
   apiKey: string;
@@ -19,6 +19,7 @@ export interface ChatList {
   data: Conversation[];
   title?: string;
   style?: React.CSSProperties;
+  lastUpdateTime?: string;
   systemMessage?: string;
   titleBlock?: boolean;
   otherProps?: Record<string, any>;
@@ -31,7 +32,7 @@ export interface ChatStoreProps {
   handleConfigChange: (config: Config) => void;
   handleChange: (chatId: string, data: Conversation[], forceUpdate?: boolean) => void;
   handleDelete: (chatId: string) => void;
-  handleChatValueChange?: (chatId: string, key: ChatListKey, value: any) => void;
+  handleChatValueChange: (chatId: string, key: ChatListKey, value: any) => void;
   handleDeleteAll: () => void;
   handleNewChat: () => void;
 }

@@ -1,11 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { Layout } from '@douyinfe/semi-ui';
+import { Button, Layout } from '@douyinfe/semi-ui';
 import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import Header from '@/components/header';
 import Chat from '@/components/chat';
+import ChatTree from '@/components/chat-tree';
+import ChatConfig from '@/components/chat-config';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
@@ -35,6 +37,13 @@ function App () {
       model: 'gpt-3.5-turbo',
     };
   });
+
+  useEffect(() => {
+    const firstChatId = chatList[0]?.chatId;
+    if (!query.get('chatId') && firstChatId) {
+      navigate(`?chatId=${firstChatId}`);
+    }
+  }, [chatList, navigate, query]);
 
   const handleConfigChange = (_config: Config) => {
     if (_config && typeof _config === 'object') {
@@ -83,9 +92,8 @@ function App () {
 
   const handleDeleteAll = useCallback(() => {
     setChatList([]);
-    navigate('/');
     localStorage?.removeItem('chatList');
-  }, [navigate]);
+  }, []);
 
   const handleNewChat = useCallback(() => {
     const curChatId = uuid();
@@ -119,14 +127,26 @@ function App () {
         <Header />
         <div className="overflow-hidden w-full h-full flex justify-center items-center">
           <Layout
-            className="w-4/5 h-4/5 max-md:w-full max-md:h-full flex-none rounded-xl"
-            style={{ border: '1px solid var(--semi-color-border)', }}
+            className="w-[95%] h-[95%] max-md:w-full max-md:h-full flex-none rounded-xl"
+            style={{ border: '2px solid var(--semi-color-border)', }}
           >
-            {currentChat && (
-              <Layout.Content className="h-full">
-                <Chat key={currentChat.chatId} chat={currentChat} />
-              </Layout.Content>
-            )}
+            <Layout.Sider className="max-md:hidden w-[240px]">
+              <ChatTree />
+            </Layout.Sider>
+            <Layout.Content className="h-full">
+              {currentChat ? <Chat key={currentChat.chatId} chat={currentChat} /> : (
+                <div className="h-full w-full flex justify-center items-center">
+                  <Button type="tertiary" className="text-[20px]" onClick={handleNewChat}>
+                    Click here to start a new chat
+                  </Button>
+                </div>
+              )}
+            </Layout.Content>
+            {currentChat ? (
+              <Layout.Sider className="w-[240px] max-md:hidden">
+                <ChatConfig key={currentChat.chatId} chat={currentChat} onConfirm={handleChatValueChange} />
+              </Layout.Sider>
+            ) : null}
           </Layout>
         </div>
       </div>

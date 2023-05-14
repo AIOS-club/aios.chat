@@ -10,7 +10,9 @@ import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
 import useChatList from '@/hooks/useChatList';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
-import { getCachePrompt, parseMarkdown, parseStreamText, getSystemMessages } from '@/utils';
+import {
+  getCachePrompt, parseMarkdown, parseStreamText, getSystemMessages, getCurrentDate 
+} from '@/utils';
 import Refresh from '@/assets/svg/refresh.svg';
 import Stop from '@/assets/svg/stop.svg';
 import { ChatProps } from './Chat';
@@ -22,9 +24,9 @@ const ONLY_TEXT: string = import.meta.env.VITE_ONLY_TEXT;
 const Chat: React.FC<ChatProps> = function Chat(props) {
   const { chat } = props;
 
-  const { data, chatId: ChatID, systemMessage } = chat;
+  const { data, chatId: ChatID, title, systemMessage } = chat;
 
-  const { config, handleChange } = useChatList();
+  const { config, handleChange, handleChatValueChange } = useChatList();
 
   const chatId = useMemo(() => ChatID || uuid(), [ChatID]);
 
@@ -60,6 +62,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     }
     setConversation(curConversation);
     handleChange(chatId, curConversation, true);
+    handleChatValueChange?.(chatId, 'lastUpdateTime', getCurrentDate());
 
     const messages = getSystemMessages(systemMessage).concat(getCachePrompt([...curConversation], v.trimEnd())); // 获取上下文缓存的信息
 
@@ -154,7 +157,13 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   };
 
   return (
-    <div className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}>
+    <div className={classNames('shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:text-white', styles.window)}>
+      <div
+        className="h-10 leading-10 px-6 max-md:text-center overflow-hidden text-ellipsis break-keep whitespace-nowrap"
+        style={{ borderBottom: '1px solid var(--semi-color-border)' }}
+      >
+        {title || data[0]?.value || 'New Chat'}
+      </div>
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>

@@ -1,8 +1,6 @@
-import { ChatListKey } from '@/global';
+import { ChatList, ChatListKey } from '@/global';
 
 export interface ChatConfigProps {
-  chatId: string;
-  originTitle?: string;
-  systemMessage?: string;
-  handleChange?: (chatId: string, key: ChatListKey, value: any) => void;
+  chat: ChatList;
+  onConfirm: (chatId: string, key: ChatListKey, value: any) => void;
 }

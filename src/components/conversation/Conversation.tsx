@@ -116,13 +116,7 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
   return (
     <div className="flex flex-col items-center text-sm" ref={ref}>
       {data.map((d) => (
-        <div
-          key={d.key}
-          className={classNames(defaultClass, {
-            'bg-white dark:bg-black': d.character === 'user',
-            'bg-gray-50 dark:bg-[#091119]': d.character !== 'user'
-          })}
-        >
+        <div key={d.key} className={classNames(defaultClass, { 'bg-gray-50 dark:bg-[#232429]': d.character !== 'user' })}>
           <div className="gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
             <div className="w-[30px] flex flex-col relative items-end flex-shrink-0">
               {renderAvator(d.character)}
@@ -132,7 +126,8 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
                 className={classNames(conversationCls, {
                   [styles.error]: d.error,
                   [styles.loading]: !d.stop && d.character !== 'user',
-                  [styles.start]: d.character !== 'user' && !d.value
+                  [styles.start]: d.character !== 'user' && !d.value,
+                  'whitespace-pre-line': d.character === 'user'
                 })}
               >
                 {d.character !== 'user' ? (
