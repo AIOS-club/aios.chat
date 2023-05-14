@@ -3,14 +3,11 @@ import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
 import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
-import { animated, useSpringValue } from '@react-spring/web';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import useConfigSetting from '@/components/config-setting/useConfigSetting';
 import ConversationList from '@/components/conversation';
 import AutoTextArea from '@/components/auto-textarea';
-import ChatHeader from '@/components/chat-header';
-import useIsMobile from '@/hooks/useIsMobile';
 import useChatList from '@/hooks/useChatList';
 import useScrollToBottom from '@/hooks/useScrollToBottom';
 import { getCachePrompt, parseMarkdown, parseStreamText, getSystemMessages } from '@/utils';
@@ -25,9 +22,7 @@ const ONLY_TEXT: string = import.meta.env.VITE_ONLY_TEXT;
 const Chat: React.FC<ChatProps> = function Chat(props) {
   const { chat } = props;
 
-  const {
-    data, chatId: ChatID, title, systemMessage
-  } = chat;
+  const { data, chatId: ChatID, systemMessage } = chat;
 
   const { config, handleChange } = useChatList();
 
@@ -36,21 +31,11 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [conversation, setConversation] = useState<Conversation[]>(data || []);
 
-  const isMobile = useIsMobile();
-
   const [scrollRef, scrollToBottom] = useScrollToBottom();
 
   const open = useConfigSetting();
 
-  const width = useSpringValue(isMobile ? '100%' : '80%', { config: { mass: 0.1, tension: 320 } });
-  const height = useSpringValue(isMobile ? '100%' : '80%', { config: { mass: 0.1, tension: 320, } });
-
   const abortControllerRef = useRef<AbortController>();
-
-  const handleResize = (widthSize: string, heightSize: string) => {
-    width.start(widthSize).catch(() => {});
-    height.start(heightSize).catch(() => {});
-  };
 
   const handleFetchAnswer = async (v: string, retry: boolean = false) => {
     if (!v) return;
@@ -169,23 +154,15 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   };
 
   return (
-    <animated.div className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)} style={{ width, height }}>
-      {!isMobile && (
-        <ChatHeader
-          onResize={handleResize}
-          title={title || conversation[0]?.value}
-          chatId={chatId}
-          systemMessage={systemMessage}
-        />
-      )}
+    <div className={classNames('rounded-xl shadow-[0_0_10px_rgba(0,0,0,0.10)]', styles.window)}>
       <div className="flex-1 overflow-hidden relative">
-        <div className="h-full bg-white dark:bg-gray-800 relative">
+        <div className="h-full relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
             {conversation.length > 0 ? <ConversationList data={conversation} /> : <ProjectSourceInfo />}
           </div>
         </div>
       </div>
-      <div className="absolute md:px-4 max-md:pb-4 bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient">
+      <div className="absolute md:px-4 max-md:pb-4 bottom-0 left-0 w-full bg-vert-light-gradient dark:bg-vert-dark-gradient">
         <form className="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6">
           <div className="relative flex h-full flex-1 flex-col">
             <div className="w-full flex gap-2 justify-center mb-3">
@@ -195,7 +172,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
           </div>
         </form>
       </div>
-    </animated.div>
+    </div>
   );
 };
 

@@ -34,11 +34,15 @@ const Header: React.FC = function Header() {
       html.classList.remove('light');
       html.classList.add('dark');
       html.style.colorScheme = 'dark';
+      document.body.setAttribute('theme-mode', 'dark');
     } else {
       setMode('light');
       html.classList.remove('dark');
       html.classList.add('light');
       html.style.colorScheme = 'light';
+      if (document.body.hasAttribute('theme-mode')) {
+        document.body.removeAttribute('theme-mode');
+      }
     }
   }, [mode]);
 

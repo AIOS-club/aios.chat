@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
+import { Layout } from '@douyinfe/semi-ui';
 import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import Header from '@/components/header';
@@ -34,13 +35,6 @@ function App () {
       model: 'gpt-3.5-turbo',
     };
   });
-
-  useEffect(() => {
-    const firstChatId = chatList[0]?.chatId;
-    if (!query.get('chatId') && firstChatId) {
-      navigate(`?chatId=${firstChatId}`);
-    }
-  }, [chatList, navigate, query]);
 
   const handleConfigChange = (_config: Config) => {
     if (_config && typeof _config === 'object') {
@@ -123,8 +117,17 @@ function App () {
     <Store.Provider value={value}>
       <div className="overflow-hidden w-full h-full flex flex-col">
         <Header />
-        <div className="overflow-hidden w-full h-full flex justify-center items-center dark:bg-gray-900">
-          {currentChat && <Chat key={currentChat.chatId} chat={currentChat} />}
+        <div className="overflow-hidden w-full h-full flex justify-center items-center">
+          <Layout
+            className="w-4/5 h-4/5 max-md:w-full max-md:h-full flex-none rounded-xl"
+            style={{ border: '1px solid var(--semi-color-border)', }}
+          >
+            {currentChat && (
+              <Layout.Content className="h-full">
+                <Chat key={currentChat.chatId} chat={currentChat} />
+              </Layout.Content>
+            )}
+          </Layout>
         </div>
       </div>
     </Store.Provider>

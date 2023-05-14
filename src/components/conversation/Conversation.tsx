@@ -18,7 +18,7 @@ import styles from './Conversation.module.less';
 import './github.css';
 import './katex.min.css';
 
-const defaultClass = 'md:px-4 w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group';
+const defaultClass = 'md:px-4 w-full border-b border-black/10 text-gray-800 group';
 const conversationCls = 'min-h-[20px] flex flex-col items-start gap-4';
 const shareBtnCls = 'absolute top-10 right-0 w-10 h-7 flex justify-center items-center btn-neutral rounded-l html2canvas-ignore';
 const markdownCls = 'markdown-body w-0 flex-grow';
@@ -36,7 +36,7 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
 
   const renderAvator = useCallback((character: 'user' | 'bot') => {
     if (character === 'user' && !USER_AVATOR) {
-      return <IconUser className="w-full flex items-center justify-center" size="large" />;
+      return <IconUser className="w-full flex items-center justify-center dark:text-white" size="large" />;
     }
     const userUrl = USER_AVATOR;
     const aiUrl = AI_AVATOR || aiAvator;
@@ -114,13 +114,13 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
   };
 
   return (
-    <div className="flex flex-col items-center text-sm dark:bg-gray-800" ref={ref}>
+    <div className="flex flex-col items-center text-sm" ref={ref}>
       {data.map((d) => (
         <div
           key={d.key}
           className={classNames(defaultClass, {
-            'bg-white dark:bg-gray-800': d.character === 'user',
-            'bg-gray-50 dark:bg-[#444654]': d.character !== 'user'
+            'bg-white dark:bg-black': d.character === 'user',
+            'bg-gray-50 dark:bg-[#091119]': d.character !== 'user'
           })}
         >
           <div className="gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
