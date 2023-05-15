@@ -75,7 +75,7 @@ const AutoTextArea: React.FC<AutoTextAreaProps> = function AutoTextArea(props) {
   const renderPromptStore = useCallback(() => {
     const promptStore: PromptStoreList[] = JSON.parse(localStorage?.getItem('PromptStore') || '[]');
     const realValue = value.substring(1, value.length);
-    const data = promptStore.filter((prompt) => prompt.label?.includes(realValue));
+    const data = promptStore.filter((prompt) => prompt.label?.toLocaleLowerCase()?.includes(realValue.toLocaleLowerCase()));
     return data.length > 0 ? (
       <Dropdown.Menu style={{ maxHeight: '500px', overflow: 'auto' }}>
         {data.map((d) => (

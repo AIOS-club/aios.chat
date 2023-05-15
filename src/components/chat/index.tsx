@@ -159,7 +159,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   return (
     <div className={classNames('shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:text-white', styles.window)}>
       <div
-        className="h-10 leading-10 px-6 max-md:text-center overflow-hidden text-ellipsis break-keep whitespace-nowrap"
+        className="h-10 leading-10 px-6 overflow-hidden text-ellipsis break-keep whitespace-nowrap"
         style={{ borderBottom: '1px solid var(--semi-color-border)' }}
       >
         {title || data[0]?.value || 'New Chat'}
