@@ -81,7 +81,7 @@ const AutoTextArea: React.FC<AutoTextAreaProps> = function AutoTextArea(props) {
         {data.map((d) => (
           <Dropdown.Item
             key={d.key}
-            className="text-overflow-l2 dark:text-white dark:hover:bg-slate-500"
+            className="text-overflow-l2"
             style={{ maxWidth: '100%' }}
             onClick={() => handleDropdownItemClick(d.value)}
           >
@@ -97,7 +97,6 @@ const AutoTextArea: React.FC<AutoTextAreaProps> = function AutoTextArea(props) {
       <Dropdown
         trigger="custom"
         visible={visible}
-        className="dark:bg-gray-500"
         content={renderPromptStore}
         position="top"
         spacing={12}

@@ -54,7 +54,7 @@ const ImportFromOnline: React.FC<ImportFromOnlineProps> = function ImportFromOnl
           className="flex-grow w-0"
           value={url}
           onChange={setUrl}
-          placeholder="Fill in the json download address here"
+          placeholder="Fill in the json or csv download address here"
           showClear
         />
         <Button

@@ -21,7 +21,7 @@ const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = function EmptyChatPl
           key={v}
           type="button"
           onClick={() => setValue(v)}
-          className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900"
+          className="w-full bg-gray-50 p-3 rounded-md hover:bg-gray-200"
         >
           {`"${v}" →`}
         </button>
@@ -30,8 +30,8 @@ const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = function EmptyChatPl
   );
 
   return (
-    <div className="flex flex-col items-center text-sm h-full dark:bg-gray-800">
-      <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 dark:text-gray-100">
+    <div className="flex flex-col items-center text-sm h-full">
+      <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6">
         <h1 className="text-4xl font-semibold md:mt-[10vh] ml-auto mr-auto mb-8 sm:mb-16 hover:cursor-pointer mt-[12px]">
           Chat
         </h1>
@@ -45,13 +45,13 @@ const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = function EmptyChatPl
             <Icon svg={<Lightning />} />
             <h2 className="text-lg font-normal">Capabilities</h2>
             <ul className="flex flex-col gap-3.5">
-              <li className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md">
+              <li className="w-full bg-gray-50 p-3 rounded-md">
                 Remembers what user said earlier in the conversation
               </li>
-              <li className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md">
+              <li className="w-full bg-gray-50 p-3 rounded-md">
                 Allows user to provide follow-up corrections
               </li>
-              <li className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md">
+              <li className="w-full bg-gray-50 p-3 rounded-md">
                 Trained to decline inappropriate requests
               </li>
             </ul>
@@ -60,13 +60,13 @@ const EmptyChatPlaceholder: FC<EmptyChatPlaceholderProps> = function EmptyChatPl
             <Icon svg={<Warning />} />
             <h2 className="text-lg font-normal">Limitations</h2>
             <ul className="flex flex-col gap-3.5">
-              <li className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md">
+              <li className="w-full bg-gray-50 p-3 rounded-md">
                 May occasionally generate incorrect information
               </li>
-              <li className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md">
+              <li className="w-full bg-gray-50 p-3 rounded-md">
                 May occasionally produce harmful instructions or biased content
               </li>
-              <li className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md">
+              <li className="w-full bg-gray-50 p-3 rounded-md">
                 Limited knowledge of world and events after 2021
               </li>
             </ul>

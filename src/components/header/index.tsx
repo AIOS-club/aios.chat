@@ -6,7 +6,7 @@ import Moon from '@/assets/svg/moon.svg';
 import Add from '@/assets/svg/add.svg';
 import Sun from '@/assets/svg/sun.svg';
 import Delete from '@/assets/svg/delete.svg';
-import TabItem from '@/components/tab-item';
+import ChatItem from '@/components/chat-item';
 import useConfigSetting from '@/components/config-setting/useConfigSetting';
 import useChatList from '@/hooks/useChatList';
 
@@ -34,11 +34,15 @@ const Header: React.FC = function Header() {
       html.classList.remove('light');
       html.classList.add('dark');
       html.style.colorScheme = 'dark';
+      document.body.setAttribute('theme-mode', 'dark');
     } else {
       setMode('light');
       html.classList.remove('dark');
       html.classList.add('light');
       html.style.colorScheme = 'light';
+      if (document.body.hasAttribute('theme-mode')) {
+        document.body.removeAttribute('theme-mode');
+      }
     }
   }, [mode]);
 
@@ -80,12 +84,12 @@ const Header: React.FC = function Header() {
         title="Conversation history"
         width="60%"
         headerStyle={{ padding: '12px' }}
-        bodyStyle={{ padding: 0 }}
+        bodyStyle={{ padding: '0 12px' }}
         visible={visible}
         placement="left"
         onCancel={() => setVisible(false)}
       >
-        {chatList.length > 0 && chatList.map((chat) => <TabItem key={chat.chatId} chat={chat} />)}
+        {chatList.length > 0 && chatList.map((chat) => <ChatItem key={chat.chatId} chat={chat} />)}
       </SideSheet>
     </div>
   );

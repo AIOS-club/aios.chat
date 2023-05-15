@@ -1,38 +1,45 @@
-import React from 'react';
-import { Form, withField } from '@douyinfe/semi-ui';
-import IconPicker from '@/components/icon-picker';
+import React, { useCallback, useState } from 'react';
+import { Button, ButtonGroup, Form, Toast } from '@douyinfe/semi-ui';
 import { ChatConfigProps } from './ChatConfig';
 
-const Picker = withField(IconPicker);
-
 const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
-  const {
-    originIcon, originTitle, chatId, systemMessage, handleChange
-  } = props;
+  const { chat, onConfirm } = props;
+
+  const { title, data, chatId, systemMessage } = chat;
+
+  const initKey: string = title || data[0]?.value || 'New Chat';
+
+  const handleSubmit = (values: any) => {
+    onConfirm(chatId, 'title', values?.title);
+    onConfirm(chatId, 'systemMessage', values?.systemMessage);
+    Toast.success('Save successful');
+  };
 
   return (
-    <Form labelPosition="top" style={{ padding: '20px 0' }}>
-      <Picker
-        labelPosition="left"
-        field="icon"
-        label="Icon"
-        closeable
-        icon={originIcon}
-        onSelect={(icon) => handleChange?.(chatId, 'icon', icon)}
-      />
+    <Form
+      key={`${initKey}${systemMessage || ''}`}
+      labelPosition="top"
+      className="h-full w-[240px]"
+      style={{ padding: '10px 20px', borderLeft: '1px solid var(--semi-color-border)' }}
+      onSubmit={handleSubmit}
+    >
       <Form.Input
         field="title"
         label="Title"
-        initValue={originTitle}
-        onChange={(value) => handleChange?.(chatId, 'title', value)}
+        initValue={initKey}
+        showClear
       />
-      <Form.Input
+      <Form.TextArea
         field="systemMessage"
         label="System Message"
         initValue={systemMessage}
         placeholder="eg: You are a translation assistant"
-        onChange={(value) => handleChange?.(chatId, 'systemMessage', value)}
+        showClear
       />
+      <ButtonGroup className="mt-4">
+        <Button htmlType="submit" className="flex-1" theme="solid">Save</Button>
+        <Button htmlType="reset" className="flex-1" type="secondary">Reset</Button>
+      </ButtonGroup>
     </Form>
   );
 };

@@ -1,5 +1,5 @@
 import { Conversation } from '@/components/conversation/ConversationProps';
-import { Messages, ChatList } from '@/global';
+import { Messages } from '@/global';
 
 const CACHE_TIMES = parseInt(import.meta.env.VITE_CACHE_TIMES, 10);
 
@@ -87,22 +87,6 @@ function getCurrentDate() {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${dayOfWeek}`;
 }
 
-function findMaxZIndex(arr: ChatList[]): number {
-  let maxZIndex = Number.MIN_SAFE_INTEGER;
-  let maxZIndexElement;
-  arr.forEach((element) => {
-    const { zIndex } = (element.style || {});
-    const zIndexNumber = parseInt(`${zIndex || 10}`, 10);
-    if (element) {
-      if (zIndexNumber > maxZIndex) {
-        maxZIndex = zIndexNumber;
-        maxZIndexElement = element;
-      }
-    }
-  });
-  return maxZIndex > 0 ? maxZIndex + 1 : 10;
-}
-
 function getSystemMessages(message?: string): Messages[] {
   const systemMessages: Messages[] = [
     { role: 'system', content: 'Return the answer in markdown format' },
@@ -114,19 +98,10 @@ function getSystemMessages(message?: string): Messages[] {
   return systemMessages;
 }
 
-function randomBrightColor(str: string): string {
-  let hash = 0;
-  for (let i = 0; i < str.length; i += 1) {
-    hash = (hash * 31 + str.charCodeAt(i)) % 240; // 使用常数31作为散列因子
-  }
-  return `hsl(${hash}, 100%, 50%)`; // 转为 HSL 颜色，并设置饱和度和亮度
-}
-
 export {
   getCachePrompt,
   parseMarkdown,
-  findMaxZIndex,
   parseStreamText,
   getSystemMessages,
-  randomBrightColor,
+  getCurrentDate,
 };

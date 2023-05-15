@@ -20,9 +20,9 @@ const ProjectSourceInfo: React.FC = function ProjectSourceInfo() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full dark:bg-gray-800 pb-32">
+    <div className="flex flex-col items-center justify-center h-full pb-32">
       <Image preview={false} height="200" width="200" src={LOGO || AIOSLOGO} />
-      <Typography className="text-gray-600 font-medium m-8 dark:text-gray-300 text-xl">
+      <Typography className="font-medium m-8 text-xl">
         {info}        
       </Typography>
     </div>
