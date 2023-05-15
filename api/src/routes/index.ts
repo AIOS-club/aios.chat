@@ -68,8 +68,8 @@ router.post('/aios-chat', async (req, res) => {
     res.status(status).send(errorMessage);
   } else if (stream) {
     answer.data.on('data', (data: any) => {
-      const chunk = parseStreamText(data.toString()).content;
-      res.write(chunk);
+      // const chunk = parseStreamText(data.toString()).content;
+      res.write(data.toString());
     });
 
     answer.data.on('end', () => {
