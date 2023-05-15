@@ -68,6 +68,12 @@ VITE_API_HOST="https://api.openai.com/v1/chat/completions"
 
 <img src="docs/api-key.png" />
 
+**Don't want to set environment variables?**
+
+No problem, just need to fill in the official API endpoint directly in the settings as shown in the figure.
+```https://api.openai.com/v1/chat/completions```
+
+Then enter the correct and available API KEY.
 ## Environment Variables
 Please refer to the **.env.example** file.<br />
 ```bash

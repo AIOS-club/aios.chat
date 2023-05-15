@@ -69,6 +69,12 @@ VITE_API_HOST="https://api.openai.com/v1/chat/completions"
 
 <img src="docs/api-key.png" />
 
+**不想设置环境变量？**
+
+没问题，只需要在上图的设置中直接填入官方的接口
+```https://api.openai.com/v1/chat/completions```
+然后输入正确可用的API KEY即可
+
 ## 环境变量
 请参考 **.env.example** 文件。<br />
 ```bash
