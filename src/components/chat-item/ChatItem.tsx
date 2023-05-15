@@ -16,7 +16,7 @@ const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
 
   const checked = chat.chatId === query.get('chatId');
   const tileChatCls = 'w-full p-2 rounded-md my-2 cursor-pointer hover:bg-[#eaeaea] dark:hover:bg-[#5a5a5a]';
-  const tileChatDynamicCls = { 'bg-[#eaeaea] dark:bg-[#6a6a6a]': checked };
+  const tileChatDynamicCls = { '!bg-[#eaeaea] dark:!bg-[#6a6a6a]': checked };
 
   const [show, setShow] = useState(false);
 
