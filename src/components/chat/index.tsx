@@ -1,8 +1,9 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Icon } from '@douyinfe/semi-ui';
 import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
+import { IconArrowDown } from '@douyinfe/semi-icons';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import useConfigSetting from '@/components/config-setting/useConfigSetting';
@@ -38,6 +39,26 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
   const open = useConfigSetting();
 
   const abortControllerRef = useRef<AbortController>();
+  const arrowDownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const content = scrollRef.current as HTMLDivElement;
+    const arrowDownBtn = arrowDownRef.current;
+
+    const handleScroll = () => {
+      if (content.scrollTop < content.scrollHeight - content.offsetHeight - 100) {
+        arrowDownBtn?.style.setProperty('display', 'flex');
+      } else {
+        arrowDownBtn?.style.setProperty('display', 'none');
+      }
+    };
+
+    handleScroll(); // 执行一遍设置初始状态
+
+    content.addEventListener('scroll', handleScroll);
+    return () => content.removeEventListener('scroll', handleScroll);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleFetchAnswer = async (v: string, retry: boolean = false) => {
     if (!v) return;
@@ -168,6 +189,13 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
         <div className="h-full relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
             {conversation.length > 0 ? <ConversationList data={conversation} /> : <ProjectSourceInfo />}
+          </div>
+          <div
+            ref={arrowDownRef}
+            className={classNames(styles.arrowDown, 'bg-white dark:bg-[#2f2f35]')}
+            onClick={scrollToBottom}
+          >
+            <IconArrowDown />
           </div>
         </div>
       </div>
