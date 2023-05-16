@@ -8,6 +8,7 @@ import Header from '@/components/header';
 import Chat from '@/components/chat';
 import ChatTree from '@/components/chat-tree';
 import ChatConfig from '@/components/chat-config';
+import SiderConfig from '@/components/sider-config';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
@@ -123,33 +124,36 @@ function App () {
 
   return (
     <Store.Provider value={value}>
-      <div className="overflow-hidden w-full h-full flex flex-col">
-        <Header />
-        <div className="overflow-hidden w-full h-full flex justify-center items-center">
-          <Layout
-            className="w-[95%] h-[95%] max-md:w-full max-md:h-full flex-none rounded-xl"
-            style={{ border: '2px solid var(--semi-color-border)', }}
-          >
-            <Layout.Sider className="max-md:hidden w-[240px]">
-              <ChatTree />
+      <Layout className="overflow-hidden w-full h-full md:items-center md:justify-center max-md:flex-col">
+        <Layout.Header className="md:hidden">
+          <Header />
+        </Layout.Header>
+        <Layout
+          className="w-[95%] h-[95%] max-md:w-full max-md:h-[calc(100%-3rem)] flex-none rounded-xl overflow-hidden"
+          style={{ border: '1px solid var(--semi-color-border)', }}
+        >
+          <div className="w-[50px] flex-shrink-0 max-md:hidden" style={{ border: '1px solid var(--semi-color-border)' }}>
+            <SiderConfig />
+          </div>
+          <Layout.Sider className="w-[240px] max-md:hidden flex-shrink-0">
+            <ChatTree />
+          </Layout.Sider>
+          <Layout.Content className="h-full">
+            {currentChat ? <Chat key={currentChat.chatId} chat={currentChat} /> : (
+              <div className="h-full w-full flex justify-center items-center">
+                <Button type="tertiary" className="text-[20px]" onClick={handleNewChat}>
+                  Click here to start a new chat
+                </Button>
+              </div>
+            )}
+          </Layout.Content>
+          {currentChat ? (
+            <Layout.Sider className="w-[240px] max-md:hidden">
+              <ChatConfig key={currentChat.chatId} chat={currentChat} onConfirm={handleChatValueChange} />
             </Layout.Sider>
-            <Layout.Content className="h-full">
-              {currentChat ? <Chat key={currentChat.chatId} chat={currentChat} /> : (
-                <div className="h-full w-full flex justify-center items-center">
-                  <Button type="tertiary" className="text-[20px]" onClick={handleNewChat}>
-                    Click here to start a new chat
-                  </Button>
-                </div>
-              )}
-            </Layout.Content>
-            {currentChat ? (
-              <Layout.Sider className="w-[240px] max-md:hidden">
-                <ChatConfig key={currentChat.chatId} chat={currentChat} onConfirm={handleChatValueChange} />
-              </Layout.Sider>
-            ) : null}
-          </Layout>
-        </div>
-      </div>
+          ) : null}
+        </Layout>
+      </Layout>
     </Store.Provider>
   );
 }
