@@ -26,6 +26,7 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
         field="title"
         label="Title"
         initValue={initKey}
+        placeholder="Fill in the title here"
         showClear
       />
       <Form.TextArea
