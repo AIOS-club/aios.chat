@@ -132,10 +132,10 @@ function App () {
           className="w-[95%] h-[95%] max-md:w-full max-md:h-[calc(100%-3rem)] flex-none rounded-xl overflow-hidden"
           style={{ border: '1px solid var(--semi-color-border)', }}
         >
-          <div className="w-[50px] flex-shrink-0 max-md:hidden" style={{ border: '1px solid var(--semi-color-border)' }}>
+          <div className="w-[50px] flex-shrink-0 max-md:hidden">
             <SiderConfig />
           </div>
-          <Layout.Sider className="w-[240px] max-md:hidden flex-shrink-0">
+          <Layout.Sider className="w-[250px] max-md:hidden flex-shrink-0">
             <ChatTree />
           </Layout.Sider>
           <Layout.Content className="h-full">

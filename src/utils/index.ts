@@ -71,7 +71,7 @@ function parseMarkdown(chunk: string): string {
   return text;
 }
 
-function getCurrentDate() {
+function getCurrentDate(noWeekDay: boolean = false): string {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   const date = new Date();
@@ -84,7 +84,7 @@ function getCurrentDate() {
   const minutes = date.getMinutes().toString().padStart(2, '0');
   const seconds = date.getSeconds().toString().padStart(2, '0');
 
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${dayOfWeek}`;
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${noWeekDay ? '' : dayOfWeek}`;
 }
 
 function getSystemMessages(message?: string): Messages[] {

@@ -1,11 +1,18 @@
-import React from 'react';
-import { Button, Tabs } from '@douyinfe/semi-ui';
-import { IconPlus } from '@douyinfe/semi-icons';
+import React, { useState } from 'react';
+import { Button, Empty, Input, Tabs } from '@douyinfe/semi-ui';
+import { IconPlus, IconSearch } from '@douyinfe/semi-icons';
 import useChatList from '@/hooks/useChatList';
 import ChatItem from '../chat-item';
+import { ChatList } from '@/global';
 
 const ChatTree: React.FC = function ChatTree() {
   const { chatList, handleNewChat } = useChatList();
+
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  const filterChatList = (chat: ChatList) => (chat.title || chat.data[0]?.value || 'New Chat').includes(searchValue);
+
+  const filterList = chatList.filter(filterChatList);
 
   return (
     <Tabs
@@ -15,7 +22,10 @@ const ChatTree: React.FC = function ChatTree() {
       tabBarExtraContent={<Button type="tertiary" icon={<IconPlus />} onClick={handleNewChat} />}
     >
       <Tabs.TabPane className="h-full overflow-auto" tab="Tile View" itemKey="tile">
-        {chatList.length > 0 ? chatList.map((chat) => <ChatItem key={chat.chatId} chat={chat} />) : null}
+        <Input prefix={<IconSearch />} value={searchValue} onChange={setSearchValue} showClear />
+        {filterList.length > 0 ? filterList.map((chat) => <ChatItem key={chat.chatId} chat={chat} />) : (
+          <Empty description="No Data" />
+        )}
       </Tabs.TabPane>
       {/* <Tabs.TabPane tab="Tree View" itemKey="tree">
         123

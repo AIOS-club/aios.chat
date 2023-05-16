@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { IconDeleteStroked } from '@douyinfe/semi-icons';
+import { Icon } from '@douyinfe/semi-ui';
+import Bot from '@/assets/svg/bot.svg';
 import { ChatList } from '@/global';
 import useChatList from '@/hooks/useChatList';
 
@@ -35,25 +37,28 @@ const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
   return (
     <div
       key={chat.chatId}
-      className={classNames('dark:bg-[#2b2b2b]', tileChatCls, tileChatDynamicCls)}
+      className={classNames('flex items-center dark:bg-[#2b2b2b]', tileChatCls, tileChatDynamicCls)}
       style={{ border: '1px solid var(--semi-color-border)' }}
       onClick={handleClick}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
-      <div className="w-full overflow-hidden text-ellipsis break-keep whitespace-nowrap text-[#000] dark:text-[#fff]">
-        {chat.title || chat.data[0]?.value || 'New Chat'}  
-      </div>
-      {chat.lastUpdateTime && (
-        <div className="text-[#606060] dark:text-[#b4b4b4] mt-1">
-          {chat.lastUpdateTime}
+      <Icon className="flex-shrink-0 mr-2" svg={<Bot />} />
+      <div className="w-0 flex-grow">
+        <div className="w-full overflow-hidden text-ellipsis break-keep whitespace-nowrap text-[#000] dark:text-[#fff]">
+          {chat.title || chat.data[0]?.value || 'New Chat'}  
         </div>
-      )}
-      <div className="text-[#606060] dark:text-[#b4b4b4] mt-1 flex items-center">
-        <span className="flex-grow">
-          {chat.data.length > 0 ? `${chat.data.length} records` : '[empty]'}
-        </span>
-        {(show || checked) && <IconDeleteStroked className="flex-shrink-0" onClick={handleDelete} />}
+        {chat.lastUpdateTime && (
+          <div className="text-[#606060] dark:text-[#b4b4b4] mt-1">
+            {chat.lastUpdateTime}
+          </div>
+        )}
+        <div className="text-[#606060] dark:text-[#b4b4b4] mt-1 flex items-center">
+          <span className="flex-grow">
+            {chat.data.length > 0 ? `${chat.data.length} records` : '[empty]'}
+          </span>
+          {(show || checked) && <IconDeleteStroked className="flex-shrink-0" onClick={handleDelete} />}
+        </div>
       </div>
     </div>
   );
