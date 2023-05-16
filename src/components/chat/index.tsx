@@ -83,7 +83,7 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     }
     setConversation(curConversation);
     handleChange(chatId, curConversation, true);
-    handleChatValueChange?.(chatId, 'lastUpdateTime', getCurrentDate());
+    handleChatValueChange?.(chatId, 'lastUpdateTime', getCurrentDate(true));
 
     const messages = getSystemMessages(systemMessage).concat(getCachePrompt([...curConversation], v.trimEnd())); // 获取上下文缓存的信息
 

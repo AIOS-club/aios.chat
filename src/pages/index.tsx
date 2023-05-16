@@ -135,7 +135,7 @@ function App () {
           <div className="w-[50px] flex-shrink-0 max-md:hidden">
             <SiderConfig />
           </div>
-          <Layout.Sider className="w-[240px] max-md:hidden flex-shrink-0">
+          <Layout.Sider className="w-[250px] max-md:hidden flex-shrink-0">
             <ChatTree />
           </Layout.Sider>
           <Layout.Content className="h-full">
