@@ -5,7 +5,7 @@ import ConfigSetting from './index';
 import useChatList from '@/hooks/useChatList';
 
 function useConfigSetting() {
-  const { config, handleConfigChange } = useChatList();
+  const { config, handleConfigChange, chatList, handleDeleteAll } = useChatList();
 
   const configRef = useRef<any>();
 
@@ -21,7 +21,15 @@ function useConfigSetting() {
       style: { top: '20px', maxWidth: '100%' },
       width: '900px',
       bodyStyle: { marginLeft: 0 },
-      content: <ConfigSetting tips={tips} handleConfigChange={handleConfigChange} config={config} />,
+      content: (
+        <ConfigSetting
+          chatList={chatList}
+          tips={tips}
+          handleConfigChange={handleConfigChange}
+          handleDeleteAll={handleDeleteAll}
+          config={config}
+        />
+      ),
       okText: 'Save',
       cancelText: 'Cancel',
       onOk: () => {
@@ -33,7 +41,7 @@ function useConfigSetting() {
         configRef.current?.destroy();
       }
     });
-  }, [config, handleConfigChange]);
+  }, [config, chatList, handleConfigChange, handleDeleteAll]);
 
   return open;
 }

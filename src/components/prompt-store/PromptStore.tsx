@@ -26,7 +26,7 @@ const PromptStore: React.FC = function PromptStore() {
   const localRef = useRef<any>();
   const onlineRef = useRef<any>();
 
-  const scroll = useMemo(() => ({ y: '50vh', x: '100%' }), []);
+  const scroll = useMemo(() => ({ y: '40vh', x: '100%' }), []);
 
   const handleClear = () => {
     setData([]);
