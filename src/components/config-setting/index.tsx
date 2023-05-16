@@ -20,9 +20,8 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
     if (typeof window.matchMedia === 'function') {
       const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const html = document.getElementsByTagName('html')[0];
-      if (html.className.includes('dark')) {
-        return 'dark';
-      }
+      if (html.className.includes('dark')) return 'dark';
+      if (html.className.includes('light')) return 'light';
       return darkMode ? 'dark' : 'light';
     }
     return false; // 表示不支持暗色模式
