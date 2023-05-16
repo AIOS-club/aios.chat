@@ -16,7 +16,7 @@ const PromptStore: React.FC = function PromptStore() {
     if (localStorage?.getItem('PromptStore')) {
       return JSON.parse(localStorage.getItem('PromptStore') || '') || [];
     }
-    return undefined;
+    return [];
   });
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -27,6 +27,32 @@ const PromptStore: React.FC = function PromptStore() {
   const onlineRef = useRef<any>();
 
   const scroll = useMemo(() => ({ y: '40vh', x: '100%' }), []);
+
+  const deduplication = (json: unknown): boolean => {
+    if (Array.isArray(json)) {
+      const repeatLabelList: string[] = [];
+      data.forEach((prompt) => {
+        const labelRepeatIndex = json.findIndex((j) => j.label === prompt.label);
+        if (labelRepeatIndex >= 0) {
+          const repeatLabel = json[labelRepeatIndex].label as string;
+          repeatLabelList.push(repeatLabel);
+          json.splice(labelRepeatIndex, 1);
+        }
+      });
+      if (repeatLabelList.length > 0) {
+        Toast.warning(`label ${repeatLabelList.join(',')} repeat`);
+      }
+      return true;
+    }
+    if (json && typeof json === 'object') {
+      const { label } = json as PromptStoreList;
+      if (data.some((prompt) => prompt.label === label)) {
+        Toast.warning(`label: ${label} repeat`);
+      }
+      return false;
+    }
+    return false;
+  };
 
   const handleClear = () => {
     setData([]);
@@ -53,7 +79,7 @@ const PromptStore: React.FC = function PromptStore() {
   const handleConfirm = (changeFlag: boolean, values?: PromptStoreList) => {
     if (values) {
       if (!changeFlag && data?.some((d) => d.label === values.label)) {
-        Toast.warning('title repeat');
+        Toast.warning('label repeat');
         return;
       }
       setData((pre) => {
@@ -72,6 +98,8 @@ const PromptStore: React.FC = function PromptStore() {
   };
 
   const handleImportData = (json: unknown) => {
+    const validate = deduplication(json);
+    if (!validate) return;
     setData((pre) => {
       const cacheData = [...(pre || [])];
       if (Array.isArray(json)) {
