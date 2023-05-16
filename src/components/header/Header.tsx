@@ -33,7 +33,7 @@ const Header: React.FC = function Header() {
       <SideSheet
         closable
         title="Conversation history"
-        width="60%"
+        width="80%"
         headerStyle={{ padding: '12px' }}
         bodyStyle={{ padding: '0 12px' }}
         visible={visible}

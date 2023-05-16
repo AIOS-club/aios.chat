@@ -67,3 +67,7 @@ html {
 .semi-button-primary {
   background-color: var(--semi-color-primary)
 }
+
+.layout-root .semi-portal {
+  width: 0;
+}

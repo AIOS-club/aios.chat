@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-import { Icon } from '@douyinfe/semi-ui';
+import { Button, Icon } from '@douyinfe/semi-ui';
 import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
-import { IconArrowDown } from '@douyinfe/semi-icons';
+import { IconArrowDown, IconMore } from '@douyinfe/semi-icons';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import useConfigSetting from '@/components/config-setting/useConfigSetting';
@@ -23,7 +23,7 @@ const API_HOST: string = import.meta.env.VITE_API_HOST;
 const ONLY_TEXT: string = import.meta.env.VITE_ONLY_TEXT;
 
 const Chat: React.FC<ChatProps> = function Chat(props) {
-  const { chat } = props;
+  const { chat, onOpenConfig } = props;
 
   const { data, chatId: ChatID, title, systemMessage } = chat;
 
@@ -179,11 +179,11 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
   return (
     <div className={classNames('shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:text-white', styles.window)}>
-      <div
-        className="h-10 leading-10 px-6 overflow-hidden text-ellipsis break-keep whitespace-nowrap"
-        style={{ borderBottom: '1px solid var(--semi-color-border)' }}
-      >
-        {title || data[0]?.value || 'New Chat'}
+      <div className="h-10 leading-10 pl-6 flex" style={{ borderBottom: '1px solid var(--semi-color-border)' }}>
+        <div className="w-0 flex-grow overflow-hidden text-ellipsis break-keep whitespace-nowrap">
+          {title || data[0]?.value || 'New Chat'}
+        </div>
+        <Button className="h-full flex-shrink-0 ml-4" type="tertiary" icon={<IconMore />} onClick={onOpenConfig} />
       </div>
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full relative">
