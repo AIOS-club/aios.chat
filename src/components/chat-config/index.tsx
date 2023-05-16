@@ -19,8 +19,7 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
     <Form
       key={`${initKey}${systemMessage || ''}`}
       labelPosition="top"
-      className="h-full w-[240px]"
-      style={{ padding: '10px 20px', borderLeft: '1px solid var(--semi-color-border)' }}
+      className="h-full w-full"
       onSubmit={handleSubmit}
     >
       <Form.Input

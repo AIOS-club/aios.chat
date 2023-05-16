@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { Button, Layout } from '@douyinfe/semi-ui';
+import { Button, Layout, SideSheet } from '@douyinfe/semi-ui';
 import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import Header from '@/components/header';
@@ -38,6 +38,8 @@ function App () {
       model: 'gpt-3.5-turbo',
     };
   });
+
+  const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const firstChatId = chatList[0]?.chatId;
@@ -129,7 +131,7 @@ function App () {
           <Header />
         </Layout.Header>
         <Layout
-          className="w-[95%] h-[95%] max-md:w-full max-md:h-[calc(100%-3rem)] flex-none rounded-xl overflow-hidden"
+          className="relative w-[95%] h-[95%] max-md:w-full max-md:h-[calc(100%-3rem)] flex-none md:rounded-xl overflow-hidden layout-root"
           style={{ border: '1px solid var(--semi-color-border)', }}
         >
           <div className="w-[50px] flex-shrink-0 max-md:hidden">
@@ -139,7 +141,7 @@ function App () {
             <ChatTree />
           </Layout.Sider>
           <Layout.Content className="h-full">
-            {currentChat ? <Chat key={currentChat.chatId} chat={currentChat} /> : (
+            {currentChat ? <Chat key={currentChat.chatId} chat={currentChat} onOpenConfig={() => setVisible(true)} /> : (
               <div className="h-full w-full flex justify-center items-center">
                 <Button type="tertiary" className="text-[20px]" onClick={handleNewChat}>
                   Click here to start a new chat
@@ -147,11 +149,18 @@ function App () {
               </div>
             )}
           </Layout.Content>
-          {currentChat ? (
-            <Layout.Sider className="w-[240px] max-md:hidden">
+          {currentChat && (
+            <SideSheet
+              closable
+              style={{ maxWidth: '80%' }}
+              title="Chat Setting"
+              visible={visible}
+              onCancel={() => setVisible(false)}
+              getPopupContainer={() => document.querySelector('.layout-root') as HTMLElement}
+            >
               <ChatConfig key={currentChat.chatId} chat={currentChat} onConfirm={handleChatValueChange} />
-            </Layout.Sider>
-          ) : null}
+            </SideSheet>
+          )}
         </Layout>
       </Layout>
     </Store.Provider>
