@@ -7,7 +7,7 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
 
   const { title, data, chatId, systemMessage } = chat;
 
-  const initKey: string = title || data[0]?.value || 'New Chat';
+  const initKey: string = title || data[0]?.value || '';
 
   const handleSubmit = (values: any) => {
     onConfirm(chatId, 'title', values?.title);
