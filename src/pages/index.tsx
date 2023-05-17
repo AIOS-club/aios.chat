@@ -132,7 +132,7 @@ function App () {
         </Layout.Header>
         <Layout
           className="relative w-[95%] h-[95%] max-md:w-full max-md:h-[calc(100%-3rem)] flex-none md:rounded-xl overflow-hidden layout-root"
-          style={{ border: '1px solid var(--semi-color-border)', }}
+          style={{ border: '1px solid var(--semi-color-border)', maxWidth: '1920px', maxHeight: '1080px' }}
         >
           <div className="w-[50px] flex-shrink-0 max-md:hidden">
             <SiderConfig />
