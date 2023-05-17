@@ -3,13 +3,14 @@ import {
   Button, Form, Tabs, Tooltip, Popconfirm, Toast
 } from '@douyinfe/semi-ui';
 import { IconHelpCircle } from '@douyinfe/semi-icons';
+import type { RadioChangeEvent } from '@douyinfe/semi-ui/lib/es/radio';
 import PromptStore from '@/components/prompt-store';
 import { Config } from '@/global';
 import { ConfigSettingProps } from './ConfigSetting';
 
 const API_HOST: string = import.meta.env.VITE_API_HOST;
 
-export type Mode = 'light' | 'dark' | false;
+export type Mode = 'light' | 'dark' | 'auto' | false;
 
 const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props) {
   const {
@@ -18,6 +19,8 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
 
   const [mode, setMode] = useState<Mode>(() => {
     if (typeof window.matchMedia === 'function') {
+      const theme = localStorage?.getItem('theme') as Mode;
+      if (theme) return theme;
       const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const html = document.getElementsByTagName('html')[0];
       if (html.className.includes('dark')) return 'dark';
@@ -27,24 +30,28 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
     return false; // 表示不支持暗色模式
   });
 
-  const handleChangeMode = useCallback(() => {
+  const changeTheme = (theme: 'dark' | 'light') => {
     const html = document.getElementsByTagName('html')[0];
-    if (mode === 'light') {
-      setMode('dark');
-      html.classList.remove('light');
-      html.classList.add('dark');
-      html.style.colorScheme = 'dark';
-      document.body.setAttribute('theme-mode', 'dark');
-    } else {
-      setMode('light');
-      html.classList.remove('dark');
-      html.classList.add('light');
-      html.style.colorScheme = 'light';
-      if (document.body.hasAttribute('theme-mode')) {
-        document.body.removeAttribute('theme-mode');
-      }
+    html.classList.remove(theme === 'light' ? 'dark' : 'light');
+    html.classList.add(theme);
+    html.style.colorScheme = theme;
+    document.body.setAttribute('theme-mode', theme);
+    if (theme === 'light' && document.body.hasAttribute('theme-mode')) {
+      document.body.removeAttribute('theme-mode');
     }
-  }, [mode]);
+  };
+
+  const handleChangeMode = (event: RadioChangeEvent) => {
+    const { value } = event.target;
+    setMode(value);
+    localStorage?.setItem('theme', value);
+    if (value === 'dark' || value === 'light') {
+      changeTheme(value);
+    } else {
+      const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      changeTheme(darkMode ? 'dark' : 'light');
+    }
+  };
 
   const handleValuesChange = useCallback((values: Config) => {
     handleConfigChange(values);
@@ -62,6 +69,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
             <Form.RadioGroup field="theme" initValue={mode} onChange={handleChangeMode}>
               <Form.Radio value="light">Light</Form.Radio>
               <Form.Radio value="dark">Dark</Form.Radio>
+              <Form.Radio value="auto">Automatic</Form.Radio>
             </Form.RadioGroup>
           )}
           <Form.Slot label="Clear all chats">
