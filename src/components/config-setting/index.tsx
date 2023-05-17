@@ -73,7 +73,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
             </Form.RadioGroup>
           )}
           <Form.Slot label="Clear all chats">
-            {chatList.length > 0 && (
+            {chatList?.length > 0 && (
               <Popconfirm
                 title="Are you sure you want to delete all conversations?"
                 content="Once deleted, all conversations will be removed and cannot be restored."
