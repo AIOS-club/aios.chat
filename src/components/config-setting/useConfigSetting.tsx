@@ -18,7 +18,7 @@ function useConfigSetting() {
           Setting
         </div>
       ),
-      style: { top: '20px', maxWidth: '100%' },
+      style: { maxWidth: '100%' },
       width: '900px',
       bodyStyle: { marginLeft: 0 },
       content: (
@@ -34,10 +34,11 @@ function useConfigSetting() {
       cancelText: 'Cancel',
       onOk: () => {
         Toast.success('Save successful');
-        configRef.current?.destroy();
       },
       onCancel: () => {
         handleConfigChange(preConfig);
+      },
+      afterClose: () => {
         configRef.current?.destroy();
       }
     });
