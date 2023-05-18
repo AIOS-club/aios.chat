@@ -9,6 +9,7 @@ import Chat from '@/components/chat';
 import ChatTree from '@/components/chat-tree';
 import ChatConfig from '@/components/chat-config';
 import SiderConfig from '@/components/sider-config';
+import { getDefaultSystemMessage } from '@/utils';
 
 export const Store = React.createContext<ChatStoreProps>({} as any);
 
@@ -21,7 +22,7 @@ function App () {
       const data = JSON.parse(localStorage.getItem('chatList') || '[]');
       return data;
     }
-    return [{ chatId: uuid(), data: [] }];
+    return [{ chatId: uuid(), data: [], systemMessage: getDefaultSystemMessage() }];
   });
 
   const [config, setConfig] = useState<Config>(() => {
@@ -100,7 +101,7 @@ function App () {
 
   const handleNewChat = useCallback(() => {
     const curChatId = uuid();
-    const newChat = { chatId: curChatId, data: [] };
+    const newChat = { chatId: curChatId, data: [], systemMessage: getDefaultSystemMessage() };
     navigate(`?chatId=${curChatId}`);
     setChatList((pre) => {
       const cacheChatList = [...pre];
@@ -153,6 +154,7 @@ function App () {
             <SideSheet
               closable
               style={{ maxWidth: '80%' }}
+              bodyStyle={{ marginBottom: '20px' }}
               title="Chat Setting"
               visible={visible}
               onCancel={() => setVisible(false)}

@@ -20,7 +20,7 @@ export interface ChatList {
   title?: string;
   style?: React.CSSProperties;
   lastUpdateTime?: string;
-  systemMessage?: string;
+  systemMessage?: string[];
   titleBlock?: boolean;
   otherProps?: Record<string, any>;
 }

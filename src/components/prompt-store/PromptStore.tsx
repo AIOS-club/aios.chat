@@ -3,7 +3,7 @@ import {
   Button, ButtonGroup, Modal, Popconfirm, Table, Toast 
 } from '@douyinfe/semi-ui';
 import {
-  IconDelete, IconPlus, IconRedoStroked, IconImport, IconCloud
+  IconDelete, IconPlus, IconImport, IconCloud, IconEdit
 } from '@douyinfe/semi-icons';
 import { v4 as uuid } from 'uuid';
 import PromptItem from './PromptItem';
@@ -137,7 +137,7 @@ const PromptStore: React.FC = function PromptStore() {
 
   const renderOptions = useCallback((_: any, record: PromptStoreList, index: number) => (
     <ButtonGroup>
-      <Button icon={<IconRedoStroked />} type="secondary" onClick={() => handleChange(record)}>Change</Button>
+      <Button icon={<IconEdit />} type="secondary" onClick={() => handleChange(record)}>Change</Button>
       <Button icon={<IconDelete />} type="danger" onClick={() => handleDelete(index)}>Delete</Button>
     </ButtonGroup>
   ), [handleDelete]);
