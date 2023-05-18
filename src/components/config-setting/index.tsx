@@ -62,37 +62,8 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
   ), []);
 
   return (
-    <Tabs defaultActiveKey={tips ? '1' : '0'}>
-      <Tabs.TabPane tab="General" itemKey="0">
-        <Form labelPosition="left">
-          {mode && (
-            <Form.RadioGroup field="theme" initValue={mode} onChange={handleChangeMode}>
-              <Form.Radio value="light">Light</Form.Radio>
-              <Form.Radio value="dark">Dark</Form.Radio>
-              <Form.Radio value="auto">Automatic</Form.Radio>
-            </Form.RadioGroup>
-          )}
-          <Form.Slot label="Clear all chats">
-            {chatList.length > 0 && (
-              <Popconfirm
-                title="Are you sure you want to delete all conversations?"
-                content="Once deleted, all conversations will be removed and cannot be restored."
-                okText="Confirm"
-                cancelText="Cancel"
-                onConfirm={() => {
-                  handleDeleteAll();
-                  Toast.success('Deletion successful');
-                }}
-              >
-                <Button className="bg-[var(--semi-color-danger)]" theme="solid" type="danger">
-                  Clear
-                </Button>
-              </Popconfirm>
-            )}
-          </Form.Slot>
-        </Form>
-      </Tabs.TabPane>
-      <Tabs.TabPane tab="Chat" itemKey="1">
+    <Tabs>
+      <Tabs.TabPane tab="Chat" itemKey="0">
         <Form labelPosition="left" onValueChange={handleValuesChange}>
           {tips ? <div className="text-[#ff0000]">{tips}</div> : null}
           <Form.Select field="model" initValue={config.model || 'gpt-3.5-turbo'} disabled />
@@ -130,6 +101,35 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
             }}
           />
           <Form.Switch field="stream" initValue={config.stream} />
+        </Form>
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="General" itemKey="1">
+        <Form labelPosition="left">
+          {mode && (
+            <Form.RadioGroup field="theme" initValue={mode} onChange={handleChangeMode}>
+              <Form.Radio value="light">Light</Form.Radio>
+              <Form.Radio value="dark">Dark</Form.Radio>
+              <Form.Radio value="auto">Automatic</Form.Radio>
+            </Form.RadioGroup>
+          )}
+          <Form.Slot label="Clear all chats">
+            {chatList?.length > 0 && (
+              <Popconfirm
+                title="Are you sure you want to delete all conversations?"
+                content="Once deleted, all conversations will be removed and cannot be restored."
+                okText="Confirm"
+                cancelText="Cancel"
+                onConfirm={() => {
+                  handleDeleteAll();
+                  Toast.success('Deletion successful');
+                }}
+              >
+                <Button className="bg-[var(--semi-color-danger)]" theme="solid" type="danger">
+                  Clear
+                </Button>
+              </Popconfirm>
+            )}
+          </Form.Slot>
         </Form>
       </Tabs.TabPane>
       <Tabs.TabPane tab="Prompt Store" itemKey="2">
