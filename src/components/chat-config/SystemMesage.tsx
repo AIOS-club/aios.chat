@@ -1,8 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { v4 as uuid } from 'uuid';
-import {
-  Button, ButtonGroup, Empty, TextArea, Toast 
-} from '@douyinfe/semi-ui';
+import { Button, ButtonGroup, TextArea, Toast } from '@douyinfe/semi-ui';
 import {
   IconClose, IconDelete, IconEdit, IconTick, IconPlus 
 } from '@douyinfe/semi-icons';
