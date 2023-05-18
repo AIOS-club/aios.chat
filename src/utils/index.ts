@@ -87,12 +87,18 @@ function getCurrentDate(noWeekDay: boolean = false): string {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${noWeekDay ? '' : dayOfWeek}`;
 }
 
-function getSystemMessages(message?: string): Messages[] {
-  const systemMessages: Messages[] = [
-    { role: 'system', content: 'Return the answer in markdown format' },
-    { role: 'system', content: `Current Beijing time is: ${getCurrentDate()}` }
+function getDefaultSystemMessage() {
+  return [
+    'Return the answer in markdown format',
+    `Current Beijing time is: ${getCurrentDate()}`
   ];
-  if (message) {
+}
+
+function getSystemMessages(message?: string | string[]): Messages[] {
+  const systemMessages: Messages[] = [];
+  if (Array.isArray(message) && message.length) {
+    message.forEach((m) => systemMessages.push({ role: 'system', content: m }));
+  } else if (typeof message === 'string') {
     systemMessages.push({ role: 'system', content: message });
   }
   return systemMessages;
@@ -102,6 +108,7 @@ export {
   getCachePrompt,
   parseMarkdown,
   parseStreamText,
+  getDefaultSystemMessage,
   getSystemMessages,
   getCurrentDate,
 };
