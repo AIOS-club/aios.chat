@@ -113,32 +113,33 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
     });
   };
 
-  const handleCheckChange = (conversation: Con) => {
+  const handleCheckChange = (user: Con, bot: Con) => {
+    if (!showCheck) return;
     const cacheCheckList = [...checkList];
-    const checked = cacheCheckList.some((item) => item.key === conversation.key);
+    const checked = cacheCheckList.some((item) => item.conversationId === user.conversationId);
     if (checked) {
-      const curConversation = cacheCheckList.findIndex((item) => item.key === conversation.key);
-      cacheCheckList.splice(curConversation, 1);
+      const curConversation = cacheCheckList.findIndex((item) => item.conversationId === user.conversationId);
+      cacheCheckList.splice(curConversation, 2);
     } else {
-      cacheCheckList.push(conversation);
+      cacheCheckList.push(user, bot);
     }
     onCheckListChange(cacheCheckList);
   };
 
   return (
     <div className="flex flex-col items-center text-sm" ref={ref}>
-      {data.map((d) => (
+      {data.map((d, index, arr) => (
         <div
           key={d.key}
           className={classNames(defaultClass, { 'bg-gray-50 dark:bg-[#232429]': d.character !== 'user', 'cursor-pointer': showCheck })}
-          onClick={() => handleCheckChange(d)}
+          onClick={() => handleCheckChange(d, d.character === 'user' ? arr[index + 1] : arr[index - 1])}
         >
           <div className="gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
             <div className="w-[30px] flex flex-col items-end flex-shrink-0">
               {showCheck ? (
                 <Checkbox
                   checked={checkList.some((item) => item.key === d.key)}
-                  onChange={() => handleCheckChange(d)}
+                  onChange={() => handleCheckChange(d, d.character === 'user' ? arr[index + 1] : arr[index - 1])}
                 />
               ) : renderAvator(d.character)}
             </div>
