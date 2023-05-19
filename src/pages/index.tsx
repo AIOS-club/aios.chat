@@ -125,6 +125,7 @@ function App () {
   }), [chatList, config, handleDeleteAll, handleNewChat]);
 
   const currentChat = chatList.find((chat) => chat.chatId === query.get('chatId'));
+  const parentChat = chatList.find((chat) => chat.chatId === currentChat?.parentId);
 
   return (
     <Store.Provider value={value}>
@@ -161,7 +162,13 @@ function App () {
               onCancel={() => setVisible(false)}
               getPopupContainer={() => document.querySelector('.layout-root') as HTMLElement}
             >
-              <ChatConfig key={currentChat.chatId} chat={currentChat} onConfirm={handleChatValueChange} />
+              <ChatConfig
+                key={currentChat.chatId}
+                chat={currentChat}
+                parentChat={parentChat}
+                onConfirm={handleChatValueChange}
+                onClose={() => setVisible(false)}
+              />
             </SideSheet>
           )}
         </Layout>
