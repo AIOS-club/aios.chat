@@ -1,6 +1,8 @@
 import React from 'react';
-import { IconClose, IconDelete, IconPlus, IconShareStroked } from '@douyinfe/semi-icons';
-import { Button, Checkbox, Toast } from '@douyinfe/semi-ui';
+import {
+  IconClose, IconDelete, IconList, IconPlus, IconShareStroked 
+} from '@douyinfe/semi-icons';
+import { Button, Checkbox, Dropdown, Toast } from '@douyinfe/semi-ui';
 import { CheckboxEvent } from '@douyinfe/semi-ui/lib/es/checkbox';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import { ChatList } from '@/global';
@@ -39,7 +41,7 @@ const CheckOptions: React.FC<CheckOptionsProps> = function CheckOptions(props) {
   const indeterminate = checkList.length > 0 && checkList.length !== data.length;
   const checked = checkList.length === data.length;
 
-  const handleCreateChat = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleCreateChat = (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => {
     event.stopPropagation();
     if (checkList.length === 0) {
       Toast.warning('Please select at least one option.');
@@ -54,12 +56,12 @@ const CheckOptions: React.FC<CheckOptionsProps> = function CheckOptions(props) {
     }
   };
 
-  const handleDelete = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleDelete = (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => {
     event.stopPropagation();
     Toast.info('The feature is still under development.');
   };
 
-  const handleShare = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleShare = (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => {
     event.stopPropagation();
     Toast.info('The feature is still under development.');
   };
@@ -76,19 +78,38 @@ const CheckOptions: React.FC<CheckOptionsProps> = function CheckOptions(props) {
     onClose(false);
   };
 
+  const renderContent = () => (
+    <Dropdown.Menu>
+      <Dropdown.Item onClick={handleCreateChat} style={{ color: 'var(--semi-color-secondary)' }} icon={<IconPlus />}>
+        New Chat
+      </Dropdown.Item>
+      <Dropdown.Item onClick={handleDelete} style={{ color: 'var(--semi-color-danger)' }} icon={<IconDelete />}>
+        Delete
+      </Dropdown.Item>
+      <Dropdown.Item onClick={handleShare} style={{ color: 'var(--semi-color-tertiary)' }} icon={<IconShareStroked />}>
+        Share
+      </Dropdown.Item>
+    </Dropdown.Menu>
+  );
+
   return (
     <div
-      className="w-full min-h-[100px] p-3 bg-[#f0f1f3] dark:bg-[#191919] flex justify-evenly items-center max-md:flex-col"
+      className="w-full min-h-[80px] p-3 bg-[#f0f1f3] dark:bg-[#191919] flex justify-evenly items-center"
       style={{ borderTop: '1px solid var(--semi-color-border)' }}
     >
       <Checkbox checked={checked} indeterminate={indeterminate} onChange={handleChange}>
         Select All
       </Checkbox>
-      <div className="flex max-md:my-4">
+      <div className="flex max-[408px]:hidden">
         <OptionButton type="secondary" text="New Chat" icon={<IconPlus />} onClick={handleCreateChat} />
         <OptionButton type="danger" text="Delete" icon={<IconDelete />} onClick={handleDelete} />
         <OptionButton type="tertiary" text="Share" icon={<IconShareStroked />} onClick={handleShare} />
       </div>
+      <Dropdown clickToHide stopPropagation trigger="click" content={renderContent}>
+        <div className="hidden max-[408px]:block">
+          <Button type="tertiary" icon={<IconList />}>Options</Button>
+        </div>
+      </Dropdown>
       <Button type="tertiary" icon={<IconClose />} onClick={handleClose} />
     </div>
   );
