@@ -166,9 +166,11 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
         </div>
       ))}
       <div className="w-full h-48 flex items-center m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl py-4 px-12 md:py-6 flex-shrink-0 share-btn-custom" />
-      <button type="button" className={classNames(shareBtnCls, styles.share)} onClick={handleClick}>
-        {loading ? <Spin /> : <Icon svg={<Share />} />}
-      </button>
+      {!showCheck && (
+        <button type="button" className={classNames(shareBtnCls, styles.share)} onClick={handleClick}>
+          {loading ? <Spin /> : <Icon svg={<Share />} />}
+        </button>
+      )}
       <ImagePreview
         src={previewSrc}
         visible={!!previewSrc}
