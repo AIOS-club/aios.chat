@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-import { Button, Icon } from '@douyinfe/semi-ui';
+import { Button, Icon, Toast } from '@douyinfe/semi-ui';
 import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
-import { IconArrowDown, IconMore } from '@douyinfe/semi-icons';
+import { IconArrowDown, IconCheckList, IconMore } from '@douyinfe/semi-icons';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import useConfigSetting from '@/components/config-setting/useConfigSetting';
@@ -16,6 +16,7 @@ import {
 } from '@/utils';
 import Refresh from '@/assets/svg/refresh.svg';
 import Stop from '@/assets/svg/stop.svg';
+import CheckOptions from './CheckOptions';
 import { ChatProps } from './Chat';
 import styles from './Chat.module.less';
 
@@ -27,12 +28,14 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
   const { data, chatId: ChatID, title, systemMessage } = chat;
 
-  const { config, handleChange, handleChatValueChange } = useChatList();
+  const { config, handleChange, handleChatValueChange, handleNewChat } = useChatList();
 
   const chatId = useMemo(() => ChatID || uuid(), [ChatID]);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [conversation, setConversation] = useState<Conversation[]>(data || []);
+  const [checkFlag, setCheckFlag] = useState<boolean>(false);
+  const [checkList, setCheckList] = useState<Conversation[]>([]);
 
   const [scrollRef, scrollToBottom] = useScrollToBottom();
 
@@ -127,7 +130,11 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
       const statusCode = error.response?.status;
       const errorObj = res && typeof res === 'string' ? JSON.parse(res) : res;
       const errorMsg = errorObj?.error?.message || errorObj?.message || '';
-      // TODO 这里的state需要重新封装一个组件，更新正在stream中的state
+      // TODO  超过最大tokens限制
+      // const errorCode = errorObj?.error?.code || errorObj?.code || '';
+      // if (statusCode === 400 && errorCode === 'context_length_exceeded') {
+        
+      // }
       setConversation((c) => {
         const pre = [...c];
         const [lastConversation] = pre.slice(-1);
@@ -183,31 +190,59 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
         <div className="w-0 flex-grow overflow-hidden text-ellipsis break-keep whitespace-nowrap">
           {title || data[0]?.value || 'New Chat'}
         </div>
-        <Button className="h-full flex-shrink-0 ml-4" type="tertiary" icon={<IconMore />} onClick={onOpenConfig} />
+        {conversation.length > 0 && (
+          <Button
+            className="h-full flex-shrink-0 ml-4"
+            type="tertiary"
+            icon={<IconCheckList />}
+            onClick={() => {
+              if (loading) Toast.warning('Please wait for the current conversation to finish.');
+              else setCheckFlag((pre) => !pre);
+            }}
+          />
+        )}
+        <Button className="h-full flex-shrink-0 ml-2" type="tertiary" icon={<IconMore />} onClick={onOpenConfig} />
       </div>
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>
-            {conversation.length > 0 ? <ConversationList data={conversation} /> : <ProjectSourceInfo />}
+            {conversation.length > 0 ? (
+              <ConversationList checkList={checkList} onCheckListChange={setCheckList} showCheck={checkFlag} data={conversation} />
+            ) : <ProjectSourceInfo />}
           </div>
           <div
             ref={arrowDownRef}
             className={classNames(styles.arrowDown, 'bg-white dark:bg-[#2f2f35]')}
-            onClick={scrollToBottom}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              scrollToBottom();
+            }}
           >
             <IconArrowDown />
           </div>
         </div>
       </div>
-      <div className="absolute md:px-4 max-md:pb-4 bottom-0 left-0 w-full bg-vert-light-gradient dark:bg-vert-dark-gradient">
-        <form className="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6">
-          <div className="relative flex h-full flex-1 flex-col">
-            <div className="w-full flex gap-2 justify-center mb-3">
-              {renderRetryButton()}
+      <div className={classNames('absolute bottom-0 left-0 w-full bg-vert-light-gradient dark:bg-vert-dark-gradient', { 'md:px-4 max-md:pb-4': !checkFlag })}>
+        {!checkFlag ? (
+          <form className="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6">
+            <div className="relative flex h-full flex-1 flex-col">
+              <div className="w-full flex gap-2 justify-center mb-3">
+                {renderRetryButton()}
+              </div>
+              <AutoTextArea loading={loading} onFetchAnswer={handleFetchAnswer} />
             </div>
-            <AutoTextArea loading={loading} onFetchAnswer={handleFetchAnswer} />
-          </div>
-        </form>
+          </form>
+        ) : (
+          <CheckOptions
+            chat={chat}
+            checkList={checkList}
+            data={conversation}
+            onCheckListChange={setCheckList}
+            onClose={setCheckFlag}
+            handleNewChat={handleNewChat}
+          />
+        )}
       </div>
     </div>
   );

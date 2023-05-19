@@ -11,4 +11,7 @@ export interface Conversation {
 
 export interface ConversationProps {
   data: Conversation[];
+  showCheck: boolean;
+  checkList: Conversation[];
+  onCheckListChange: React.Dispatch<React.SetStateAction<any[]>>;
 }

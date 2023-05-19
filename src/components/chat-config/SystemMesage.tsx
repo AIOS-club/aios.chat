@@ -51,7 +51,7 @@ const SystemMessageItem: React.FC<SystemMessageItemProps> = function SystemMessa
       {editFlag ? (
         <TextArea value={inputValue} onChange={setInputValue} autoFocus />
       ) : (
-        <div className="text-overflow-l2">{value}</div>
+        <div className="text-overflow-l2 dark:text-white">{value}</div>
       )}
       <ButtonGroup className="mt-1 justify-end">
         {editFlag ? (

@@ -6,7 +6,9 @@ import SystemMessage from './SystemMesage';
 const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
   const { chat, onConfirm } = props;
 
-  const { title, data, chatId, systemMessage } = chat;
+  const {
+    title, data, chatId, systemMessage, parentId 
+  } = chat;
 
   const [smList, setSmList] = useState<string[]>(() => {
     const parsedSystemMessage = Array.isArray(systemMessage) ? systemMessage : [systemMessage || ''] as string[];
@@ -33,6 +35,7 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
       className="h-full w-full"
       onSubmit={handleSubmit}
     >
+      {parentId && <Form.Slot label="Source">{`Source from ${parentId}`}</Form.Slot>}
       <Form.Input
         field="title"
         label="Title"

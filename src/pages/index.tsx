@@ -99,9 +99,10 @@ function App () {
     localStorage?.removeItem('chatList');
   }, []);
 
-  const handleNewChat = useCallback(() => {
+  const handleNewChat = useCallback((data?: Conversation[], systemMessage?: string[], parentId?: string) => {
     const curChatId = uuid();
-    const newChat = { chatId: curChatId, data: [], systemMessage: getDefaultSystemMessage() };
+    const newChat = { chatId: curChatId, data: data || [], systemMessage: systemMessage || getDefaultSystemMessage() };
+    if (parentId) Object.assign(newChat, { parentId });
     navigate(`?chatId=${curChatId}`);
     setChatList((pre) => {
       const cacheChatList = [...pre];
@@ -144,7 +145,7 @@ function App () {
           <Layout.Content className="h-full">
             {currentChat ? <Chat key={currentChat.chatId} chat={currentChat} onOpenConfig={() => setVisible(true)} /> : (
               <div className="h-full w-full flex justify-center items-center">
-                <Button type="tertiary" className="text-[20px]" onClick={handleNewChat}>
+                <Button type="tertiary" className="text-[20px]" onClick={() => handleNewChat}>
                   Click here to start a new chat
                 </Button>
               </div>

@@ -19,7 +19,7 @@ const ChatTree: React.FC = function ChatTree() {
       className="w-full h-full px-2 flex flex-col"
       style={{ borderRight: '1px solid var(--semi-color-border)' }}
       contentStyle={{ height: 0, flexGrow: 1 }}
-      tabBarExtraContent={<Button type="tertiary" icon={<IconPlus />} onClick={handleNewChat} />}
+      tabBarExtraContent={<Button type="tertiary" icon={<IconPlus />} onClick={() => handleNewChat()} />}
     >
       <Tabs.TabPane className="h-full overflow-auto" tab="Tile View" itemKey="tile">
         <Input prefix={<IconSearch />} value={searchValue} onChange={setSearchValue} showClear />
