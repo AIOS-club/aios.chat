@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Form, Toast } from '@douyinfe/semi-ui';
+import { useNavigate } from 'react-router-dom';
+import {
+  Button, ButtonGroup, Descriptions, Form, Toast 
+} from '@douyinfe/semi-ui';
 import { ChatConfigProps } from './ChatConfig';
 import SystemMessage from './SystemMesage';
 
 const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
-  const { chat, onConfirm } = props;
+  const { chat, parentChat, onConfirm, onClose } = props;
 
-  const {
-    title, data, chatId, systemMessage, parentId 
-  } = chat;
+  const { title, data, chatId, systemMessage } = chat;
+
+  const navigate = useNavigate();
 
   const [smList, setSmList] = useState<string[]>(() => {
     const parsedSystemMessage = Array.isArray(systemMessage) ? systemMessage : [systemMessage || ''] as string[];
@@ -28,6 +31,13 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
     setSmList(parsedSystemMessage.filter((message) => message));
   };
 
+  const handleRedirect = () => {
+    if (parentChat) {
+      navigate(`?chatId=${parentChat.chatId}`);
+      onClose();
+    }
+  };
+
   return (
     <Form
       key={`${initKey}${JSON.stringify(systemMessage) || ''}`}
@@ -35,7 +45,19 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
       className="h-full w-full"
       onSubmit={handleSubmit}
     >
-      {parentId && <Form.Slot label="Source">{`Source from ${parentId}`}</Form.Slot>}
+      {parentChat && (
+        <Form.Slot label="Source">
+          <Descriptions className="border-[var(--semi-color-border)] border-[1px] rounded-md p-3">
+            <Descriptions.Item itemKey="id">{parentChat.chatId}</Descriptions.Item>
+            <Descriptions.Item itemKey="title">{parentChat.title || parentChat.data[0]?.value}</Descriptions.Item>
+            <Descriptions.Item itemKey="redirect">
+              <span className="text-[#40b4f3] cursor-pointer" onClick={handleRedirect}>
+                Redirect to source chat
+              </span>
+            </Descriptions.Item>
+          </Descriptions>
+        </Form.Slot>
+      )}
       <Form.Input
         field="title"
         label="Title"
