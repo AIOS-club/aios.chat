@@ -25,7 +25,7 @@ const Header: React.FC = function Header() {
         <button className={commonCls} type="button" onClick={() => open()}>
           <IconSetting />
         </button>
-        <button className={commonCls} onClick={handleNewChat} type="button">
+        <button className={commonCls} onClick={() => handleNewChat()} type="button">
           <Icon svg={<Add />} />
           New Chat
         </button>

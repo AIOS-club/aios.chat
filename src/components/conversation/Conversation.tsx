@@ -1,7 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
 import classNames from 'classnames';
 import html2canvas from 'html2canvas';
-import { Spin, Icon, ImagePreview, Toast } from '@douyinfe/semi-ui';
+import {
+  Spin, Icon, ImagePreview, Toast, Checkbox 
+} from '@douyinfe/semi-ui';
 import { IconCopy, IconUser } from '@douyinfe/semi-icons';
 import ReactMarkdown from 'react-markdown';
 import type { CodeProps } from 'react-markdown/lib/ast-to-react';
@@ -13,21 +15,19 @@ import rehypeKatex from 'rehype-katex'; // katex
 import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Share from '@/assets/svg/share.svg';
 import aiAvator from '@/assets/img/aiAvator.jpg';
-import { ConversationProps } from './ConversationProps';
+import type { Conversation as Con, ConversationProps } from './ConversationProps';
 import styles from './Conversation.module.less';
 import './github.css';
 import './katex.min.css';
 
-const defaultClass = 'md:px-4 w-full border-b border-black/10 text-gray-800 group';
-const conversationCls = 'min-h-[20px] flex flex-col items-start gap-4';
+const defaultClass = 'md:px-5 w-full border-b border-black/10 text-gray-800';
 const shareBtnCls = 'absolute top-10 right-0 w-10 h-7 flex justify-center items-center btn-neutral rounded-l html2canvas-ignore';
-const markdownCls = 'markdown-body w-0 flex-grow';
 
 const AI_AVATOR = import.meta.env.VITE_AI_AVATOR_URL;
 const USER_AVATOR = import.meta.env.VITE_USER_AVATOR_URL;
 
 const Conversation: React.FC<ConversationProps> = function Conversation(props) {
-  const { data } = props;
+  const { data, showCheck, checkList, onCheckListChange } = props;
 
   const [loading, setLoading] = useState<boolean>(false);
   const [previewSrc, serPreviewSrc] = useState<string>('');
@@ -113,17 +113,38 @@ const Conversation: React.FC<ConversationProps> = function Conversation(props) {
     });
   };
 
+  const handleCheckChange = (conversation: Con) => {
+    const cacheCheckList = [...checkList];
+    const checked = cacheCheckList.some((item) => item.key === conversation.key);
+    if (checked) {
+      const curConversation = cacheCheckList.findIndex((item) => item.key === conversation.key);
+      cacheCheckList.splice(curConversation, 1);
+    } else {
+      cacheCheckList.push(conversation);
+    }
+    onCheckListChange(cacheCheckList);
+  };
+
   return (
     <div className="flex flex-col items-center text-sm" ref={ref}>
       {data.map((d) => (
-        <div key={d.key} className={classNames(defaultClass, { 'bg-gray-50 dark:bg-[#232429]': d.character !== 'user' })}>
+        <div
+          key={d.key}
+          className={classNames(defaultClass, { 'bg-gray-50 dark:bg-[#232429]': d.character !== 'user', 'cursor-pointer': showCheck })}
+          onClick={() => handleCheckChange(d)}
+        >
           <div className="gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
-            <div className="w-[30px] flex flex-col relative items-end flex-shrink-0">
-              {renderAvator(d.character)}
+            <div className="w-[30px] flex flex-col items-end flex-shrink-0">
+              {showCheck ? (
+                <Checkbox
+                  checked={checkList.some((item) => item.key === d.key)}
+                  onChange={() => handleCheckChange(d)}
+                />
+              ) : renderAvator(d.character)}
             </div>
-            <div className={markdownCls}>
+            <div className="markdown-body w-0 flex-grow">
               <div
-                className={classNames(conversationCls, {
+                className={classNames('min-h-[20px] flex flex-col items-start gap-4', {
                   [styles.error]: d.error,
                   [styles.loading]: !d.stop && d.character !== 'user',
                   [styles.start]: d.character !== 'user' && !d.value,
