@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Icon, SideSheet } from '@douyinfe/semi-ui';
+import { Icon, SideSheet, Empty } from '@douyinfe/semi-ui';
 import { IconMenu, IconSetting } from '@douyinfe/semi-icons';
 import classNames from 'classnames';
 import Add from '@/assets/svg/add.svg';
@@ -40,7 +40,9 @@ const Header: React.FC = function Header() {
         placement="left"
         onCancel={() => setVisible(false)}
       >
-        {chatList?.length > 0 && chatList.map((chat) => <ChatItem key={chat.chatId} chat={chat} />)}
+        {chatList?.length > 0 ? chatList.map((chat) => <ChatItem key={chat.chatId} chat={chat} />) : (
+          <Empty description="No Data" />
+        )}
       </SideSheet>
     </div>
   );
