@@ -12,11 +12,6 @@ const Header: React.FC = function Header() {
 
   const [visible, setVisible] = useState<boolean>(false);
 
-  const handleOpenSideSheet = () => {
-    console.log(visible);
-    setVisible(true);
-  };
-
   return (
     <div className="shrink-0 z-11 h-12 flex items-center justify-between border-b border-white/20 bg-gray-800 text-gray-200 sm:pl-3">
       <Button
@@ -24,7 +19,7 @@ const Header: React.FC = function Header() {
         icon={<IconMenu />}
         className="hidden max-md:flex"
         style={{ color: '#fff' }}
-        onClick={handleOpenSideSheet}
+        onClick={() => setVisible(true)}
       />
       <div className="flex-grow flex items-center justify-end">
         <Button type="tertiary" style={{ color: '#fff' }} icon={<IconSetting />} onClick={() => open()} />
