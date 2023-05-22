@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import { Icon, SideSheet, Empty } from '@douyinfe/semi-ui';
-import { IconMenu, IconSetting } from '@douyinfe/semi-icons';
-import classNames from 'classnames';
-import Add from '@/assets/svg/add.svg';
+import { SideSheet, Empty, Button } from '@douyinfe/semi-ui';
+import { IconMenu, IconPlus, IconSetting } from '@douyinfe/semi-icons';
 import ChatItem from '@/components/chat-item';
 import useConfigSetting from '@/components/config-setting/useConfigSetting';
 import useChatList from '@/hooks/useChatList';
-
-const commonCls = 'flex py-3 px-3 items-center shrink-0 gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm';
 
 const Header: React.FC = function Header() {
   const { handleNewChat, chatList } = useChatList();
@@ -16,19 +12,25 @@ const Header: React.FC = function Header() {
 
   const [visible, setVisible] = useState<boolean>(false);
 
+  const handleOpenSideSheet = () => {
+    console.log(visible);
+    setVisible(true);
+  };
+
   return (
     <div className="shrink-0 z-11 h-12 flex items-center justify-between border-b border-white/20 bg-gray-800 text-gray-200 sm:pl-3">
-      <button className={classNames(commonCls, 'hidden', 'max-md:flex')} type="button" onClick={() => setVisible(true)}>
-        <IconMenu />
-      </button>
+      <Button
+        type="tertiary"
+        icon={<IconMenu />}
+        className="hidden max-md:flex"
+        style={{ color: '#fff' }}
+        onClick={handleOpenSideSheet}
+      />
       <div className="flex-grow flex items-center justify-end">
-        <button className={commonCls} type="button" onClick={() => open()}>
-          <IconSetting />
-        </button>
-        <button className={commonCls} onClick={() => handleNewChat()} type="button">
-          <Icon svg={<Add />} />
+        <Button type="tertiary" style={{ color: '#fff' }} icon={<IconSetting />} onClick={() => open()} />
+        <Button type="tertiary" style={{ color: '#fff' }} icon={<IconPlus />} onClick={() => handleNewChat()}>
           New Chat
-        </button>
+        </Button>
       </div>
       <SideSheet
         closable
