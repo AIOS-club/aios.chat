@@ -29,7 +29,7 @@ export default function App () {
     >
       <ChatStore>
         <Layout
-          className="relative overflow-hidden w-[95%] h-[95%] flex-row flex-none rounded-lg max-md:flex-col max-md:w-full max-md:h-full layout-root"
+          className="relative overflow-hidden w-[95%] h-[95%] flex-row flex-none rounded-lg max-md:flex-col max-md:w-full max-md:h-full max-md:rounded-none layout-root"
           style={{ border: '1px solid var(--semi-color-border)' }}
         >
           <Layout.Header className="md:hidden">
