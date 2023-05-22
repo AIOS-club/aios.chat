@@ -33,12 +33,13 @@ const Header: React.FC = function Header() {
       <SideSheet
         closable
         title="Conversation history"
-        width="80%"
+        style={{ maxWidth: '80%' }}
         headerStyle={{ padding: '12px' }}
         bodyStyle={{ padding: '0 12px' }}
         visible={visible}
         placement="left"
         onCancel={() => setVisible(false)}
+        getPopupContainer={() => document.querySelector('.layout-root') as HTMLElement}
       >
         {chatList?.length > 0 ? chatList.map((chat) => <ChatItem key={chat.chatId} chat={chat} />) : (
           <Empty description="No Data" />
