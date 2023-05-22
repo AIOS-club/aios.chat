@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ChatStoreProps } from '@/global';
-import { Store } from '@/pages/index';
+import { Store } from '@/store/ChatStore';
 
 function useChatList() {
   return useContext<ChatStoreProps>(Store);

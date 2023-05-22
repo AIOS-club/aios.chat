@@ -1,21 +1,18 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useState, useMemo, useCallback, createContext } from 'react';
 import { v4 as uuid } from 'uuid';
-import { Button, Layout, SideSheet } from '@douyinfe/semi-ui';
+import { useNavigate } from 'react-router-dom';
 import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
 import { Conversation } from '@/components/conversation/ConversationProps';
-import Header from '@/components/header';
-import Chat from '@/components/chat';
-import ChatTree from '@/components/chat-tree';
-import ChatConfig from '@/components/chat-config';
-import SiderConfig from '@/components/sider-config';
 import { getDefaultSystemMessage } from '@/utils';
 
-export const Store = React.createContext<ChatStoreProps>({} as any);
+interface ChatStoreReactProps {
+  children: React.ReactElement;
+}
 
-function App () {
+export const Store = createContext<ChatStoreProps>({} as any);
+
+function ChatStore({ children }: ChatStoreReactProps) {
   const navigate = useNavigate();
-  const [query] = useSearchParams();
 
   const [chatList, setChatList] = useState<ChatList[]>(() => {
     if (localStorage?.getItem('chatList')) {
@@ -39,15 +36,6 @@ function App () {
       model: 'gpt-3.5-turbo',
     };
   });
-
-  const [visible, setVisible] = useState<boolean>(false);
-
-  useEffect(() => {
-    const firstChatId = chatList[0]?.chatId;
-    if (!query.get('chatId') && firstChatId) {
-      navigate(`?chatId=${firstChatId}`);
-    }
-  }, [chatList, navigate, query]);
 
   const handleConfigChange = (_config: Config) => {
     if (_config && typeof _config === 'object') {
@@ -124,57 +112,11 @@ function App () {
     handleChatValueChange,
   }), [chatList, config, handleDeleteAll, handleNewChat]);
 
-  const currentChat = chatList.find((chat) => chat.chatId === query.get('chatId'));
-  const parentChat = chatList.find((chat) => chat.chatId === currentChat?.parentId);
-
   return (
     <Store.Provider value={value}>
-      <Layout className="overflow-hidden w-full h-full md:items-center md:justify-center max-md:flex-col">
-        <Layout.Header className="md:hidden">
-          <Header />
-        </Layout.Header>
-        <Layout
-          className="relative w-[95%] h-[95%] max-md:w-full max-md:h-[calc(100%-3rem)] flex-none md:rounded-xl overflow-hidden layout-root"
-          style={{ border: '1px solid var(--semi-color-border)', maxWidth: '1920px', maxHeight: '1080px' }}
-        >
-          <div className="w-[50px] flex-shrink-0 max-md:hidden">
-            <SiderConfig />
-          </div>
-          <Layout.Sider className="w-[250px] max-md:hidden flex-shrink-0">
-            <ChatTree />
-          </Layout.Sider>
-          <Layout.Content className="h-full">
-            {currentChat ? <Chat key={currentChat.chatId} chat={currentChat} onOpenConfig={() => setVisible(true)} /> : (
-              <div className="h-full w-full flex justify-center items-center">
-                <Button type="tertiary" className="text-[20px]" onClick={() => handleNewChat}>
-                  Click here to start a new chat
-                </Button>
-              </div>
-            )}
-          </Layout.Content>
-          {currentChat && (
-            <SideSheet
-              closable
-              style={{ maxWidth: '80%' }}
-              bodyStyle={{ marginBottom: '20px' }}
-              title="Chat Setting"
-              visible={visible}
-              onCancel={() => setVisible(false)}
-              getPopupContainer={() => document.querySelector('.layout-root') as HTMLElement}
-            >
-              <ChatConfig
-                key={currentChat.chatId}
-                chat={currentChat}
-                parentChat={parentChat}
-                onConfirm={handleChatValueChange}
-                onClose={() => setVisible(false)}
-              />
-            </SideSheet>
-          )}
-        </Layout>
-      </Layout>
+      {children}
     </Store.Provider>
   );
 }
 
-export default App;
+export default ChatStore;

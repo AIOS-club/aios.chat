@@ -49,7 +49,11 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
         <Form.Slot label="Source">
           <Descriptions className="border-[var(--semi-color-border)] border-[1px] rounded-md p-3">
             <Descriptions.Item itemKey="id">{parentChat.chatId}</Descriptions.Item>
-            <Descriptions.Item itemKey="title">{parentChat.title || parentChat.data[0]?.value}</Descriptions.Item>
+            <Descriptions.Item itemKey="title">
+              <div className="text-overflow-l4">
+                {parentChat.title || parentChat.data[0]?.value}
+              </div>
+            </Descriptions.Item>
             <Descriptions.Item itemKey="redirect">
               <span className="text-[#40b4f3] cursor-pointer" onClick={handleRedirect}>
                 Redirect to source chat
