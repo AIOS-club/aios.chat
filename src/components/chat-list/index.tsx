@@ -15,7 +15,7 @@ const ChatList: React.FC = function ChatList() {
   const filterList = chatList?.filter(filterChatList);
 
   return (
-    <div className="w-full h-full overflow-hidden flex flex-col border-[1px] border-l-[var(--semi-color-border)]">
+    <div className="w-full h-full overflow-hidden flex flex-col border-r-[1px] border-r-[var(--semi-color-border)]">
       <div className="flex-shrink-0 flex my-2 px-2">
         <Input
           className="flex-grow rounded-md"

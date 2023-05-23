@@ -1,57 +1,17 @@
-import React, { useCallback, useState } from 'react';
-import {
-  Button, Form, Tabs, Tooltip, Popconfirm, Toast
-} from '@douyinfe/semi-ui';
+import React, { useCallback } from 'react';
+import { Form, Tabs, Tooltip } from '@douyinfe/semi-ui';
 import { IconHelpCircle } from '@douyinfe/semi-icons';
-import type { RadioChangeEvent } from '@douyinfe/semi-ui/lib/es/radio';
 import PromptStore from '@/components/prompt-store';
+import GeneralConfig from '@/components/general-config';
 import { Config } from '@/global';
 import { ConfigSettingProps } from './ConfigSetting';
 
 const API_HOST: string = import.meta.env.VITE_API_HOST;
 
-export type Mode = 'light' | 'dark' | 'auto' | false;
-
 const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props) {
   const {
     handleConfigChange, config, tips, chatList, handleDeleteAll 
   } = props;
-
-  const [mode, setMode] = useState<Mode>(() => {
-    if (typeof window.matchMedia === 'function') {
-      const theme = localStorage?.getItem('theme') as Mode;
-      if (theme) return theme;
-      const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const html = document.getElementsByTagName('html')[0];
-      if (html.className.includes('dark')) return 'dark';
-      if (html.className.includes('light')) return 'light';
-      return darkMode ? 'dark' : 'light';
-    }
-    return false; // 表示不支持暗色模式
-  });
-
-  const changeTheme = (theme: 'dark' | 'light') => {
-    const html = document.getElementsByTagName('html')[0];
-    html.classList.remove(theme === 'light' ? 'dark' : 'light');
-    html.classList.add(theme);
-    html.style.colorScheme = theme;
-    document.body.setAttribute('theme-mode', theme);
-    if (theme === 'light' && document.body.hasAttribute('theme-mode')) {
-      document.body.removeAttribute('theme-mode');
-    }
-  };
-
-  const handleChangeMode = (event: RadioChangeEvent) => {
-    const { value } = event.target;
-    setMode(value);
-    localStorage?.setItem('theme', value);
-    if (value === 'dark' || value === 'light') {
-      changeTheme(value);
-    } else {
-      const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      changeTheme(darkMode ? 'dark' : 'light');
-    }
-  };
 
   const handleValuesChange = useCallback((values: Config) => {
     handleConfigChange(values);
@@ -66,7 +26,10 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
       <Tabs.TabPane tab="Chat" itemKey="0">
         <Form labelPosition="left" onValueChange={handleValuesChange}>
           {tips ? <div className="text-[#ff0000]">{tips}</div> : null}
-          <Form.Select field="model" initValue={config.model || 'gpt-3.5-turbo'} disabled />
+          <Form.Select field="model" initValue={config.model || 'gpt-3.5-turbo'}>
+            <Form.Select.Option value="gpt-3.5-turbo">gpt-3.5-turbo</Form.Select.Option>
+            <Form.Select.Option value="gpt-4">gpt-4</Form.Select.Option>
+          </Form.Select>
           <Form.Input field="apiHost" initValue={config.apiHost || API_HOST} showClear />
           <Form.Input field="apiKey" initValue={config.apiKey} showClear />
           <Form.Slider
@@ -104,33 +67,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
         </Form>
       </Tabs.TabPane>
       <Tabs.TabPane tab="General" itemKey="1">
-        <Form labelPosition="left">
-          {mode && (
-            <Form.RadioGroup field="theme" initValue={mode} onChange={handleChangeMode}>
-              <Form.Radio value="light">Light</Form.Radio>
-              <Form.Radio value="dark">Dark</Form.Radio>
-              <Form.Radio value="auto">Automatic</Form.Radio>
-            </Form.RadioGroup>
-          )}
-          <Form.Slot label="Clear all chats">
-            {chatList?.length > 0 && (
-              <Popconfirm
-                title="Are you sure you want to delete all conversations?"
-                content="Once deleted, all conversations will be removed and cannot be restored."
-                okText="Confirm"
-                cancelText="Cancel"
-                onConfirm={() => {
-                  handleDeleteAll();
-                  Toast.success('Deletion successful');
-                }}
-              >
-                <Button className="bg-[var(--semi-color-danger)]" theme="solid" type="danger">
-                  Clear
-                </Button>
-              </Popconfirm>
-            )}
-          </Form.Slot>
-        </Form>
+        <GeneralConfig chatList={chatList} onDelete={handleDeleteAll} />
       </Tabs.TabPane>
       <Tabs.TabPane tab="Prompt Store" itemKey="2">
         <PromptStore />
