@@ -23,13 +23,13 @@ const SiderConfig: React.FC = function SiderConfig() {
       />
       <div className="w-full flex flex-col items-center">
         <Button
-          className="my-2 !text-white"
+          className="!my-2 !text-white !bg-transparent"
           type="tertiary"
           icon={<IconGithubLogo size="large" />}
           onClick={() => window.open('https://github.com/AIOS-club/aios.chat')}
         />
         <Button
-          className="my-2 !text-white"
+          className="!my-2 !text-white !bg-transparent"
           type="tertiary"
           icon={<IconSetting size="large" />}
           onClick={() => open()}
