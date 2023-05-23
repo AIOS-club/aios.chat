@@ -11,13 +11,14 @@ interface ChatItemProps {
   chat: ChatList;
 }
 
+const tileChatCls = 'w-full h-[80px] p-2 cursor-pointer hover:bg-[#eaeaea] dark:hover:bg-[#5a5a5a]';
+
 const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
   const navigate = useNavigate();
 
   const [query] = useSearchParams();
 
   const checked = chat.chatId === query.get('chatId');
-  const tileChatCls = 'w-full p-2 rounded-md my-2 cursor-pointer hover:bg-[#eaeaea] dark:hover:bg-[#5a5a5a]';
   const tileChatDynamicCls = { '!bg-[#eaeaea] dark:!bg-[#6a6a6a]': checked };
 
   const [show, setShow] = useState(false);
@@ -38,8 +39,9 @@ const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
     <div
       key={chat.chatId}
       className={classNames('flex items-center dark:bg-[#2b2b2b]', tileChatCls, tileChatDynamicCls)}
-      style={{ border: '1px solid var(--semi-color-border)' }}
+      style={{ borderBottom: '1px solid var(--semi-color-border)' }}
       onClick={handleClick}
+      onTouchEnd={handleClick}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >

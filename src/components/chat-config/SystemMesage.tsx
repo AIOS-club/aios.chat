@@ -4,23 +4,7 @@ import { Button, ButtonGroup, TextArea, Toast } from '@douyinfe/semi-ui';
 import {
   IconClose, IconDelete, IconEdit, IconTick, IconPlus 
 } from '@douyinfe/semi-icons';
-
-interface SystemMessageProps {
-  data: string[];
-  onChange: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-interface SystemMessageItemProps {
-  id: string;
-  value: string;
-  onChange: (id: string, value: string) => void;
-  onDelete: (id: string) => void;
-}
-
-interface SmList {
-  id: string;
-  value: string;
-}
+import { SystemMessageItemProps, SystemMessageProps, SmList } from './ChatConfig';
 
 const SystemMessageItem: React.FC<SystemMessageItemProps> = function SystemMessageItem(props) {
   const { value, id, onChange, onDelete } = props;
@@ -115,9 +99,7 @@ const SystemMessage: React.FC<SystemMessageProps> = function SystemMessage(props
           onDelete={handleDelete}
         />
       ))}
-      <ButtonGroup className="justify-end my-4">
-        <Button className="flex-1" type="tertiary" icon={<IconPlus />} onClick={handleAddOne}>Add</Button>
-      </ButtonGroup>
+      <Button className="w-full h-[50px]" type="tertiary" icon={<IconPlus />} onClick={handleAddOne}>Add</Button>
     </div>
   );
 };
