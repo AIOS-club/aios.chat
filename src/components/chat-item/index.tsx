@@ -13,13 +13,19 @@ interface ChatItemProps {
 
 const tileChatCls = 'w-full h-[80px] p-2 cursor-pointer hover:bg-[#eaeaea] dark:hover:bg-[#5a5a5a]';
 
+const colorList = {
+  'gpt-3.5-turbo': '#18bb72',
+  'gpt-4': '#000'
+};
+
 const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
   const navigate = useNavigate();
 
   const [query] = useSearchParams();
 
-  const checked = chat.chatId === query.get('chatId');
-  const tileChatDynamicCls = { '!bg-[#eaeaea] dark:!bg-[#6a6a6a]': checked };
+  const checked: boolean = chat.chatId === query.get('chatId');
+  const color: string = colorList[chat.model || 'gpt-3.5-turbo'];
+  const tileChatDynamicCls: Record<string, boolean> = { '!bg-[#eaeaea] dark:!bg-[#6a6a6a]': checked };
 
   const [show, setShow] = useState(false);
 
@@ -45,7 +51,7 @@ const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
-      <Icon className="flex-shrink-0 mr-2" svg={<Bot />} />
+      <Icon className={classNames('flex-shrink-0 mr-4 ml-2', `text-[${color}]`)} svg={<Bot />} />
       <div className="w-0 flex-grow">
         <div className="w-full overflow-hidden text-ellipsis break-keep whitespace-nowrap text-[#000] dark:text-[#fff]">
           {chat.title || chat.data[0]?.value || 'New Chat'}  

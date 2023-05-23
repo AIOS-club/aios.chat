@@ -13,13 +13,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = function ChatHeader(props) {
       <div className="w-0 flex-grow overflow-hidden text-ellipsis break-keep whitespace-nowrap">
         {title || 'New Chat'}
       </div>
-      <Typography.Text type="secondary" className="ml-4  flex-shrink-0 leading-10">
+      <Typography.Text type="secondary" className="!ml-4  flex-shrink-0 !leading-10">
         {model}
       </Typography.Text>
       {showSelectButton && (
-        <Button className="h-full flex-shrink-0 ml-4" type="tertiary" icon={<IconCheckList />} onClick={onSelectList} />
+        <Button className="!h-full flex-shrink-0 !ml-4" type="tertiary" icon={<IconCheckList />} onClick={onSelectList} />
       )}
-      <Button className="h-full flex-shrink-0 ml-2" type="tertiary" icon={<IconMore />} onClick={onOpenConfig} />
+      <Button className="!h-full flex-shrink-0 !ml-2" type="tertiary" icon={<IconMore />} onClick={onOpenConfig} />
     </div>
   );
 };

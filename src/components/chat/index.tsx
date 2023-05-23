@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-import { Button, Icon, Toast } from '@douyinfe/semi-ui';
+import { Icon, Toast } from '@douyinfe/semi-ui';
 import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
-import { IconArrowDown, IconCheckList, IconMore } from '@douyinfe/semi-icons';
+import { IconArrowDown } from '@douyinfe/semi-icons';
 import ProjectSourceInfo from '@/components/project-source-info';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import useConfigSetting from '@/components/config-setting/useConfigSetting';
@@ -14,6 +14,7 @@ import useScrollToBottom from '@/hooks/useScrollToBottom';
 import {
   getCachePrompt, parseMarkdown, parseStreamText, getSystemMessages, getCurrentDate 
 } from '@/utils';
+import { API_HOST_LIST, ONLY_TEXT } from '@/utils/env';
 import Refresh from '@/assets/svg/refresh.svg';
 import Stop from '@/assets/svg/stop.svg';
 import { Config } from '@/global';
@@ -21,12 +22,6 @@ import CheckOptions from './CheckOptions';
 import { ChatProps } from './Chat';
 import styles from './Chat.module.less';
 import ChatHeader from './ChatHeader';
-
-const API_HOST_LIST = {
-  'gpt-3.5-turbo': import.meta.env.VITE_API_HOST,
-  'gpt-4': import.meta.env.VITE_API_HOST_GPT4
-};
-const ONLY_TEXT: string = import.meta.env.VITE_ONLY_TEXT;
 
 const Chat: React.FC<ChatProps> = function Chat(props) {
   const { chat, onOpenConfig } = props;
