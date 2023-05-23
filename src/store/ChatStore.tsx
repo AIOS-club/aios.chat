@@ -1,4 +1,6 @@
-import { useState, useMemo, useCallback, createContext } from 'react';
+import {
+  useState, useMemo, useCallback, createContext, useEffect 
+} from 'react';
 import { v4 as uuid } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -40,6 +42,21 @@ function ChatStore({ children }: ChatStoreReactProps) {
       'gpt-4': { ...defaultConfig, apiHost: import.meta.env.VITE_API_HOST_GPT4, model: 'gpt-4', },
     };
   });
+
+  useEffect(() => {
+    // 兼容旧的config数据，主要是apiKey
+    const cacheConfig = localStorage?.getItem('config') ? JSON.parse(localStorage.getItem('config') || '{}') : {};
+    if (cacheConfig?.apiKey && !cacheConfig?.block) {
+      setConfig((pre) => {
+        const cachePreConfig = JSON.parse(JSON.stringify(pre));
+        Object.assign(cachePreConfig['gpt-3.5-turbo'], { apiKey: cacheConfig.apiKey });
+        cacheConfig.block = true;
+        localStorage.setItem('config', JSON.stringify(cacheConfig));
+        localStorage.setItem('multiConfig', JSON.stringify(cachePreConfig));
+        return cachePreConfig;
+      });
+    }
+  }, []);
 
   const handleConfigChange = (_config: MultiConfig) => {
     if (_config && typeof _config === 'object') {
