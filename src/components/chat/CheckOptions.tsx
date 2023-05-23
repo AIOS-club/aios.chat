@@ -4,24 +4,7 @@ import {
 } from '@douyinfe/semi-icons';
 import { Button, Checkbox, Dropdown, Toast } from '@douyinfe/semi-ui';
 import { CheckboxEvent } from '@douyinfe/semi-ui/lib/es/checkbox';
-import { Conversation } from '@/components/conversation/ConversationProps';
-import { ChatList } from '@/global';
-
-interface CheckOptionsProps {
-  chat: ChatList;
-  data: Conversation[];
-  checkList: Conversation[];
-  onCheckListChange: React.Dispatch<React.SetStateAction<Conversation[]>>;
-  onClose: React.Dispatch<React.SetStateAction<boolean>>;
-  handleNewChat: (data?: Conversation[], systemMessage?: string[], parentId?: string) => void;
-}
-
-interface OptionButtonProps {
-  text: string;
-  type: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
-  icon: React.ReactNode;
-  onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-}
+import { OptionButtonProps, CheckOptionsProps } from './Chat';
 
 const OptionButton: React.FC<OptionButtonProps> = function OptionButton(props) {
   const { text, onClick, icon, type } = props;
@@ -51,7 +34,7 @@ const CheckOptions: React.FC<CheckOptionsProps> = function CheckOptions(props) {
         const index2 = data.findIndex((conversation) => conversation.key === conversation2.key);
         return index1 - index2;
       });
-      handleNewChat(cacheCheckList, chat.systemMessage, chat.chatId);
+      handleNewChat({ data: cacheCheckList, systemMessage: chat.systemMessage, parentId: chat.chatId });
       onCheckListChange([]);
     }
   };

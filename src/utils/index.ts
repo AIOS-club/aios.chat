@@ -88,9 +88,7 @@ function getCurrentDate(noWeekDay: boolean = false): string {
 }
 
 function getDefaultSystemMessage() {
-  return [
-    'Return the answer in markdown format',
-  ];
+  return [];
 }
 
 function getSystemMessages(message?: string | string[]): Messages[] {

@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 
-const HeaderComponent = React.lazy(async () => import('./Header'));
+const HeaderComponent = React.lazy(async () => import('./Header').catch(() => ({ default: () => <div>failed</div> })));
 
 const Header: React.FC = function Header() {
   return (

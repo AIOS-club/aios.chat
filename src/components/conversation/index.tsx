@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { ConversationProps } from './ConversationProps';
 
-const ConversationCpm = lazy(async () => import('./Conversation'));
+const ConversationCpm = lazy(async () => import('./Conversation').catch(() => ({ default: () => <div>failed</div> })));
 
 const Conversation: React.FC<ConversationProps> = function ChatIcon(props) {
   const { data, showCheck, checkList, onCheckListChange } = props;

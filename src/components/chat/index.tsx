@@ -16,17 +16,24 @@ import {
 } from '@/utils';
 import Refresh from '@/assets/svg/refresh.svg';
 import Stop from '@/assets/svg/stop.svg';
+import { Config } from '@/global';
 import CheckOptions from './CheckOptions';
 import { ChatProps } from './Chat';
 import styles from './Chat.module.less';
+import ChatHeader from './ChatHeader';
 
-const API_HOST: string = import.meta.env.VITE_API_HOST;
+const API_HOST_LIST = {
+  'gpt-3.5-turbo': import.meta.env.VITE_API_HOST,
+  'gpt-4': import.meta.env.VITE_API_HOST_GPT4
+};
 const ONLY_TEXT: string = import.meta.env.VITE_ONLY_TEXT;
 
 const Chat: React.FC<ChatProps> = function Chat(props) {
   const { chat, onOpenConfig } = props;
 
-  const { data, chatId: ChatID, title, systemMessage } = chat;
+  const {
+    data, chatId: ChatID, title, systemMessage, model 
+  } = chat;
 
   const { config, handleChange, handleChatValueChange, handleNewChat } = useChatList();
 
@@ -94,11 +101,13 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
     setLoading(true);
 
-    const headers = config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : {};
-    const { apiKey, apiHost, ...body } = config;
+    const modelConfig: Config = config[model || 'gpt-3.5-turbo'];
+
+    const headers = modelConfig.apiKey ? { Authorization: `Bearer ${modelConfig.apiKey}` } : {};
+    const { apiKey, apiHost, ...body } = modelConfig;
 
     await axios({
-      url: apiHost || API_HOST,
+      url: apiHost || API_HOST_LIST[model || 'gpt-3.5-turbo'],
       timeout: 300000,
       method: 'POST',
       responseType: 'stream',
@@ -162,6 +171,11 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     await handleFetchAnswer(lastConversationValue.trim(), true);
   };
 
+  const handleSelectList = () => {
+    if (loading) Toast.warning('Please wait for the current conversation to finish.');
+    else setCheckFlag((pre) => !pre);
+  };
+
   const renderRetryButton = () => {
     const { length } = conversation;
     if (!length) return null;
@@ -186,23 +200,13 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
 
   return (
     <div className={classNames('shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:text-white', styles.window)}>
-      <div className="h-10 leading-10 pl-6 flex" style={{ borderBottom: '1px solid var(--semi-color-border)' }}>
-        <div className="w-0 flex-grow overflow-hidden text-ellipsis break-keep whitespace-nowrap">
-          {title || data[0]?.value || 'New Chat'}
-        </div>
-        {conversation.length > 0 && (
-          <Button
-            className="h-full flex-shrink-0 ml-4"
-            type="tertiary"
-            icon={<IconCheckList />}
-            onClick={() => {
-              if (loading) Toast.warning('Please wait for the current conversation to finish.');
-              else setCheckFlag((pre) => !pre);
-            }}
-          />
-        )}
-        <Button className="h-full flex-shrink-0 ml-2" type="tertiary" icon={<IconMore />} onClick={onOpenConfig} />
-      </div>
+      <ChatHeader
+        model={model || 'gpt-3.5.turbo'}
+        showSelectButton={conversation.length > 0}
+        title={title || data[0]?.value}
+        onOpenConfig={onOpenConfig}
+        onSelectList={handleSelectList}
+      />
       <div className="flex-1 overflow-hidden relative">
         <div className="h-full relative">
           <div className="h-full w-full overflow-y-auto" ref={scrollRef}>

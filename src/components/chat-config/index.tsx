@@ -9,7 +9,9 @@ import SystemMessage from './SystemMesage';
 const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
   const { chat, parentChat, onConfirm, onClose } = props;
 
-  const { title, data, chatId, systemMessage } = chat;
+  const {
+    title, data, chatId, systemMessage, model 
+  } = chat;
 
   const navigate = useNavigate();
 
@@ -22,6 +24,7 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
 
   const handleSubmit = (values: any) => {
     onConfirm(chatId, 'title', values?.title);
+    onConfirm(chatId, 'model', values?.model);
     onConfirm(chatId, 'systemMessage', [...(smList || [])]);
     Toast.success('Save successful');
   };
@@ -69,6 +72,10 @@ const ChatConfig: React.FC<ChatConfigProps> = function ChatConfig(props) {
         placeholder="Fill in the title here"
         showClear
       />
+      <Form.Select field="model" initValue={model || 'gpt-3.5-turbo'}>
+        <Form.Select.Option value="gpt-3.5-turbo">gpt-3.5-turbo</Form.Select.Option>
+        <Form.Select.Option value="gpt-4">gpt-4</Form.Select.Option>
+      </Form.Select>
       <Form.Slot label="System Message">
         <SystemMessage key={JSON.stringify(smList)} data={smList} onChange={setSmList} />
       </Form.Slot>

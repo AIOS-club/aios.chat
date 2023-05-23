@@ -1,7 +1,9 @@
 import { useState, useMemo, useCallback, createContext } from 'react';
 import { v4 as uuid } from 'uuid';
 import { useNavigate } from 'react-router-dom';
-import { ChatStoreProps, ChatList, ChatListKey, Config } from '@/global';
+import {
+  ChatStoreProps, ChatList, ChatListKey, MultiConfig, NewChatProps 
+} from '@/global';
 import { Conversation } from '@/components/conversation/ConversationProps';
 import { getDefaultSystemMessage } from '@/utils';
 
@@ -19,29 +21,31 @@ function ChatStore({ children }: ChatStoreReactProps) {
       const data = JSON.parse(localStorage.getItem('chatList') || '[]');
       return data;
     }
-    return [{ chatId: uuid(), data: [], systemMessage: getDefaultSystemMessage() }];
+    return [{ chatId: uuid(), data: [], systemMessage: getDefaultSystemMessage(), model: 'gpt-3.5-turbo' }];
   });
 
-  const [config, setConfig] = useState<Config>(() => {
-    if (localStorage?.getItem('config')) {
-      return JSON.parse(localStorage.getItem('config') || '{}');
+  const [config, setConfig] = useState<MultiConfig>(() => {
+    if (localStorage?.getItem('multiConfig')) {
+      return JSON.parse(localStorage.getItem('multiConfig') || '{}');
     }
-    return {
-      apiHost: import.meta.env.VITE_API_HOST,
+    const defaultConfig = {
       apiKey: '',
       stream: true,
       temperature: 0.8,
       presence_penalty: -1.0,
       frequency_penalty: 1.0,
-      model: 'gpt-3.5-turbo',
+    };
+    return {
+      'gpt-3.5-turbo': { ...defaultConfig, apiHost: import.meta.env.VITE_API_HOST, model: 'gpt-3.5-turbo', },
+      'gpt-4': { ...defaultConfig, apiHost: import.meta.env.VITE_API_HOST_GPT4, model: 'gpt-4', },
     };
   });
 
-  const handleConfigChange = (_config: Config) => {
+  const handleConfigChange = (_config: MultiConfig) => {
     if (_config && typeof _config === 'object') {
-      const data = { ..._config };
+      const data = JSON.parse(JSON.stringify(_config));
       setConfig(data);
-      localStorage?.setItem('config', JSON.stringify(data));
+      localStorage?.setItem('multiConfig', JSON.stringify(data));
     }
   };
 
@@ -87,9 +91,10 @@ function ChatStore({ children }: ChatStoreReactProps) {
     localStorage?.removeItem('chatList');
   }, []);
 
-  const handleNewChat = useCallback((data?: Conversation[], systemMessage?: string[], parentId?: string) => {
+  const handleNewChat = useCallback((newChatProps?: NewChatProps) => {
+    const { data, systemMessage, parentId, model = 'gpt-3.5-turbo' } = newChatProps || {};
     const curChatId = uuid();
-    const newChat = { chatId: curChatId, data: data || [], systemMessage: systemMessage || getDefaultSystemMessage() };
+    const newChat = { chatId: curChatId, data: data || [], systemMessage: systemMessage || getDefaultSystemMessage(), model };
     if (parentId) Object.assign(newChat, { parentId });
     navigate(`?chatId=${curChatId}`);
     setChatList((pre) => {
