@@ -1,9 +1,10 @@
-import { ChatList, Config } from '@/global';
+import { ChatList, Config, Model, MultiConfig } from '@/global';
 
 export interface ConfigSettingProps {
-  handleConfigChange: (config: Config) => void;
+  handleConfigChange: (config: MultiConfig) => void;
   handleDeleteAll: () => void;
-  config: Config;
+  config: MultiConfig;
   tips?: string;
+  model?: Model;
   chatList: ChatList[];
 }

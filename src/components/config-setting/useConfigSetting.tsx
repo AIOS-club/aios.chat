@@ -3,13 +3,14 @@ import { Modal, Toast } from '@douyinfe/semi-ui';
 import { IconSetting } from '@douyinfe/semi-icons';
 import ConfigSetting from './index';
 import useChatList from '@/hooks/useChatList';
+import { Model } from '@/global';
 
 function useConfigSetting() {
   const { config, handleConfigChange, chatList, handleDeleteAll } = useChatList();
 
   const configRef = useRef<any>();
 
-  const open = useCallback((tips?: string) => {
+  const open = useCallback((tips?: string, model?: Model) => {
     const preConfig = { ...(config || {}) };
     configRef.current = Modal.info({
       header: (
@@ -25,6 +26,7 @@ function useConfigSetting() {
         <ConfigSetting
           chatList={chatList}
           tips={tips}
+          model={model}
           handleConfigChange={handleConfigChange}
           handleDeleteAll={handleDeleteAll}
           config={config}

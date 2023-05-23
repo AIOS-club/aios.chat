@@ -2,7 +2,8 @@ import React from "react";
 import { SiteConfig } from "./hooks/useWebConfigModel";
 import { Conversation } from "./components/conversation/Conversation";
 
-export type ChatListKey = 'chatId' | 'title' | 'lastUpdateTime' | 'systemMessage' | 'parentId';
+export type ChatListKey = 'chatId' | 'title' | 'lastUpdateTime' | 'systemMessage' | 'parentId' | 'model';
+export type Model = 'gpt-3.5-turbo' | 'gpt-4';
 
 export interface Config {
   apiKey: string;
@@ -14,6 +15,11 @@ export interface Config {
   stream: boolean; // 流式传输
 }
 
+export interface MultiConfig {
+  'gpt-3.5-turbo': Config;
+  'gpt-4': Config;
+}
+
 export interface ChatList {
   chatId: string;
   data: Conversation[];
@@ -21,21 +27,29 @@ export interface ChatList {
   lastUpdateTime?: string;
   systemMessage?: string[];
   parentId?: string;
+  model?: Model;
 }
 
 export interface ChatStoreProps {
-  config: Config;
+  config: MultiConfig;
   chatList: ChatList[];
   setChatList: React.Dispatch<React.SetStateAction<ChatList[]>>;
-  handleConfigChange: (config: Config) => void;
+  handleConfigChange: (config: MultiConfig) => void;
   handleChange: (chatId: string, data: Conversation[], forceUpdate?: boolean) => void;
   handleDelete: (chatId: string) => void;
   handleChatValueChange: (chatId: string, key: ChatListKey, value: any) => void;
   handleDeleteAll: () => void;
-  handleNewChat: (data?: Conversation[], systemMessage?: string[], parentId?: string) => void;
+  handleNewChat: (chatProps?: NewChatProps) => void;
 }
 
 export interface Messages {
   role: 'assistant' | 'user' | 'system';
   content: string;
+}
+
+export interface NewChatProps {
+  data?: Conversation[];
+  parentId?: string;
+  systemMessage?: string[];
+  model?: Model;
 }

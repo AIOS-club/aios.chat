@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Empty, Input } from '@douyinfe/semi-ui';
+import React, { useMemo, useState } from 'react';
+import { Button, Dropdown, Empty, Input } from '@douyinfe/semi-ui';
 import { IconPlus, IconSearch } from '@douyinfe/semi-icons';
 import useChatList from '@/hooks/useChatList';
 import ChatItem from '@/components/chat-item';
@@ -14,8 +14,15 @@ const ChatList: React.FC = function ChatList() {
 
   const filterList = chatList?.filter(filterChatList);
 
+  const renderChatModelList = useMemo(() => (
+    <Dropdown.Menu>
+      <Dropdown.Item onClick={() => handleNewChat({ model: 'gpt-3.5-turbo' })}>gpt-3.5-turbo</Dropdown.Item>
+      <Dropdown.Item onClick={() => handleNewChat({ model: 'gpt-4' })}>gpt4</Dropdown.Item>
+    </Dropdown.Menu>
+  ), [handleNewChat]);
+
   return (
-    <div className="w-full h-full overflow-hidden flex flex-col border-[1px] border-l-[var(--semi-color-border)]">
+    <div className="w-full h-full overflow-hidden flex flex-col border-r-[1px] border-r-[var(--semi-color-border)]">
       <div className="flex-shrink-0 flex my-2 px-2">
         <Input
           className="flex-grow rounded-md"
@@ -24,7 +31,9 @@ const ChatList: React.FC = function ChatList() {
           onChange={setSearchValue}
           showClear
         />
-        <Button className="flex-shrink-0 ml-2" type="tertiary" icon={<IconPlus />} onClick={() => handleNewChat()} />
+        <Dropdown clickTriggerToHide trigger="click" content={renderChatModelList}>
+          <Button className="flex-shrink-0 ml-2" type="tertiary" icon={<IconPlus />} />
+        </Dropdown>
       </div>
       <div className="h-1 flex-grow overflow-auto">
         {filterList?.length > 0 ? filterList.map((chat) => <ChatItem key={chat.chatId} chat={chat} />) : (

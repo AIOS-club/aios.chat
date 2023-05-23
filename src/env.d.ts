@@ -5,6 +5,7 @@ declare const BASE: string;
 
 interface ImportMetaEnv {
   readonly VITE_API_HOST: string
+  readonly VITE_API_HOST_GPT4: string
   readonly VITE_CACHE_TIMES: string
   readonly VITE_BASE_URL: string
   readonly VITE_DEFAULT_PLACEHOLDER: string
