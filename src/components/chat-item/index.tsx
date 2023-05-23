@@ -41,6 +41,7 @@ const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
       className={classNames('flex items-center dark:bg-[#2b2b2b]', tileChatCls, tileChatDynamicCls)}
       style={{ borderBottom: '1px solid var(--semi-color-border)' }}
       onClick={handleClick}
+      onTouchEnd={handleClick}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
