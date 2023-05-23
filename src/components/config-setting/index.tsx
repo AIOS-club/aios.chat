@@ -4,12 +4,8 @@ import { IconHelpCircle } from '@douyinfe/semi-icons';
 import PromptStore from '@/components/prompt-store';
 import GeneralConfig from '@/components/general-config';
 import { Config, Model, MultiConfig } from '@/global';
+import { API_HOST_LIST } from '@/utils/env';
 import { ConfigSettingProps } from './ConfigSetting';
-
-const API_HOST_LIST = {
-  'gpt-3.5-turbo': import.meta.env.VITE_API_HOST,
-  'gpt-4': import.meta.env.VITE_API_HOST_GPT4
-};
 
 const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props) {
   const {
@@ -31,7 +27,7 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
   ), []);
 
   const config = multiConfig[model] || {};
-  const API_HOST = API_HOST_LIST[model] || 'https://api.openai.com/v1/chat/completions';
+  const API_HOST = API_HOST_LIST[model];
 
   return (
     <Tabs>
