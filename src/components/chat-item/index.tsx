@@ -13,18 +13,12 @@ interface ChatItemProps {
 
 const tileChatCls = 'w-full h-[80px] p-2 cursor-pointer hover:bg-[#eaeaea] dark:hover:bg-[#5a5a5a]';
 
-const colorList = {
-  'gpt-3.5-turbo': '#18bb72',
-  'gpt-4': '#000'
-};
-
 const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
   const navigate = useNavigate();
 
   const [query] = useSearchParams();
 
   const checked: boolean = chat.chatId === query.get('chatId');
-  const color: string = colorList[chat.model || 'gpt-3.5-turbo'];
   const tileChatDynamicCls: Record<string, boolean> = { '!bg-[#eaeaea] dark:!bg-[#6a6a6a]': checked };
 
   const [show, setShow] = useState(false);
@@ -51,7 +45,12 @@ const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
-      <div className={classNames('flex-shrink-0 h-[40px] w-[40px] flex items-center justify-center rounded mr-2', `bg-[${color}]`)}>
+      <div
+        className={classNames('flex-shrink-0 h-[40px] w-[40px] flex items-center justify-center rounded mr-2', {
+          'bg-[#18bb72]': chat.model !== 'gpt-4',
+          'bg-[#000]': chat.model === 'gpt-4'
+        })}
+      >
         <Icon className="text-white" svg={<Bot />} />
       </div>
       <div className="w-0 flex-grow">

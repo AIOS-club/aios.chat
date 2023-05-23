@@ -23,7 +23,7 @@ const ChatList: React.FC = function ChatList() {
 
   return (
     <div className="w-full h-full overflow-hidden flex flex-col border-r-[1px] border-r-[var(--semi-color-border)]">
-      <div className="flex-shrink-0 flex my-2 px-2">
+      <div className="flex-shrink-0 flex !my-2 !px-2">
         <Input
           className="flex-grow rounded-md"
           prefix={<IconSearch />}
@@ -32,7 +32,7 @@ const ChatList: React.FC = function ChatList() {
           showClear
         />
         <Dropdown clickTriggerToHide trigger="click" content={renderChatModelList}>
-          <Button className="flex-shrink-0 ml-2" type="tertiary" icon={<IconPlus />} />
+          <Button className="flex-shrink-0 !ml-2 !bg-transparent" type="tertiary" icon={<IconPlus />} />
         </Dropdown>
       </div>
       <div className="h-1 flex-grow overflow-auto">
