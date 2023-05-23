@@ -114,7 +114,12 @@ const AutoTextArea: React.FC<AutoTextAreaProps> = function AutoTextArea(props) {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           onCompositionStart={() => setIsComposition(true)}
-          onCompositionEnd={() => setIsComposition(false)}
+          onCompositionEnd={() => {
+            // 处理safari浏览器的执行顺序问题
+            setTimeout(() => {
+              setIsComposition(false);
+            });
+          }}
         />
       </Dropdown>
       {loading ? <Loading /> : (

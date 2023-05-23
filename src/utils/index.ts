@@ -90,7 +90,6 @@ function getCurrentDate(noWeekDay: boolean = false): string {
 function getDefaultSystemMessage() {
   return [
     'Return the answer in markdown format',
-    `Current Beijing time is: ${getCurrentDate()}`
   ];
 }
 
