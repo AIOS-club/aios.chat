@@ -3,6 +3,7 @@ import { useNavigate, useRoutes } from 'react-router-dom';
 import { Layout } from '@douyinfe/semi-ui';
 import { IconLoading } from '@douyinfe/semi-icons';
 import routes from 'virtual:generated-pages-react';
+import classNames from 'classnames';
 import ChatStore from '@/store/ChatStore';
 import SiderConfig from '@/components/sider-config';
 import Header from '@/components/header';
@@ -29,8 +30,12 @@ export default function App () {
     >
       <ChatStore>
         <Layout
-          className="relative overflow-hidden w-[95%] h-[95%] flex-row flex-none rounded-lg max-md:flex-col max-md:w-full max-md:h-full max-md:rounded-none layout-root"
-          style={{ border: '1px solid var(--semi-color-border)' }}
+          className={classNames(
+            'w-[95%] h-[95%] layout-root relative', 
+            'overflow-hidden flex-row flex-none rounded-lg',
+            'max-md:flex-col max-md:w-full max-md:h-full max-md:rounded-none',
+            'border-[1px] border-[var(--semi-color-border)] max-md:border-none'
+          )}
         >
           <Layout.Header className="md:hidden">
             <Header />

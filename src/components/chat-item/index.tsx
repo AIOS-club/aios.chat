@@ -51,7 +51,9 @@ const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
-      <Icon className={classNames('flex-shrink-0 mr-4 ml-2', `text-[${color}]`)} svg={<Bot />} />
+      <div className={classNames('flex-shrink-0 h-[40px] w-[40px] flex items-center justify-center rounded mr-2', `bg-[${color}]`)}>
+        <Icon className="text-white" svg={<Bot />} />
+      </div>
       <div className="w-0 flex-grow">
         <div className="w-full overflow-hidden text-ellipsis break-keep whitespace-nowrap text-[#000] dark:text-[#fff]">
           {chat.title || chat.data[0]?.value || 'New Chat'}  
