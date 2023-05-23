@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { SideSheet, Empty, Button } from '@douyinfe/semi-ui';
+import React, { useState, useMemo } from 'react';
+import { SideSheet, Empty, Button, Dropdown } from '@douyinfe/semi-ui';
 import { IconMenu, IconPlus, IconSetting } from '@douyinfe/semi-icons';
 import ChatItem from '@/components/chat-item';
 import useConfigSetting from '@/components/config-setting/useConfigSetting';
@@ -12,6 +12,13 @@ const Header: React.FC = function Header() {
 
   const [visible, setVisible] = useState<boolean>(false);
 
+  const renderChatModelList = useMemo(() => (
+    <Dropdown.Menu>
+      <Dropdown.Item onClick={() => handleNewChat({ model: 'gpt-3.5-turbo' })}>gpt-3.5-turbo</Dropdown.Item>
+      <Dropdown.Item onClick={() => handleNewChat({ model: 'gpt-4' })}>gpt4</Dropdown.Item>
+    </Dropdown.Menu>
+  ), [handleNewChat]);
+
   return (
     <div className="shrink-0 z-11 h-12 flex items-center justify-between border-b border-white/20 bg-gray-800 text-gray-200 sm:pl-3">
       <Button
@@ -23,9 +30,11 @@ const Header: React.FC = function Header() {
       />
       <div className="flex-grow flex items-center justify-end">
         <Button type="tertiary" style={{ color: '#fff' }} icon={<IconSetting />} onClick={() => open()} />
-        <Button type="tertiary" style={{ color: '#fff' }} icon={<IconPlus />} onClick={() => handleNewChat()}>
-          New Chat
-        </Button>
+        <Dropdown clickTriggerToHide trigger="click" content={renderChatModelList}>
+          <Button type="tertiary" style={{ color: '#fff' }} icon={<IconPlus />}>
+            New Chat
+          </Button>
+        </Dropdown>
       </div>
       <SideSheet
         closable

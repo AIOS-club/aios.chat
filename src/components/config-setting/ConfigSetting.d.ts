@@ -5,5 +5,6 @@ export interface ConfigSettingProps {
   handleDeleteAll: () => void;
   config: MultiConfig;
   tips?: string;
+  model?: Model;
   chatList: ChatList[];
 }

@@ -13,10 +13,10 @@ const API_HOST_LIST = {
 
 const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props) {
   const {
-    handleConfigChange, config: defaultConfig, tips, chatList, handleDeleteAll 
+    handleConfigChange, config: defaultConfig, model: currentModel, tips, chatList, handleDeleteAll 
   } = props;
 
-  const [model, setModel] = useState<Model>('gpt-3.5-turbo');
+  const [model, setModel] = useState<Model>(currentModel || 'gpt-3.5-turbo');
   const [multiConfig, setMultiConfig] = useState<MultiConfig>(defaultConfig);
 
   const handleValuesChange = useCallback((values: Config) => {
@@ -48,8 +48,13 @@ const ConfigSetting: React.FC<ConfigSettingProps> = function ConfigSetting(props
         </Form>
         <Form key={model} labelPosition="left" onValueChange={handleValuesChange}>
           <Form.Input field="apiHost" initValue={config.apiHost || API_HOST} showClear />
+          <Form.Input
+            field="apiKey"
+            initValue={config.apiKey}
+            label={{ text: 'apiKey', extra: labelTips('When using GPT-4, you need to make sure your apiKey is the correct GPT-4 API key.') }}
+            showClear
+          />
           {tips ? <div className="text-[#ff0000]">{tips}</div> : null}
-          <Form.Input field="apiKey" initValue={config.apiKey} showClear />
           <Form.Slider
             field="temperature"
             initValue={config.temperature ?? 0.8}
