@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button, Layout, SideSheet } from '@douyinfe/semi-ui';
 import Chat from '@/components/chat';
-import ChatTree from '@/components/chat-tree';
+import ChatList from '@/components/chat-list';
 import ChatConfig from '@/components/chat-config';
 
 import useChatList from '@/hooks/useChatList';
@@ -28,7 +28,7 @@ function App () {
   return (
     <Layout className="">
       <Layout.Sider className="w-[250px] max-md:hidden flex-shrink-0">
-        <ChatTree />
+        <ChatList />
       </Layout.Sider>
       <Layout.Content className="h-full">
         {currentChat ? <Chat key={currentChat.chatId} chat={currentChat} onOpenConfig={() => setVisible(true)} /> : (
