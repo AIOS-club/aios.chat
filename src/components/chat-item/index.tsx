@@ -11,7 +11,7 @@ interface ChatItemProps {
   chat: ChatList;
 }
 
-const tileChatCls = 'w-full h-[80px] p-2 cursor-pointer hover:bg-[#eaeaea] dark:hover:bg-[#5a5a5a]';
+const tileChatCls = 'w-full min-h-[80px] p-2 cursor-pointer hover:bg-[#eaeaea] dark:hover:bg-[#5a5a5a]';
 
 const ChatItem: React.FC<ChatItemProps> = function ChatItem({ chat }) {
   const navigate = useNavigate();
