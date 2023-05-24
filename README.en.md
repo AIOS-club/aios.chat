@@ -42,6 +42,22 @@ This project comes with a built-in server for local development and testing, and
 Want to use your own API? No problem, the client can connect to the server of this project as well as any official standard API.
 
 We recommend connecting to [AIOK](https://key.aios.chat), which is free for the first registration and provides 100,000 points for free.
+
+**The following models are currently supported:**
+
+| Model          | Description                                                                                       | Max Tokens | Training Data      | Pros                           | Cons                                         |
+| -------------- | ------------------------------------------------------------------------------------------------- | ----------- | -------------------------| ------------------------------| --------------------------------------------|
+| gpt-3.5-turbo  | One of the most capable GPT-3.5 models, optimized for chat at 1/10th the cost of text-davinci-003.| 4096 tokens  | Up to Sep 2021      | Faster response, slower token usage  	  	 	| Slightly less intelligent than GPT-4          |
+| gpt4          	| More capable than any GPT-3.5 model, able to do more complex tasks and optimized for chat.       	| 8192 tokens 	| Up to Sep 2021  		| More intelligent, more accurate problem solving   	 	| Slower response time and higher token usage compared to GPT-3.5 |
+
+You can choose the model for each conversation on the conversation settings page or when creating a new conversation.
+
+<img src="docs/chat-config.png" />
+
+For the GPT4 model, it is important to select it in the configuration page and enter an API key available for that model.
+
+<img src="docs/setting.jpeg" />
+
 ## Getting Started
 Node.js v18.x.0 is recommended.
 
@@ -53,6 +69,8 @@ npm run inst # Installation
 npm run dev # Running
 
 npm run dev:env # Generating environment variable files during runtime
+
+npm run dev:vite # Run only the frontend if you don't want to use the local API.
 ```
 
 > After using the ```npm run dev:env``` command, if you need a local server, you need to fill in the correct and available API KEY in the .env.development file generated under the /api directory.
@@ -85,6 +103,9 @@ VITE_DEFAULT_BOTTOM_TIPS=''
 
 # API_HOST
 VITE_API_HOST='http://localhost:3000/aios-chat'
+
+# GPT4 API_HOST
+VITE_API_HOST_GPT4='https://api.openai.com/v1/chat/completions'
 
 # Whether to return only text content, which means whether the stream needs to be parsed by the frontend.
 VITE_ONLY_TEXT=true
@@ -119,6 +140,7 @@ To be updated later.
 - Share current conversation with one click
 - Streaming transmission
 - Dark mode
+- Supports GPT-4
 
 ## Upcoming Features
 - [x] github action（eslint）
@@ -131,14 +153,14 @@ To be updated later.
 - [x] Material modification of openai model (3.5, 3.0) and modification of interface parameters temperature, frequency_penalty, presence_penalty
 - [ ] Multi-language support
 - [ ] One-click deployment document
-- [ ] GitHub pages automatic deployment
 - [ ] docker-compose files
 
 ## FAQ
 
 Q: Why is it that after using the official interface, a large character string is returned without being parsed?
 
-A: Because the ```VITE_ONLY_TEXT``` in the environment variables is set to true by default, there is no parsing on the client side. Change it to false or delete it.
+A: ~~Because the ```VITE_ONLY_TEXT``` in the environment variables is set to true by default, there is no parsing on the client side. Change it to false or delete it.~~
+> The default value is now set to false.
 
 ## License
 
