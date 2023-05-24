@@ -171,6 +171,39 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
     else setCheckFlag((pre) => !pre);
   };
 
+  const handleCreateChat = (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => {
+    event.stopPropagation();
+    if (checkList.length === 0) {
+      Toast.warning('Please select at least one option.');
+    } else {
+      const cacheCheckList = [...checkList].sort((conversation1, conversation2) => {
+        const index1 = data.findIndex((cn) => cn.key === conversation1.key);
+        const index2 = data.findIndex((cn) => cn.key === conversation2.key);
+        return index1 - index2;
+      });
+      handleNewChat({ data: cacheCheckList, systemMessage: chat.systemMessage, parentId: chat.chatId, model });
+      setCheckList([]);
+    }
+  };
+
+  const handleDeleteRecord = (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => {
+    event.stopPropagation();
+    if (checkList.length === 0) {
+      Toast.warning('Please select at least one option.');
+    } else {
+      const cacheData: Conversation[] = JSON.parse(JSON.stringify(data));
+      checkList.forEach((item) => {
+        const index = cacheData.findIndex((d) => d.key === item.key);
+        if (index >= 0) cacheData.splice(index, 1);
+      });
+      handleChange(chatId, cacheData);
+      setConversation(cacheData);
+      Toast.success('Deletion successful');
+      setCheckList([]);
+      setCheckFlag(false);
+    }
+  };
+
   const renderRetryButton = () => {
     const { length } = conversation;
     if (!length) return null;
@@ -237,6 +270,8 @@ const Chat: React.FC<ChatProps> = function Chat(props) {
             chat={chat}
             checkList={checkList}
             data={conversation}
+            onCreateNewChat={handleCreateChat}
+            onDeleteRecord={handleDeleteRecord}
             onCheckListChange={setCheckList}
             onClose={setCheckFlag}
             handleNewChat={handleNewChat}

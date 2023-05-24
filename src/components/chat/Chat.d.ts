@@ -10,6 +10,8 @@ export interface CheckOptionsProps {
   chat: ChatList;
   data: Conversation[];
   checkList: Conversation[];
+  onCreateNewChat: (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => void;
+  onDeleteRecord: (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => void;
   onCheckListChange: React.Dispatch<React.SetStateAction<Conversation[]>>;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   handleNewChat: (chatProps: NewChatProps) => void;

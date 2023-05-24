@@ -18,31 +18,11 @@ const OptionButton: React.FC<OptionButtonProps> = function OptionButton(props) {
 
 const CheckOptions: React.FC<CheckOptionsProps> = function CheckOptions(props) {
   const {
-    chat, data, checkList, onCheckListChange, onClose, handleNewChat 
+    data, checkList, onCheckListChange, onClose, onCreateNewChat, onDeleteRecord
   } = props;
 
   const indeterminate = checkList.length > 0 && checkList.length !== data.length;
   const checked = checkList.length === data.length;
-
-  const handleCreateChat = (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => {
-    event.stopPropagation();
-    if (checkList.length === 0) {
-      Toast.warning('Please select at least one option.');
-    } else {
-      const cacheCheckList = [...checkList].sort((conversation1, conversation2) => {
-        const index1 = data.findIndex((conversation) => conversation.key === conversation1.key);
-        const index2 = data.findIndex((conversation) => conversation.key === conversation2.key);
-        return index1 - index2;
-      });
-      handleNewChat({ data: cacheCheckList, systemMessage: chat.systemMessage, parentId: chat.chatId });
-      onCheckListChange([]);
-    }
-  };
-
-  const handleDelete = (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => {
-    event.stopPropagation();
-    Toast.info('The feature is still under development.');
-  };
 
   const handleShare = (event: React.MouseEvent<HTMLDivElement | HTMLLIElement, MouseEvent>) => {
     event.stopPropagation();
@@ -63,10 +43,10 @@ const CheckOptions: React.FC<CheckOptionsProps> = function CheckOptions(props) {
 
   const renderContent = () => (
     <Dropdown.Menu>
-      <Dropdown.Item onClick={handleCreateChat} style={{ color: 'var(--semi-color-secondary)' }} icon={<IconPlus />}>
+      <Dropdown.Item onClick={onCreateNewChat} style={{ color: 'var(--semi-color-secondary)' }} icon={<IconPlus />}>
         New Chat
       </Dropdown.Item>
-      <Dropdown.Item onClick={handleDelete} style={{ color: 'var(--semi-color-danger)' }} icon={<IconDelete />}>
+      <Dropdown.Item onClick={onDeleteRecord} style={{ color: 'var(--semi-color-danger)' }} icon={<IconDelete />}>
         Delete
       </Dropdown.Item>
       <Dropdown.Item onClick={handleShare} style={{ color: 'var(--semi-color-tertiary)' }} icon={<IconShareStroked />}>
@@ -84,8 +64,8 @@ const CheckOptions: React.FC<CheckOptionsProps> = function CheckOptions(props) {
         Select All
       </Checkbox>
       <div className="flex max-[408px]:hidden">
-        <OptionButton type="secondary" text="New Chat" icon={<IconPlus />} onClick={handleCreateChat} />
-        <OptionButton type="danger" text="Delete" icon={<IconDelete />} onClick={handleDelete} />
+        <OptionButton type="secondary" text="New Chat" icon={<IconPlus />} onClick={onCreateNewChat} />
+        <OptionButton type="danger" text="Delete" icon={<IconDelete />} onClick={onDeleteRecord} />
         <OptionButton type="tertiary" text="Share" icon={<IconShareStroked />} onClick={handleShare} />
       </div>
       <Dropdown clickToHide stopPropagation trigger="click" content={renderContent}>
