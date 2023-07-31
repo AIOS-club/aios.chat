@@ -1,5 +1,5 @@
 ## First and foremost
-I apologize for not updating for several months. The reason is that I have been working on the PLUS version. In the future, I will gradually transfer the features of the PLUS version to the open-source version. I also hope that everyone can provide new suggestions.
+I apologize for not updating for several months. The reason is that I have been working on the [PLUS](https://www.aios.chat) version. In the future, I will gradually transfer the features of the PLUS version to the open-source version. I also hope that everyone can provide new suggestions.
 
 <div align="center">
   <a href="https://github.com/AIOS-club/lite.aios.chat">
