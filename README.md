@@ -1,3 +1,6 @@
+## 写在前面
+抱歉有几个月没更新了，是因为一直在写[PLUS](https://www.aios.chat)版本，后续会将plus版本的特性一一移植到开源版本上面，也希望大家能够给出新的建议。
+
 <div align="center">
   <a href="https://github.com/AIOS-club/lite.aios.chat">
     <img src="src/assets/img/AIOS-LOGO.png" alt="Logo" width="120" height="80">
